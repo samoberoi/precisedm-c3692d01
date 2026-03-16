@@ -31,10 +31,7 @@ const sections = [
 
 const DisclaimerPage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-
-  const displayName =
-    user?.user_metadata?.full_name?.split(" ")[0] || "User";
+  const { firstName } = useProfile();
 
   return (
     <div className="min-h-screen bg-muted/40 pb-28">
