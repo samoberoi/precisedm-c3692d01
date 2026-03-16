@@ -90,9 +90,13 @@ const HomePage = () => {
           {toolkitItems.map((item) => (
             <button key={item.label} className="flex flex-col items-center gap-2">
               <div
-                className={`flex h-14 w-14 items-center justify-center rounded-2xl ${item.color} text-primary-foreground shadow-md`}
+                className={`flex h-14 w-14 items-center justify-center rounded-full ${item.color} text-primary-foreground shadow-md`}
               >
-                <item.icon className="h-6 w-6" />
+                {item.image ? (
+                  <img src={item.image} alt={item.label} className="h-7 w-7 object-contain" />
+                ) : item.icon ? (
+                  <item.icon className="h-6 w-6" />
+                ) : null}
               </div>
               <span className="text-xs font-medium text-foreground">{item.label}</span>
             </button>
