@@ -119,7 +119,10 @@ const ProfilePage = () => {
             <p className="text-sm text-muted-foreground">Hello !!</p>
             <h1 className="text-2xl font-bold text-foreground">{displayFirstName}</h1>
           </div>
-          <button className="mt-1 flex h-10 w-10 items-center justify-center rounded-full border border-border">
+          <button
+            onClick={() => navigate("/disclaimer")}
+            className="mt-1 flex h-10 w-10 items-center justify-center rounded-full border border-border"
+          >
             <Info className="h-5 w-5 text-foreground" />
           </button>
         </div>
