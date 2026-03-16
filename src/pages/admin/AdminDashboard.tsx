@@ -708,15 +708,44 @@ const AdminDashboard = () => {
           {viewMode === "submissions" && (
             <motion.div key="submissions" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
               <div className="mb-6">
-                <h1 className="text-2xl font-extrabold text-foreground">Form Submissions</h1>
-                <p className="text-sm text-muted-foreground mt-1">{submissions.length} total submissions</p>
+                <h1 className="text-2xl font-extrabold text-foreground">
+                  {submissionFormFilter ? `${FORM_LABELS[submissionFormFilter] || submissionFormFilter} Submissions` : "Form Submissions"}
+                </h1>
+                <p className="text-sm text-muted-foreground mt-1">{filteredSubmissions.length} submissions</p>
+              </div>
+
+              {/* Form Type Filter Tabs */}
+              <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+                <button
+                  onClick={() => setSubmissionFormFilter(null)}
+                  className={`text-xs font-semibold px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
+                    !submissionFormFilter
+                      ? "gradient-primary text-primary-foreground border-transparent"
+                      : "border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/30"
+                  }`}
+                >
+                  All
+                </button>
+                {Object.entries(FORM_LABELS).map(([key, label]) => (
+                  <button
+                    key={key}
+                    onClick={() => setSubmissionFormFilter(key)}
+                    className={`text-xs font-semibold px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
+                      submissionFormFilter === key
+                        ? "gradient-primary text-primary-foreground border-transparent"
+                        : "border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/30"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
 
               {submissionsLoading ? (
                 <LoadingSpinner />
               ) : (
                 <div className="space-y-3">
-                  {submissions.map((s, i) => (
+                  {filteredSubmissions.map((s, i) => (
                     <motion.button
                       key={s.id}
                       initial={{ opacity: 0, y: 8 }}
@@ -738,7 +767,7 @@ const AdminDashboard = () => {
                       </div>
                     </motion.button>
                   ))}
-                  {submissions.length === 0 && <EmptyState message="No submissions yet" />}
+                  {filteredSubmissions.length === 0 && <EmptyState message="No submissions found" />}
                 </div>
               )}
             </motion.div>
