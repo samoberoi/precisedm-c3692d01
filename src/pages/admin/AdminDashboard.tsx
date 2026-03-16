@@ -447,13 +447,14 @@ const AdminDashboard = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 + i * 0.06 }}
                       onClick={() => handleViewSubmissions(key)}
-                      className="relative flex flex-col items-start rounded-2xl p-4 text-left transition-all active:scale-[0.97] shadow-lg"
-                      style={{ minHeight: 110, background: FORM_GRADIENTS[key] }}
+                      className="relative flex flex-col items-start rounded-2xl p-4 text-left transition-all active:scale-[0.97] shadow-lg overflow-hidden"
+                      style={{ minHeight: 130, background: FORM_GRADIENTS[key] }}
                     >
-                      <p className="text-sm font-bold text-white">{label}</p>
+                      <p className="text-base font-bold text-white leading-tight">{label}</p>
+                      <p className="text-xs text-white/60 mt-0.5">{formStats[key] || 0} submissions</p>
                       <div className="flex-1" />
-                      <div className="flex items-end justify-between w-full mt-2">
-                        <p className="text-3xl font-black text-white">{formStats[key] || 0}</p>
+                      <div className="flex items-end justify-between w-full mt-3">
+                        <img src={FORM_ICONS[key]} alt={label} className="h-10 w-10 object-contain opacity-40" />
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
                           <ArrowUpRight className="h-4 w-4" />
                         </div>
