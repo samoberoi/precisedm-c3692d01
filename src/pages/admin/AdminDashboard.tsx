@@ -504,53 +504,6 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Form Breakdown */}
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm mb-8">
-                <div className="flex items-center gap-2.5 mb-5">
-                  <div className="h-8 w-8 rounded-lg bg-accent flex items-center justify-center">
-                    <BarChart3 className="h-4 w-4 text-accent-foreground" />
-                  </div>
-                  <h2 className="text-lg font-extrabold text-foreground">Form Submissions</h2>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {Object.entries(FORM_LABELS).map(([key, label]) => (
-                    <div key={key} className={`rounded-xl border border-border p-4 text-center ${FORM_COLORS[key]?.split(" ")[0] || "bg-muted/50"}`}>
-                      <p className="text-xs font-semibold text-muted-foreground mb-1">{label}</p>
-                      <p className="text-2xl font-black text-foreground">{formStats[key] || 0}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                <h2 className="text-lg font-extrabold text-foreground mb-4">Quick Actions</h2>
-                <div className="flex flex-wrap gap-3">
-                  <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button className="gap-2 rounded-xl font-semibold gradient-primary text-primary-foreground border-0 hover:opacity-90">
-                        <Plus className="h-4 w-4" />
-                        Add New User
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="mx-4 rounded-2xl">
-                      <DialogHeader>
-                        <DialogTitle>Add New User</DialogTitle>
-                      </DialogHeader>
-                      <CreateUserForm />
-                    </DialogContent>
-                  </Dialog>
-                  <Button variant="outline" className="gap-2 rounded-xl font-semibold" onClick={handleViewUsers}>
-                    <Users className="h-4 w-4" /> View All Users
-                  </Button>
-                  <Button variant="outline" className="gap-2 rounded-xl font-semibold" onClick={handleViewSubmissions}>
-                    <FileText className="h-4 w-4" /> View Submissions
-                  </Button>
-                  <Button variant="outline" className="gap-2 rounded-xl font-semibold" onClick={() => handleViewSubscriptions()}>
-                    <Shield className="h-4 w-4" /> View Subscriptions
-                  </Button>
-                </div>
-              </div>
             </motion.div>
           )}
 
