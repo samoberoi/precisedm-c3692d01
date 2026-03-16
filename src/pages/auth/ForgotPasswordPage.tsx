@@ -44,7 +44,7 @@ const ForgotPasswordPage = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen flex flex-col px-8 pt-16"
+      className="min-h-screen flex flex-col px-8 pt-16 gradient-surface"
     >
       <Link to="/login" className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
         <ArrowLeft className="h-4 w-4" /> Back to Login
@@ -71,14 +71,14 @@ const ForgotPasswordPage = () => {
       ) : (
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="resetEmail">Email Address</Label>
+            <Label htmlFor="resetEmail" className="text-muted-foreground">Email Address</Label>
             <Input
               id="resetEmail"
               type="email"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 rounded-xl bg-muted/40"
+              className="h-12 rounded-xl bg-card/60 backdrop-blur-sm border-border"
             />
             {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
@@ -86,7 +86,7 @@ const ForgotPasswordPage = () => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full h-12 rounded-xl text-base font-semibold"
+            className="w-full h-12 rounded-xl text-base font-semibold gradient-primary glow-primary"
           >
             {loading ? "Sending..." : "Send Reset Link"}
           </Button>

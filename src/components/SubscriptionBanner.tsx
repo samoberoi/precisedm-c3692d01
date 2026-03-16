@@ -7,7 +7,7 @@ const SubscriptionBanner = () => {
   if (!isActive || !subscription) return null;
 
   return (
-    <div className="mx-4 mt-2 mb-1 flex items-center gap-2 rounded-xl bg-primary/5 border border-primary/15 px-4 py-2.5">
+    <div className="mx-4 mt-2 mb-1 flex items-center gap-2 rounded-xl glass-card px-4 py-2.5 border-primary/20">
       <Shield className="h-4 w-4 text-primary shrink-0" />
       <div className="flex-1 min-w-0">
         <span className="text-xs font-semibold text-foreground">
