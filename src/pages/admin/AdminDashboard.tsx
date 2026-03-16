@@ -33,6 +33,9 @@ import {
   TrendingUp,
   Calendar,
   Activity,
+  Shield,
+  CreditCard,
+  Clock,
 } from "lucide-react";
 
 interface UserRow {
