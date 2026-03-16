@@ -114,7 +114,7 @@ const HomePage = () => {
       <div className="px-5">
         <div className="grid grid-cols-2 gap-3">
           {toolkitItems.map((item, i) => {
-            const isHighlighted = i === 3;
+            const isDark = item.dark;
             return (
               <motion.button
                 key={item.label}
@@ -122,24 +122,27 @@ const HomePage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06 }}
                 onClick={() => navigate(item.route)}
-                className={`relative flex flex-col items-start rounded-2xl p-4 text-left transition-all active:scale-[0.97] ${
-                  isHighlighted
-                    ? "bg-[hsl(200,30%,18%)] text-white shadow-lg"
-                    : "bg-card border border-border shadow-sm"
+                className={`relative flex flex-col items-start rounded-2xl p-4 text-left transition-all active:scale-[0.97] shadow-sm ${item.bg} ${
+                  isDark ? "" : "border border-border"
                 }`}
-                style={{ minHeight: 120 }}
+                style={{ minHeight: 130 }}
               >
-                <p className={`text-base font-bold leading-tight ${isHighlighted ? "text-white" : "text-foreground"}`}>
+                {/* Icon logo top-right */}
+                <div className={`absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-xl ${item.iconBg}`}>
+                  <img src={item.image} alt={item.label} className="h-5 w-5 object-contain" />
+                </div>
+                <p className={`text-base font-bold leading-tight ${isDark ? "text-white" : "text-foreground"}`}>
                   {item.label}
                 </p>
-                <p className={`text-xs mt-0.5 ${isHighlighted ? "text-white/60" : "text-muted-foreground"}`}>
+                <p className={`text-xs mt-0.5 ${isDark ? "text-white/60" : "text-muted-foreground"}`}>
                   {item.desc}
                 </p>
                 <div className="flex-1" />
                 <div className="flex items-end justify-between w-full mt-3">
-                  <img src={item.image} alt={item.label} className="h-8 w-8 object-contain opacity-60" />
+                  {isDark && <img src={item.image} alt={item.label} className="h-10 w-10 object-contain opacity-40" />}
+                  {!isDark && <div />}
                   <div className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                    isHighlighted ? "bg-primary text-primary-foreground" : "bg-primary/10 text-primary"
+                    isDark ? `${item.accent} text-primary-foreground` : "bg-primary/10 text-primary"
                   }`}>
                     <ArrowUpRight className="h-4 w-4" />
                   </div>
