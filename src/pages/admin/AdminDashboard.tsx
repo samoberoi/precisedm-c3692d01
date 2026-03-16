@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -43,6 +43,8 @@ import {
   Crown,
   BarChart3,
   Eye,
+  Search,
+  CalendarDays,
 } from "lucide-react";
 
 interface UserRow {
@@ -133,6 +135,25 @@ const AdminDashboard = () => {
   const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionRecord | null>(null);
   const [subFilter, setSubFilter] = useState<"all" | "active" | "inactive" | "monthly" | "yearly">("all");
   const [submissionFormFilter, setSubmissionFormFilter] = useState<string | null>(null);
+
+  // Shared filter state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [dateFilter, setDateFilter] = useState<"today" | "yesterday" | "this_week" | "this_month" | "custom">("today");
+  const [customStartDate, setCustomStartDate] = useState("");
+  const [customEndDate, setCustomEndDate] = useState("");
+
+  // Subscriptions-specific filters
+  const [subSearchQuery, setSubSearchQuery] = useState("");
+  const [subDateFilter, setSubDateFilter] = useState<"today" | "yesterday" | "this_week" | "this_month" | "custom">("today");
+  const [subCustomStartDate, setSubCustomStartDate] = useState("");
+  const [subCustomEndDate, setSubCustomEndDate] = useState("");
+
+  // Users-specific filters
+  const [userSearchQuery, setUserSearchQuery] = useState("");
+  const [userDateFilter, setUserDateFilter] = useState<"today" | "yesterday" | "this_week" | "this_month" | "custom">("today");
+  const [userCustomStartDate, setUserCustomStartDate] = useState("");
+  const [userCustomEndDate, setUserCustomEndDate] = useState("");
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -241,20 +262,81 @@ const AdminDashboard = () => {
     else setViewMode("dashboard");
   };
 
-  const filteredSubscriptions = allSubscriptions.filter((s) => {
-    if (subFilter === "all") return true;
-    if (subFilter === "active") return s.status === "active";
-    if (subFilter === "inactive") return s.status !== "active";
-    if (subFilter === "monthly") return s.plan_type === "monthly" && s.status === "active";
-    if (subFilter === "yearly") return s.plan_type === "yearly" && s.status === "active";
-    return true;
-  });
+  // Date range helper
+  const getDateRange = (filter: "today" | "yesterday" | "this_week" | "this_month" | "custom", startDate?: string, endDate?: string): { start: Date; end: Date } => {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
 
-  const filteredSubmissions = submissionFormFilter
-    ? submissions.filter((s) => s.form_type === submissionFormFilter)
-    : submissions;
+    switch (filter) {
+      case "today":
+        return { start: todayStart, end: todayEnd };
+      case "yesterday": {
+        const yStart = new Date(todayStart.getTime() - 24 * 60 * 60 * 1000);
+        return { start: yStart, end: todayStart };
+      }
+      case "this_week": {
+        const day = todayStart.getDay();
+        const wStart = new Date(todayStart.getTime() - day * 24 * 60 * 60 * 1000);
+        return { start: wStart, end: todayEnd };
+      }
+      case "this_month": {
+        const mStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        return { start: mStart, end: todayEnd };
+      }
+      case "custom": {
+        const s = startDate ? new Date(startDate) : todayStart;
+        const e = endDate ? new Date(new Date(endDate).getTime() + 24 * 60 * 60 * 1000) : todayEnd;
+        return { start: s, end: e };
+      }
+    }
+  };
 
-  const videoCount = 3;
+  const filterByDateAndSearch = <T extends { created_at: string }>(
+    items: T[],
+    df: "today" | "yesterday" | "this_week" | "this_month" | "custom",
+    sq: string,
+    cStart: string,
+    cEnd: string,
+    getSearchable: (item: T) => string
+  ): T[] => {
+    const { start, end } = getDateRange(df, cStart, cEnd);
+    return items.filter((item) => {
+      const d = new Date(item.created_at);
+      const inDate = d >= start && d < end;
+      const inSearch = !sq || getSearchable(item).toLowerCase().includes(sq.toLowerCase());
+      return inDate && inSearch;
+    });
+  };
+
+  const filteredSubscriptions = useMemo(() => {
+    let result = allSubscriptions.filter((s) => {
+      if (subFilter === "all") return true;
+      if (subFilter === "active") return s.status === "active";
+      if (subFilter === "inactive") return s.status !== "active";
+      if (subFilter === "monthly") return s.plan_type === "monthly" && s.status === "active";
+      if (subFilter === "yearly") return s.plan_type === "yearly" && s.status === "active";
+      return true;
+    });
+    return filterByDateAndSearch(result, subDateFilter, subSearchQuery, subCustomStartDate, subCustomEndDate, (s) => `${s.user_name} ${s.user_email} ${s.plan_type}`);
+  }, [allSubscriptions, subFilter, subDateFilter, subSearchQuery, subCustomStartDate, subCustomEndDate]);
+
+  const filteredSubmissions = useMemo(() => {
+    let result = submissionFormFilter
+      ? submissions.filter((s) => s.form_type === submissionFormFilter)
+      : submissions;
+    return filterByDateAndSearch(result, dateFilter, searchQuery, customStartDate, customEndDate, (s) => `${s.user_name} ${s.user_email}`);
+  }, [submissions, submissionFormFilter, dateFilter, searchQuery, customStartDate, customEndDate]);
+
+  const filteredUsers = useMemo(() => {
+    const { start, end } = getDateRange(userDateFilter, userCustomStartDate, userCustomEndDate);
+    return users.filter((u) => {
+      const d = new Date(u.created_at);
+      const inDate = d >= start && d < end;
+      const inSearch = !userSearchQuery || `${u.full_name} ${u.email}`.toLowerCase().includes(userSearchQuery.toLowerCase());
+      return inDate && inSearch;
+    });
+  }, [users, userDateFilter, userSearchQuery, userCustomStartDate, userCustomEndDate]);
 
   const CreateUserForm = () => (
     <form onSubmit={handleCreateUser} className="space-y-4 mt-2">
@@ -373,7 +455,7 @@ const AdminDashboard = () => {
                 <StatCard
                   icon={<PlayCircle className="h-5 w-5" />}
                   label="Videos"
-                  value={String(videoCount)}
+                  value={String(3)}
                   iconBg="bg-secondary text-secondary-foreground"
                 />
               </div>
@@ -517,7 +599,7 @@ const AdminDashboard = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h1 className="text-2xl font-extrabold text-foreground">Users</h1>
-                  <p className="text-sm text-muted-foreground mt-1">{total} total users</p>
+                  <p className="text-sm text-muted-foreground mt-1">{filteredUsers.length} of {total} users</p>
                 </div>
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
@@ -532,11 +614,23 @@ const AdminDashboard = () => {
                 </Dialog>
               </div>
 
+              <FilterBar
+                dateFilter={userDateFilter}
+                onDateFilterChange={(v) => setUserDateFilter(v)}
+                searchQuery={userSearchQuery}
+                onSearchChange={setUserSearchQuery}
+                searchPlaceholder="Search by name or email..."
+                customStartDate={userCustomStartDate}
+                customEndDate={userCustomEndDate}
+                onCustomStartChange={setUserCustomStartDate}
+                onCustomEndChange={setUserCustomEndDate}
+              />
+
               {loading ? (
                 <LoadingSpinner />
               ) : (
                 <div className="space-y-3">
-                  {users.map((u, i) => (
+                  {filteredUsers.map((u, i) => (
                     <motion.div
                       key={u.id}
                       initial={{ opacity: 0, y: 8 }}
@@ -562,7 +656,7 @@ const AdminDashboard = () => {
                       </div>
                     </motion.div>
                   ))}
-                  {users.length === 0 && <EmptyState message="No users yet" />}
+                  {filteredUsers.length === 0 && <EmptyState message="No users found for this filter" />}
                 </div>
               )}
             </motion.div>
@@ -594,6 +688,18 @@ const AdminDashboard = () => {
                   </button>
                 ))}
               </div>
+
+              <FilterBar
+                dateFilter={subDateFilter}
+                onDateFilterChange={(v) => setSubDateFilter(v)}
+                searchQuery={subSearchQuery}
+                onSearchChange={setSubSearchQuery}
+                searchPlaceholder="Search by name, email, or plan..."
+                customStartDate={subCustomStartDate}
+                customEndDate={subCustomEndDate}
+                onCustomStartChange={setSubCustomStartDate}
+                onCustomEndChange={setSubCustomEndDate}
+              />
 
               {subscriptionsLoading ? (
                 <LoadingSpinner />
@@ -745,6 +851,18 @@ const AdminDashboard = () => {
                 ))}
               </div>
 
+              <FilterBar
+                dateFilter={dateFilter}
+                onDateFilterChange={(v) => setDateFilter(v)}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                searchPlaceholder="Search by name or email..."
+                customStartDate={customStartDate}
+                customEndDate={customEndDate}
+                onCustomStartChange={setCustomStartDate}
+                onCustomEndChange={setCustomEndDate}
+              />
+
               {submissionsLoading ? (
                 <LoadingSpinner />
               ) : (
@@ -830,6 +948,87 @@ const AdminDashboard = () => {
 };
 
 /* ─── Reusable Components ─── */
+
+type DateFilterType = "today" | "yesterday" | "this_week" | "this_month" | "custom";
+
+const DATE_FILTER_LABELS: Record<DateFilterType, string> = {
+  today: "Today",
+  yesterday: "Yesterday",
+  this_week: "This Week",
+  this_month: "This Month",
+  custom: "Custom Range",
+};
+
+const FilterBar = ({
+  dateFilter,
+  onDateFilterChange,
+  searchQuery,
+  onSearchChange,
+  searchPlaceholder = "Search...",
+  customStartDate,
+  customEndDate,
+  onCustomStartChange,
+  onCustomEndChange,
+}: {
+  dateFilter: DateFilterType;
+  onDateFilterChange: (v: DateFilterType) => void;
+  searchQuery: string;
+  onSearchChange: (v: string) => void;
+  searchPlaceholder?: string;
+  customStartDate: string;
+  customEndDate: string;
+  onCustomStartChange: (v: string) => void;
+  onCustomEndChange: (v: string) => void;
+}) => (
+  <div className="rounded-xl border border-border bg-card/80 p-4 mb-6 space-y-3">
+    <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex items-center gap-2 flex-1 min-w-0">
+        <CalendarDays className="h-4 w-4 text-muted-foreground shrink-0" />
+        <Select value={dateFilter} onValueChange={(v) => onDateFilterChange(v as DateFilterType)}>
+          <SelectTrigger className="h-10 rounded-lg bg-muted/40 border-border text-sm font-medium w-full sm:w-[180px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(DATE_FILTER_LABELS).map(([key, label]) => (
+              <SelectItem key={key} value={key}>{label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="relative flex-1 min-w-0">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          value={searchQuery}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder={searchPlaceholder}
+          className="pl-9 h-10 rounded-lg bg-muted/40 border-border text-sm"
+        />
+      </div>
+    </div>
+    {dateFilter === "custom" && (
+      <div className="flex flex-col sm:flex-row gap-3 pt-1">
+        <div className="flex items-center gap-2 flex-1">
+          <Label className="text-xs text-muted-foreground whitespace-nowrap">Start</Label>
+          <Input
+            type="date"
+            value={customStartDate}
+            onChange={(e) => onCustomStartChange(e.target.value)}
+            className="h-9 rounded-lg bg-muted/40 border-border text-sm flex-1"
+          />
+        </div>
+        <div className="flex items-center gap-2 flex-1">
+          <Label className="text-xs text-muted-foreground whitespace-nowrap">End</Label>
+          <Input
+            type="date"
+            value={customEndDate}
+            onChange={(e) => onCustomEndChange(e.target.value)}
+            className="h-9 rounded-lg bg-muted/40 border-border text-sm flex-1"
+          />
+        </div>
+      </div>
+    )}
+  </div>
+);
 
 const StatCard = ({ icon, label, value, onClick, iconBg, clickable }: {
   icon: React.ReactNode;
