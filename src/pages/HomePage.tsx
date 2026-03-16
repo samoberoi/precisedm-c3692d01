@@ -19,7 +19,7 @@ const toolkitItems = [
   { label: "Gestation", icon: null, image: gestationIcon, color: "bg-[#f47055]" },
   { label: "Maintenance", icon: null, image: maintenanceIcon, color: "bg-[#FAE672]" },
   { label: "Steroid", icon: null, image: steroidIcon, color: "bg-[#8A38F5]" },
-  { label: "Videos", icon: null, image: videosIcon, color: "bg-[#B5E962]" },
+  { label: "Videos", icon: null, image: videosIcon, color: "bg-[#B5E962]", route: "/videos" },
 ];
 
 
@@ -64,7 +64,12 @@ const HomePage = () => {
         <h2 className="text-base font-bold text-foreground mb-4">Our Toolkit</h2>
         <div className="flex justify-between">
           {toolkitItems.map((item) => (
-            <button key={item.label} className="flex flex-col items-center gap-2">
+            <button
+              key={item.label}
+              type="button"
+              onClick={item.route ? () => navigate(item.route) : undefined}
+              className="flex flex-col items-center gap-2"
+            >
               <div
                 className={`flex h-14 w-14 items-center justify-center rounded-full ${item.color} text-primary-foreground shadow-md`}
               >
