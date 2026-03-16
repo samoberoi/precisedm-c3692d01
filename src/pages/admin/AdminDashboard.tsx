@@ -264,7 +264,8 @@ const AdminDashboard = () => {
     else setViewMode("dashboard");
   };
 
-  const getDateRange = (filter: "today" | "yesterday" | "this_week" | "this_month" | "custom", startDate?: string, endDate?: string): { start: Date; end: Date } => {
+  const getDateRange = (filter: "all_time" | "today" | "yesterday" | "this_week" | "this_month" | "custom", startDate?: string, endDate?: string): { start: Date; end: Date } | null => {
+    if (filter === "all_time") return null;
     const now = new Date();
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
