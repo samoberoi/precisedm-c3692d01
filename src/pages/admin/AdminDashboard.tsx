@@ -851,6 +851,18 @@ const AdminDashboard = () => {
                 ))}
               </div>
 
+              <FilterBar
+                dateFilter={dateFilter}
+                onDateFilterChange={(v) => setDateFilter(v)}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                searchPlaceholder="Search by name or email..."
+                customStartDate={customStartDate}
+                customEndDate={customEndDate}
+                onCustomStartChange={setCustomStartDate}
+                onCustomEndChange={setCustomEndDate}
+              />
+
               {submissionsLoading ? (
                 <LoadingSpinner />
               ) : (
