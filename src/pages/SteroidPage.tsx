@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Info, RotateCcw, Printer } from "lucide-react";
 import { useProfile } from "@/hooks/use-profile";
 import { useSaveSubmission } from "@/hooks/use-save-submission";
-
 import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
+import steroidIcon from "@/assets/steroid-icon.png";
 
 const raceOptions = [
   "Black",
@@ -190,35 +190,38 @@ const SteroidPage = () => {
   const raceLabel = raceOptions.find((r) => r.toLowerCase() === race) ?? race;
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <div className="min-h-screen bg-background pb-36">
       <SubscriptionBanner />
+
       {/* Header */}
-      <div className="px-5 pt-6">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-foreground mb-3">
-          <ChevronLeft className="h-5 w-5" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Hello !!</p>
-            <h1 className="text-2xl font-bold text-foreground">{firstName}</h1>
-          </div>
-          <button
-            onClick={() => navigate("/disclaimer")}
-            className="mt-1 flex h-10 w-10 items-center justify-center rounded-full border border-border"
-          >
+      <div className="px-5 pt-6 pb-3">
+        <div className="flex items-center justify-between">
+          <button onClick={() => navigate(-1)} className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border shadow-sm">
+            <ChevronLeft className="h-5 w-5 text-foreground" />
+          </button>
+          <h1 className="text-lg font-bold text-foreground">Steroid</h1>
+          <button onClick={() => navigate("/disclaimer")} className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border shadow-sm">
             <Info className="h-5 w-5 text-foreground" />
           </button>
         </div>
       </div>
 
-      {/* Title */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="px-5 mt-5 mb-2 text-center">
-        <h2 className="text-xl font-extrabold text-foreground">Welcome to Steroid Insulin Dosing</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          This tool calculates the initial insulin dose range for steroid induced hyperglycemia.
-        </p>
-      </motion.div>
+      {/* Hero Card */}
+      <div className="px-5 pt-2">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative overflow-hidden rounded-2xl p-5"
+          style={{ background: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))" }}
+        >
+          <div className="relative z-10">
+            <p className="text-[10px] font-semibold text-white/60 uppercase tracking-widest">Steroid Dosing</p>
+            <h2 className="text-lg font-extrabold text-white mt-1">Steroid Calculator</h2>
+            <p className="text-[11px] text-white/70 mt-1 max-w-[200px] leading-snug">Calculate insulin dose for steroid-induced hyperglycemia</p>
+          </div>
+          <img src={steroidIcon} alt="" className="absolute -bottom-2 -right-2 h-24 w-24 opacity-15 object-contain" />
+        </motion.div>
+      </div>
 
       {/* Form */}
       {!result && (
