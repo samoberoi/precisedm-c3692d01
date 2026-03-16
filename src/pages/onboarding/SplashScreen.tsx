@@ -3,28 +3,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-/**
- * Splash animation sequence (matching brand mockup):
- * Step 0: Blank screen (~0.6s)
- * Step 1: "PRECISE" appears center
- * Step 2: "PRECISE  DM" — DM slides in
- * Step 3: Blood drop falls in between PRECISE and DM
- * Step 4: Welcome text + Next button
- */
-
-const BloodDrop = ({ size = 52 }: { size?: number }) => (
+const BloodDrop = ({ size = 48 }: { size?: number }) => (
   <svg
     width={size}
-    height={size * 1.35}
-    viewBox="0 0 52 70"
+    height={size * 1.3}
+    viewBox="0 0 48 62"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M26 4C26 4 6 26 6 42C6 50.837 13.163 58 22 58H30C38.837 58 46 50.837 46 42C46 26 26 4 26 4Z"
+      d="M24 3C24 3 4 23 4 38C4 48.493 12.507 57 23 57H25C35.493 57 44 48.493 44 38C44 23 24 3 24 3Z"
       fill="#DC2626"
     />
-    <ellipse cx="19" cy="36" rx="4" ry="7" fill="white" opacity="0.25" />
+    <ellipse cx="17" cy="33" rx="3.5" ry="6" fill="white" opacity="0.25" />
   </svg>
 );
 
@@ -34,65 +25,78 @@ const SplashScreen = () => {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStep(1), 600),   // PRECISE
-      setTimeout(() => setStep(2), 1400),  // PRECISE DM
-      setTimeout(() => setStep(3), 2200),  // Blood drop
-      setTimeout(() => setStep(4), 3200),  // Welcome text
+      setTimeout(() => setStep(1), 600),
+      setTimeout(() => setStep(2), 1400),
+      setTimeout(() => setStep(3), 2200),
+      setTimeout(() => setStep(4), 3200),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-8 pb-32 bg-background">
-      {/* Logo area */}
       <div className="flex items-center justify-center select-none" style={{ minHeight: 80 }}>
         <AnimatePresence>
           {step >= 1 && (
             <motion.div
-              className="flex items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+              className="relative flex items-stretch"
             >
-              {/* PRECISE on white bg with blue border */}
-              <motion.span
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="text-3xl sm:text-4xl font-black italic tracking-wide px-4 py-2 border-[3px] border-primary bg-background text-foreground leading-none"
-              >
-                PRECISE
-              </motion.span>
+              {/* Outer blue container — the full rectangle */}
+              <div className="flex items-stretch bg-primary border-[3px] border-primary rounded-sm overflow-visible">
+                {/* PRECISE — white inset box */}
+                <div className="bg-background px-5 py-2.5 flex items-center m-[3px] mr-0">
+                  <span className="text-3xl sm:text-4xl font-black italic tracking-wide text-foreground leading-none whitespace-nowrap">
+                    PRECISE
+                  </span>
+                </div>
 
-              {/* Blood drop - appears step 3 */}
-              {step >= 3 && (
-                <motion.div
-                  initial={{ opacity: 0, y: -40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
-                  className="relative -mx-2 z-10"
-                  style={{ marginBottom: -14 }}
-                >
-                  <BloodDrop size={44} />
-                </motion.div>
-              )}
+                {/* DM — directly on blue, no extra box */}
+                <AnimatePresence>
+                  {step >= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, width: 0 }}
+                      animate={{ opacity: 1, width: "auto" }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
+                      className="flex items-center overflow-hidden"
+                    >
+                      <span className="text-3xl sm:text-4xl font-black italic tracking-wide text-primary-foreground leading-none whitespace-nowrap px-5 py-2.5">
+                        DM
+                      </span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-              {/* DM on blue bg - appears step 2 */}
-              {step >= 2 && (
-                <motion.span
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.45, ease: "easeOut" }}
-                  className="text-3xl sm:text-4xl font-black italic tracking-wide px-4 py-2 border-[3px] border-primary bg-primary text-primary-foreground leading-none"
-                >
-                  DM
-                </motion.span>
-              )}
+              {/* Blood drop — overlapping between PRECISE and DM */}
+              <AnimatePresence>
+                {step >= 3 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="absolute z-10"
+                    style={{
+                      right: step >= 2 ? "calc(50% + 8px)" : "0",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      marginTop: 4,
+                    }}
+                  >
+                    <div className="relative -top-1">
+                      <BloodDrop size={42} />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Welcome text - step 4 */}
+      {/* Welcome text */}
       <AnimatePresence>
         {step >= 4 && (
           <motion.div
@@ -111,7 +115,6 @@ const SplashScreen = () => {
         )}
       </AnimatePresence>
 
-      {/* Next button - step 4 */}
       <AnimatePresence>
         {step >= 4 && (
           <motion.div
