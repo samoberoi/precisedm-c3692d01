@@ -143,7 +143,31 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Videos Row */}
+      {/* Free Trial Card */}
+      {showTrialCard && (
+        <div className="px-5 pt-4">
+          <motion.button
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            onClick={() => navigate("/subscription")}
+            className="w-full flex items-center gap-4 rounded-2xl p-4 text-left active:scale-[0.98] transition-transform shadow-lg"
+            style={{ background: "linear-gradient(135deg, hsl(270,60%,50%), hsl(290,55%,40%))" }}
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
+              <Gift className="h-5 w-5 text-white" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-white">1 Week Free Trial</p>
+              <p className="text-xs text-white/60">Try all tools free — no payment needed</p>
+            </div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
+              <ArrowUpRight className="h-4 w-4" />
+            </div>
+          </motion.button>
+        </div>
+      )}
+
       <div className="px-5 pt-4">
         <motion.button
           initial={{ opacity: 0, y: 15 }}
