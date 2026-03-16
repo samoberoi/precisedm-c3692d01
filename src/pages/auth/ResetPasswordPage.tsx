@@ -29,10 +29,8 @@ const ResetPasswordPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Check for recovery event in hash
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
     if (hashParams.get("type") !== "recovery" && !hashParams.get("access_token")) {
-      // Allow the page to still be usable if user navigated here after clicking email link
     }
   }, []);
 
@@ -67,7 +65,7 @@ const ResetPasswordPage = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen flex flex-col px-8 pt-16"
+      className="min-h-screen flex flex-col px-8 pt-16 gradient-surface"
     >
       <div className="flex justify-center mb-8">
         <PreciseLogo size={56} />
@@ -79,7 +77,7 @@ const ResetPasswordPage = () => {
 
       <form onSubmit={handleReset} className="mt-8 space-y-5">
         <div className="space-y-2">
-          <Label htmlFor="newPassword">New Password</Label>
+          <Label htmlFor="newPassword" className="text-muted-foreground">New Password</Label>
           <div className="relative">
             <Input
               id="newPassword"
@@ -87,7 +85,7 @@ const ResetPasswordPage = () => {
               placeholder="Min. 8 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="h-12 rounded-xl bg-muted/40 pr-12"
+              className="h-12 rounded-xl bg-card/60 backdrop-blur-sm border-border pr-12"
             />
             <button
               type="button"
@@ -101,14 +99,14 @@ const ResetPasswordPage = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="confirmNewPassword">Confirm Password</Label>
+          <Label htmlFor="confirmNewPassword" className="text-muted-foreground">Confirm Password</Label>
           <Input
             id="confirmNewPassword"
             type="password"
             placeholder="Re-enter password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="h-12 rounded-xl bg-muted/40"
+            className="h-12 rounded-xl bg-card/60 backdrop-blur-sm border-border"
           />
           {errors.confirmPassword && (
             <p className="text-sm text-destructive">{errors.confirmPassword}</p>
@@ -118,7 +116,7 @@ const ResetPasswordPage = () => {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full h-12 rounded-xl text-base font-semibold"
+          className="w-full h-12 rounded-xl text-base font-semibold gradient-primary glow-primary"
         >
           {loading ? "Updating..." : "Update Password"}
         </Button>

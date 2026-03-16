@@ -51,7 +51,7 @@ const SubscriptionSuccessPage = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-background flex items-center justify-center px-6"
+      className="min-h-screen gradient-surface flex items-center justify-center px-6"
     >
       <div className="text-center max-w-sm">
         {activating ? (
@@ -62,14 +62,14 @@ const SubscriptionSuccessPage = () => {
           </>
         ) : success ? (
           <>
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mx-auto mb-4">
-              <CheckCircle className="h-8 w-8 text-primary" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full gradient-primary glow-primary mx-auto mb-4">
+              <CheckCircle className="h-8 w-8 text-primary-foreground" />
             </div>
             <h2 className="text-xl font-bold text-foreground mb-2">Subscription Activated!</h2>
             <p className="text-sm text-muted-foreground mb-6">
               You now have full access to all medical tools and calculators.
             </p>
-            <Button className="w-full h-12 rounded-xl font-bold" onClick={() => navigate("/home")}>
+            <Button className="w-full h-12 rounded-xl font-bold gradient-primary glow-primary" onClick={() => navigate("/home")}>
               Go to Home
             </Button>
           </>
@@ -80,10 +80,10 @@ const SubscriptionSuccessPage = () => {
               Your subscription is being processed. It may take a moment to activate. Please check back shortly.
             </p>
             <div className="flex gap-3">
-              <Button variant="outline" className="flex-1 h-12 rounded-xl font-bold" onClick={() => navigate("/subscription")}>
+              <Button variant="outline" className="flex-1 h-12 rounded-xl font-bold border-border" onClick={() => navigate("/subscription")}>
                 Back to Plans
               </Button>
-              <Button className="flex-1 h-12 rounded-xl font-bold" onClick={() => navigate("/home")}>
+              <Button className="flex-1 h-12 rounded-xl font-bold gradient-primary glow-primary" onClick={() => navigate("/home")}>
                 Go Home
               </Button>
             </div>
