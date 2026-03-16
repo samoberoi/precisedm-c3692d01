@@ -262,20 +262,81 @@ const AdminDashboard = () => {
     else setViewMode("dashboard");
   };
 
-  const filteredSubscriptions = allSubscriptions.filter((s) => {
-    if (subFilter === "all") return true;
-    if (subFilter === "active") return s.status === "active";
-    if (subFilter === "inactive") return s.status !== "active";
-    if (subFilter === "monthly") return s.plan_type === "monthly" && s.status === "active";
-    if (subFilter === "yearly") return s.plan_type === "yearly" && s.status === "active";
-    return true;
-  });
+  // Date range helper
+  const getDateRange = (filter: "today" | "yesterday" | "this_week" | "this_month" | "custom", startDate?: string, endDate?: string): { start: Date; end: Date } => {
+    const now = new Date();
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const todayEnd = new Date(todayStart.getTime() + 24 * 60 * 60 * 1000);
 
-  const filteredSubmissions = submissionFormFilter
-    ? submissions.filter((s) => s.form_type === submissionFormFilter)
-    : submissions;
+    switch (filter) {
+      case "today":
+        return { start: todayStart, end: todayEnd };
+      case "yesterday": {
+        const yStart = new Date(todayStart.getTime() - 24 * 60 * 60 * 1000);
+        return { start: yStart, end: todayStart };
+      }
+      case "this_week": {
+        const day = todayStart.getDay();
+        const wStart = new Date(todayStart.getTime() - day * 24 * 60 * 60 * 1000);
+        return { start: wStart, end: todayEnd };
+      }
+      case "this_month": {
+        const mStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        return { start: mStart, end: todayEnd };
+      }
+      case "custom": {
+        const s = startDate ? new Date(startDate) : todayStart;
+        const e = endDate ? new Date(new Date(endDate).getTime() + 24 * 60 * 60 * 1000) : todayEnd;
+        return { start: s, end: e };
+      }
+    }
+  };
 
-  const videoCount = 3;
+  const filterByDateAndSearch = <T extends { created_at: string }>(
+    items: T[],
+    df: "today" | "yesterday" | "this_week" | "this_month" | "custom",
+    sq: string,
+    cStart: string,
+    cEnd: string,
+    getSearchable: (item: T) => string
+  ): T[] => {
+    const { start, end } = getDateRange(df, cStart, cEnd);
+    return items.filter((item) => {
+      const d = new Date(item.created_at);
+      const inDate = d >= start && d < end;
+      const inSearch = !sq || getSearchable(item).toLowerCase().includes(sq.toLowerCase());
+      return inDate && inSearch;
+    });
+  };
+
+  const filteredSubscriptions = useMemo(() => {
+    let result = allSubscriptions.filter((s) => {
+      if (subFilter === "all") return true;
+      if (subFilter === "active") return s.status === "active";
+      if (subFilter === "inactive") return s.status !== "active";
+      if (subFilter === "monthly") return s.plan_type === "monthly" && s.status === "active";
+      if (subFilter === "yearly") return s.plan_type === "yearly" && s.status === "active";
+      return true;
+    });
+    return filterByDateAndSearch(result, subDateFilter, subSearchQuery, subCustomStartDate, subCustomEndDate, (s) => `${s.user_name} ${s.user_email} ${s.plan_type}`);
+  }, [allSubscriptions, subFilter, subDateFilter, subSearchQuery, subCustomStartDate, subCustomEndDate]);
+
+  const filteredSubmissions = useMemo(() => {
+    let result = submissionFormFilter
+      ? submissions.filter((s) => s.form_type === submissionFormFilter)
+      : submissions;
+    return filterByDateAndSearch(result, dateFilter, searchQuery, customStartDate, customEndDate, (s) => `${s.user_name} ${s.user_email}`);
+  }, [submissions, submissionFormFilter, dateFilter, searchQuery, customStartDate, customEndDate]);
+
+  const filteredUsers = useMemo(() => {
+    const { start, end } = getDateRange(userDateFilter, userCustomStartDate, userCustomEndDate);
+    return users.filter((u) => {
+      const d = new Date(u.created_at);
+      const inDate = d >= start && d < end;
+      const inSearch = !userSearchQuery || `${u.full_name} ${u.email}`.toLowerCase().includes(userSearchQuery.toLowerCase());
+      return inDate && inSearch;
+    });
+  }, [users, userDateFilter, userSearchQuery, userCustomStartDate, userCustomEndDate]);
 
   const CreateUserForm = () => (
     <form onSubmit={handleCreateUser} className="space-y-4 mt-2">
