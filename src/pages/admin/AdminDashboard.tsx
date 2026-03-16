@@ -599,7 +599,7 @@ const AdminDashboard = () => {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h1 className="text-2xl font-extrabold text-foreground">Users</h1>
-                  <p className="text-sm text-muted-foreground mt-1">{total} total users</p>
+                  <p className="text-sm text-muted-foreground mt-1">{filteredUsers.length} of {total} users</p>
                 </div>
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
@@ -614,11 +614,23 @@ const AdminDashboard = () => {
                 </Dialog>
               </div>
 
+              <FilterBar
+                dateFilter={userDateFilter}
+                onDateFilterChange={(v) => setUserDateFilter(v)}
+                searchQuery={userSearchQuery}
+                onSearchChange={setUserSearchQuery}
+                searchPlaceholder="Search by name or email..."
+                customStartDate={userCustomStartDate}
+                customEndDate={userCustomEndDate}
+                onCustomStartChange={setUserCustomStartDate}
+                onCustomEndChange={setUserCustomEndDate}
+              />
+
               {loading ? (
                 <LoadingSpinner />
               ) : (
                 <div className="space-y-3">
-                  {users.map((u, i) => (
+                  {filteredUsers.map((u, i) => (
                     <motion.div
                       key={u.id}
                       initial={{ opacity: 0, y: 8 }}
@@ -644,7 +656,7 @@ const AdminDashboard = () => {
                       </div>
                     </motion.div>
                   ))}
-                  {users.length === 0 && <EmptyState message="No users yet" />}
+                  {filteredUsers.length === 0 && <EmptyState message="No users found for this filter" />}
                 </div>
               )}
             </motion.div>
