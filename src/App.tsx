@@ -20,6 +20,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import DisclaimerPage from "./pages/DisclaimerPage";
 import VideosPage from "./pages/VideosPage";
 import SteroidPage from "./pages/SteroidPage";
+import MaintenancePage from "./pages/MaintenancePage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/disclaimer" element={<DisclaimerPage />} />
             <Route path="/videos" element={<VideosPage />} />
             <Route path="/steroid" element={<SteroidPage />} />
+            <Route path="/maintenance" element={<MaintenancePage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
