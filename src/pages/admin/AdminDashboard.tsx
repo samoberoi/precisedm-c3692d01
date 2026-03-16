@@ -226,7 +226,7 @@ const AdminDashboard = () => {
   const handleSignOut = async () => { await signOut(); navigate("/login"); };
 
   const handleViewUsers = () => setViewMode("users");
-  const handleViewSubmissions = () => { fetchSubmissions(); setViewMode("submissions"); };
+  const handleViewSubmissions = (formType?: string) => { fetchSubmissions(); setSubmissionFormFilter(formType || null); setViewMode("submissions"); };
   const handleViewSubscriptions = (filter?: "all" | "active" | "inactive" | "monthly" | "yearly") => {
     fetchSubscriptions();
     if (filter) setSubFilter(filter);
