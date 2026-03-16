@@ -298,35 +298,38 @@ const GestationPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <div className="min-h-screen bg-background pb-36">
       <SubscriptionBanner />
+
       {/* Header */}
-      <div className="px-5 pt-6">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-foreground mb-3">
-          <ChevronLeft className="h-5 w-5" />
-          <span className="text-sm font-medium">Back</span>
-        </button>
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">Hello !!</p>
-            <h1 className="text-2xl font-bold text-foreground">{firstName}</h1>
-          </div>
-          <button
-            onClick={() => navigate("/disclaimer")}
-            className="mt-1 flex h-10 w-10 items-center justify-center rounded-full border border-border"
-          >
+      <div className="px-5 pt-6 pb-3">
+        <div className="flex items-center justify-between">
+          <button onClick={() => navigate(-1)} className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border shadow-sm">
+            <ChevronLeft className="h-5 w-5 text-foreground" />
+          </button>
+          <h1 className="text-lg font-bold text-foreground">Gestation</h1>
+          <button onClick={() => navigate("/disclaimer")} className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border shadow-sm">
             <Info className="h-5 w-5 text-foreground" />
           </button>
         </div>
       </div>
 
-      {/* Title */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="px-5 mt-5 mb-2 text-center">
-        <h2 className="text-xl font-extrabold text-foreground">Welcome to DiaForm Gestation Insulin Dosage</h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          This tool calculates the adjustments to Basal and/or Prandial insulin doses.
-        </p>
-      </motion.div>
+      {/* Hero Card */}
+      <div className="px-5 pt-2">
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative overflow-hidden rounded-2xl p-5"
+          style={{ background: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))" }}
+        >
+          <div className="relative z-10">
+            <p className="text-[10px] font-semibold text-white/60 uppercase tracking-widest">Pregnancy Care</p>
+            <h2 className="text-lg font-extrabold text-white mt-1">Gestation Calculator</h2>
+            <p className="text-[11px] text-white/70 mt-1 max-w-[200px] leading-snug">Calculate adjustments to Basal and Prandial insulin doses</p>
+          </div>
+          <img src={gestationIcon} alt="" className="absolute -bottom-2 -right-2 h-24 w-24 opacity-15 object-contain" />
+        </motion.div>
+      </div>
 
       {/* Form */}
       {!result && (

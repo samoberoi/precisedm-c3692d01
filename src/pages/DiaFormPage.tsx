@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import diaformIcon from "@/assets/diaform-icon.png";
+import diaformIcon from "@/assets/diaform-card-icon.png";
 
 const raceOptions = [
   "Black", "Caucasian", "Hispanic", "Asian",
