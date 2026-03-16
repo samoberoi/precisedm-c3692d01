@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import SubscriptionGate from "@/components/SubscriptionGate";
 import PageTransition from "@/components/PageTransition";
 import BottomNav from "@/components/BottomNav";
+import ScrollToTop from "@/components/ScrollToTop";
 import SplashScreen from "./pages/onboarding/SplashScreen";
 import WelcomeScreen from "./pages/onboarding/WelcomeScreen";
 import FeaturesScreen from "./pages/onboarding/FeaturesScreen";
@@ -42,6 +43,7 @@ const AnimatedRoutes = () => {
 
   return (
     <>
+      <ScrollToTop />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><SplashScreen /></PageTransition>} />
