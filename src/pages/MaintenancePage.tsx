@@ -493,8 +493,6 @@ const MaintenancePage = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BottomNav />
     </div>
   );
 };

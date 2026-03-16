@@ -62,8 +62,6 @@ const DisclaimerPage = () => {
           </motion.div>
         ))}
       </div>
-
-      <BottomNav />
     </div>
   );
 };

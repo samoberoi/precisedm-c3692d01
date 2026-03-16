@@ -438,8 +438,6 @@ const DiaFormPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BottomNav />
     </div>
   );
 };

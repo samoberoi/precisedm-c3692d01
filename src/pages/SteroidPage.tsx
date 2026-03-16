@@ -337,8 +337,6 @@ const SteroidPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BottomNav />
     </div>
   );
 };

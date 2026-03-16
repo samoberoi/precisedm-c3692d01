@@ -542,8 +542,6 @@ const GestationPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <BottomNav />
     </div>
   );
 };

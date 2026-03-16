@@ -181,8 +181,6 @@ const HomePage = () => {
           </div>
         </motion.div>
       </div>
-
-      <BottomNav />
     </motion.div>
   );
 };

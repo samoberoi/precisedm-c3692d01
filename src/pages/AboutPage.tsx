@@ -143,8 +143,6 @@ const AboutPage = () => {
           ))}
         </div>
       </div>
-
-      <BottomNav />
     </motion.div>
   );
 };

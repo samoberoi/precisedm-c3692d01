@@ -131,8 +131,6 @@ const ConnectPage = () => {
           </Button>
         </motion.form>
       </div>
-
-      <BottomNav />
     </div>
   );
 };

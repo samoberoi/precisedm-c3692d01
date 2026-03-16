@@ -112,8 +112,6 @@ const VideosPage = () => {
           ))}
         </div>
       </div>
-
-      <BottomNav />
     </div>
   );
 };
