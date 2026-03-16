@@ -434,6 +434,12 @@ const AdminDashboard = () => {
                 </motion.button>
               </div>
 
+              {/* Charts */}
+              <div className="mt-5 space-y-4">
+                <UserGrowthChart users={users} />
+                <RevenueChart subscriptions={allSubscriptions} />
+              </div>
+
               {/* Form Breakdown - 2x2 grid matching toolkit style */}
               <div className="mt-5">
                 <div className="flex items-center gap-2 mb-3">
