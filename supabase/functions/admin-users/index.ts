@@ -51,6 +51,35 @@ Deno.serve(async (req) => {
 
     // GET = list users with count + stats
     if (req.method === "GET") {
+      // If action=subscriptions, return all subscription records with user details
+      if (action === "subscriptions") {
+        const { data: allSubs, error } = await supabaseAdmin
+          .from("subscriptions")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        const { data: profiles } = await supabaseAdmin
+          .from("profiles")
+          .select("user_id, full_name, email, user_type");
+
+        const enriched = (allSubs || []).map((s: any) => {
+          const profile = profiles?.find((p: any) => p.user_id === s.user_id);
+          return {
+            ...s,
+            user_name: profile?.full_name || "Unknown",
+            user_email: profile?.email || "",
+            user_type: profile?.user_type || "student",
+          };
+        });
+
+        return new Response(
+          JSON.stringify({ subscriptions: enriched, total: enriched.length }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       // If action=submissions, return form submission data
       if (action === "submissions") {
         const { data: submissions, error } = await supabaseAdmin

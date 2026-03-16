@@ -36,6 +36,13 @@ import {
   Shield,
   CreditCard,
   Clock,
+  CheckCircle2,
+  XCircle,
+  ArrowUpRight,
+  Zap,
+  Crown,
+  BarChart3,
+  Eye,
 } from "lucide-react";
 
 interface UserRow {
@@ -68,6 +75,21 @@ interface UpcomingRenewal {
   user_email: string;
 }
 
+interface SubscriptionRecord {
+  id: string;
+  user_id: string;
+  plan_type: string;
+  status: string;
+  start_date: string | null;
+  next_billing_date: string | null;
+  paypal_subscription_id: string | null;
+  created_at: string;
+  updated_at: string;
+  user_name: string;
+  user_email: string;
+  user_type: string;
+}
+
 interface SubscriptionStats {
   totalSubscribed: number;
   totalUnsubscribed: number;
@@ -76,7 +98,7 @@ interface SubscriptionStats {
   upcomingRenewals: UpcomingRenewal[];
 }
 
-type ViewMode = "dashboard" | "users" | "submissions" | "submission-detail";
+type ViewMode = "dashboard" | "users" | "submissions" | "submission-detail" | "subscriptions" | "subscription-detail";
 
 const FORM_LABELS: Record<string, string> = {
   diaform: "DiaForm Initial",
@@ -106,6 +128,10 @@ const AdminDashboard = () => {
   const [submissions, setSubmissions] = useState<SubmissionRow[]>([]);
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState<SubmissionRow | null>(null);
+  const [allSubscriptions, setAllSubscriptions] = useState<SubscriptionRecord[]>([]);
+  const [subscriptionsLoading, setSubscriptionsLoading] = useState(false);
+  const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionRecord | null>(null);
+  const [subFilter, setSubFilter] = useState<"all" | "active" | "inactive" | "monthly" | "yearly">("all");
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -121,20 +147,23 @@ const AdminDashboard = () => {
     upcomingRenewals: [],
   });
 
+  const getAuthHeaders = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    return {
+      Authorization: `Bearer ${session?.access_token}`,
+      "Content-Type": "application/json",
+    };
+  };
+
+  const getBaseUrl = () => {
+    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+    return `https://${projectId}.supabase.co/functions/v1/admin-users`;
+  };
+
   const fetchUsers = async () => {
     setLoading(true);
-    const { data: { session } } = await supabase.auth.getSession();
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-
-    const res = await fetch(
-      `https://${projectId}.supabase.co/functions/v1/admin-users`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const headers = await getAuthHeaders();
+    const res = await fetch(getBaseUrl(), { headers });
     const data = await res.json();
     if (res.ok) {
       setUsers(data.users);
@@ -150,28 +179,23 @@ const AdminDashboard = () => {
 
   const fetchSubmissions = async () => {
     setSubmissionsLoading(true);
-    const { data: { session } } = await supabase.auth.getSession();
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-
-    const res = await fetch(
-      `https://${projectId}.supabase.co/functions/v1/admin-users?action=submissions`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${getBaseUrl()}?action=submissions`, { headers });
     const data = await res.json();
-    if (res.ok) {
-      setSubmissions(data.submissions || []);
-    }
+    if (res.ok) setSubmissions(data.submissions || []);
     setSubmissionsLoading(false);
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const fetchSubscriptions = async () => {
+    setSubscriptionsLoading(true);
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${getBaseUrl()}?action=subscriptions`, { headers });
+    const data = await res.json();
+    if (res.ok) setAllSubscriptions(data.subscriptions || []);
+    setSubscriptionsLoading(false);
+  };
+
+  useEffect(() => { fetchUsers(); }, []);
 
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -179,25 +203,15 @@ const AdminDashboard = () => {
       toast({ title: "Error", description: "Fill all required fields", variant: "destructive" });
       return;
     }
-
     setCreating(true);
-    const { data: { session } } = await supabase.auth.getSession();
-    const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-
-    const res = await fetch(
-      `https://${projectId}.supabase.co/functions/v1/admin-users`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${session?.access_token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(form),
-      }
-    );
+    const headers = await getAuthHeaders();
+    const res = await fetch(getBaseUrl(), {
+      method: "POST",
+      headers,
+      body: JSON.stringify(form),
+    });
     const data = await res.json();
     setCreating(false);
-
     if (res.ok) {
       toast({ title: "User created successfully" });
       setDialogOpen(false);
@@ -208,260 +222,296 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/login");
-  };
+  const handleSignOut = async () => { await signOut(); navigate("/login"); };
 
   const handleViewUsers = () => setViewMode("users");
-  const handleViewSubmissions = () => {
-    fetchSubmissions();
-    setViewMode("submissions");
+  const handleViewSubmissions = () => { fetchSubmissions(); setViewMode("submissions"); };
+  const handleViewSubscriptions = (filter?: "all" | "active" | "inactive" | "monthly" | "yearly") => {
+    fetchSubscriptions();
+    if (filter) setSubFilter(filter);
+    else setSubFilter("all");
+    setViewMode("subscriptions");
   };
-  const handleViewSubmissionDetail = (sub: SubmissionRow) => {
-    setSelectedSubmission(sub);
-    setViewMode("submission-detail");
-  };
+  const handleViewSubmissionDetail = (sub: SubmissionRow) => { setSelectedSubmission(sub); setViewMode("submission-detail"); };
+  const handleViewSubscriptionDetail = (sub: SubscriptionRecord) => { setSelectedSubscription(sub); setViewMode("subscription-detail"); };
   const handleBack = () => {
     if (viewMode === "submission-detail") setViewMode("submissions");
+    else if (viewMode === "subscription-detail") setViewMode("subscriptions");
     else setViewMode("dashboard");
   };
 
-  const videoCount = 3; // Hardcoded based on app videos
+  const filteredSubscriptions = allSubscriptions.filter((s) => {
+    if (subFilter === "all") return true;
+    if (subFilter === "active") return s.status === "active";
+    if (subFilter === "inactive") return s.status !== "active";
+    if (subFilter === "monthly") return s.plan_type === "monthly" && s.status === "active";
+    if (subFilter === "yearly") return s.plan_type === "yearly" && s.status === "active";
+    return true;
+  });
+
+  const videoCount = 3;
+
+  const CreateUserForm = () => (
+    <form onSubmit={handleCreateUser} className="space-y-4 mt-2">
+      <div className="space-y-1.5">
+        <Label>Full Name *</Label>
+        <Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="John Doe" className="h-11 rounded-xl bg-muted/40" />
+      </div>
+      <div className="space-y-1.5">
+        <Label>Email *</Label>
+        <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="user@example.com" className="h-11 rounded-xl bg-muted/40" />
+      </div>
+      <div className="space-y-1.5">
+        <Label>Password *</Label>
+        <Input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 characters" className="h-11 rounded-xl bg-muted/40" />
+      </div>
+      <div className="space-y-1.5">
+        <Label>User Type</Label>
+        <Select value={form.user_type} onValueChange={(v) => setForm({ ...form, user_type: v })}>
+          <SelectTrigger className="h-11 rounded-xl bg-muted/40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="student">Student</SelectItem>
+            <SelectItem value="practitioner">Practitioner</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-1.5">
+        <Label>User ID (optional)</Label>
+        <Input value={form.custom_user_id} onChange={(e) => setForm({ ...form, custom_user_id: e.target.value })} placeholder="Hospital / Student ID" className="h-11 rounded-xl bg-muted/40" />
+      </div>
+      <Button type="submit" disabled={creating} className="w-full h-11 rounded-xl font-semibold">
+        {creating ? "Creating..." : "Create User"}
+      </Button>
+    </form>
+  );
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen bg-background"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-border bg-card/80 backdrop-blur-xl sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {viewMode !== "dashboard" && (
-              <button onClick={handleBack} className="mr-2 p-1.5 rounded-lg hover:bg-muted transition-colors">
+              <button onClick={handleBack} className="mr-1 p-2 rounded-xl hover:bg-muted transition-colors">
                 <ChevronLeft className="h-5 w-5 text-foreground" />
               </button>
             )}
             <PreciseLogo size={32} />
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-lg text-foreground">PreciseDM</span>
-              <span className="text-xs font-semibold bg-primary text-primary-foreground px-2.5 py-0.5 rounded-full">
+            <div className="flex items-center gap-2.5">
+              <span className="font-extrabold text-lg text-foreground tracking-tight">PreciseDM</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest gradient-primary text-primary-foreground px-3 py-1 rounded-full">
                 Admin
               </span>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleSignOut} className="rounded-lg gap-2 text-muted-foreground hover:text-foreground">
+          <Button variant="ghost" size="sm" onClick={handleSignOut} className="rounded-xl gap-2 text-muted-foreground hover:text-foreground">
             <LogOut className="h-4 w-4" />
             Sign Out
           </Button>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         <AnimatePresence mode="wait">
           {/* ─── Dashboard View ─── */}
           {viewMode === "dashboard" && (
-            <motion.div key="dashboard" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-              <div className="mb-8">
-                <h1 className="text-3xl font-extrabold text-foreground tracking-tight">Dashboard</h1>
-                <p className="text-muted-foreground mt-1">Overview of your platform activity</p>
+            <motion.div key="dashboard" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.3 }}>
+              {/* Hero Header */}
+              <div className="mb-10">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="h-10 w-10 rounded-xl gradient-primary flex items-center justify-center">
+                    <Zap className="h-5 w-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h1 className="text-3xl font-extrabold text-foreground tracking-tight">Dashboard</h1>
+                    <p className="text-muted-foreground text-sm">Overview of your platform activity</p>
+                  </div>
+                </div>
               </div>
 
-              {/* Stats Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                {/* Users Card */}
-                <button
+              {/* Primary Stats */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <StatCard
+                  icon={<Users className="h-5 w-5" />}
+                  label="Total Users"
+                  value={loading ? "—" : String(total)}
                   onClick={handleViewUsers}
-                  className="group text-left rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-200"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                      <Users className="h-6 w-6 text-primary" />
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                  </div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Users</p>
-                  <p className="text-3xl font-extrabold text-foreground mt-1">{loading ? "—" : total}</p>
-                </button>
-
-                {/* Forms Card */}
-                <button
+                  iconBg="bg-primary/10 text-primary"
+                  clickable
+                />
+                <StatCard
+                  icon={<FileText className="h-5 w-5" />}
+                  label="Submissions"
+                  value={loading ? "—" : String(totalSubmissions)}
                   onClick={handleViewSubmissions}
-                  className="group text-left rounded-2xl border border-border bg-card p-6 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-200"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent">
-                      <FileText className="h-6 w-6 text-accent-foreground" />
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                  </div>
-                  <p className="text-sm font-medium text-muted-foreground">Form Submissions</p>
-                  <p className="text-3xl font-extrabold text-foreground mt-1">{loading ? "—" : totalSubmissions}</p>
-                </button>
+                  iconBg="bg-accent text-accent-foreground"
+                  clickable
+                />
+                <StatCard
+                  icon={<PlayCircle className="h-5 w-5" />}
+                  label="Videos"
+                  value={String(videoCount)}
+                  iconBg="bg-secondary text-secondary-foreground"
+                />
+                <StatCard
+                  icon={<Activity className="h-5 w-5" />}
+                  label="Active Forms"
+                  value="4"
+                  iconBg="bg-muted text-muted-foreground"
+                />
+              </div>
 
-                {/* Videos Card */}
-                <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary">
-                      <PlayCircle className="h-6 w-6 text-secondary-foreground" />
+              {/* Subscription Overview - Premium Card */}
+              <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-card via-card to-primary/5 p-6 shadow-sm mb-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-3xl -mr-20 -mt-20" />
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2.5">
+                      <div className="h-9 w-9 rounded-xl gradient-primary flex items-center justify-center">
+                        <Crown className="h-4.5 w-4.5 text-primary-foreground" />
+                      </div>
+                      <h2 className="text-lg font-extrabold text-foreground">Subscription Overview</h2>
                     </div>
+                    <Button variant="ghost" size="sm" onClick={() => handleViewSubscriptions()} className="gap-1.5 text-xs font-semibold text-primary hover:text-primary rounded-lg">
+                      View All <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Button>
                   </div>
-                  <p className="text-sm font-medium text-muted-foreground">Videos</p>
-                  <p className="text-3xl font-extrabold text-foreground mt-1">{videoCount}</p>
-                </div>
 
-                {/* Forms Available */}
-                <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted">
-                      <Activity className="h-6 w-6 text-muted-foreground" />
-                    </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <button
+                      onClick={() => handleViewSubscriptions("active")}
+                      className="group rounded-xl border border-border bg-card/80 p-4 text-center hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <div className="flex items-center justify-center gap-1.5 mb-2">
+                        <CheckCircle2 className="h-4 w-4 text-primary" />
+                        <p className="text-xs font-semibold text-muted-foreground">Subscribed</p>
+                      </div>
+                      <p className="text-3xl font-black text-primary">{subStats.totalSubscribed}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1 group-hover:text-primary transition-colors">Click to view →</p>
+                    </button>
+
+                    <button
+                      onClick={() => handleViewSubscriptions("inactive")}
+                      className="group rounded-xl border border-border bg-card/80 p-4 text-center hover:border-destructive/30 hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <div className="flex items-center justify-center gap-1.5 mb-2">
+                        <XCircle className="h-4 w-4 text-destructive" />
+                        <p className="text-xs font-semibold text-muted-foreground">Unsubscribed</p>
+                      </div>
+                      <p className="text-3xl font-black text-foreground">{subStats.totalUnsubscribed}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1 group-hover:text-destructive transition-colors">Click to view →</p>
+                    </button>
+
+                    <button
+                      onClick={() => handleViewSubscriptions("monthly")}
+                      className="group rounded-xl border border-border bg-card/80 p-4 text-center hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <div className="flex items-center justify-center gap-1.5 mb-2">
+                        <CreditCard className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-xs font-semibold text-muted-foreground">Monthly</p>
+                      </div>
+                      <p className="text-3xl font-black text-foreground">{subStats.monthly}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1 group-hover:text-primary transition-colors">Click to view →</p>
+                    </button>
+
+                    <button
+                      onClick={() => handleViewSubscriptions("yearly")}
+                      className="group rounded-xl border border-border bg-card/80 p-4 text-center hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <div className="flex items-center justify-center gap-1.5 mb-2">
+                        <Calendar className="h-4 w-4 text-muted-foreground" />
+                        <p className="text-xs font-semibold text-muted-foreground">Yearly</p>
+                      </div>
+                      <p className="text-3xl font-black text-foreground">{subStats.yearly}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1 group-hover:text-primary transition-colors">Click to view →</p>
+                    </button>
                   </div>
-                  <p className="text-sm font-medium text-muted-foreground">Active Forms</p>
-                  <p className="text-3xl font-extrabold text-foreground mt-1">4</p>
+
+                  {/* Upcoming Renewals */}
+                  <div className="border-t border-border/60 pt-5">
+                    <div className="flex items-center gap-2 mb-3">
+                      <Clock className="h-4 w-4 text-primary" />
+                      <h3 className="text-sm font-bold text-foreground">Upcoming Renewals</h3>
+                      <span className="text-[10px] font-semibold bg-primary/10 text-primary px-2 py-0.5 rounded-full">Next 15 Days</span>
+                    </div>
+                    {subStats.upcomingRenewals.length > 0 ? (
+                      <div className="space-y-2">
+                        {subStats.upcomingRenewals.map((r) => {
+                          const daysLeft = Math.max(0, Math.ceil((new Date(r.next_billing_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
+                          return (
+                            <div key={r.id} className="flex items-center gap-3 rounded-xl border border-border bg-card/60 p-3 hover:bg-card transition-colors">
+                              <div className="flex h-9 w-9 items-center justify-center rounded-full gradient-primary text-primary-foreground font-bold text-xs shrink-0">
+                                {r.user_name.charAt(0).toUpperCase()}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-semibold text-foreground truncate">{r.user_name}</p>
+                                <p className="text-xs text-muted-foreground truncate">{r.user_email}</p>
+                              </div>
+                              <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0 ${r.plan_type === "yearly" ? "bg-primary/10 text-primary" : "bg-accent text-accent-foreground"}`}>
+                                {r.plan_type}
+                              </span>
+                              <div className="text-right shrink-0">
+                                <p className={`text-sm font-black ${daysLeft <= 3 ? "text-destructive" : "text-foreground"}`}>{daysLeft}d</p>
+                                <p className="text-[10px] text-muted-foreground">{new Date(r.next_billing_date).toLocaleDateString()}</p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="text-center py-6">
+                        <CheckCircle2 className="h-8 w-8 text-primary/30 mx-auto mb-2" />
+                        <p className="text-sm text-muted-foreground">No renewals in the next 15 days</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* Form Breakdown */}
               <div className="rounded-2xl border border-border bg-card p-6 shadow-sm mb-8">
-                <div className="flex items-center gap-2 mb-5">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                  <h2 className="text-lg font-bold text-foreground">Form Submissions Breakdown</h2>
+                <div className="flex items-center gap-2.5 mb-5">
+                  <div className="h-8 w-8 rounded-lg bg-accent flex items-center justify-center">
+                    <BarChart3 className="h-4 w-4 text-accent-foreground" />
+                  </div>
+                  <h2 className="text-lg font-extrabold text-foreground">Form Submissions</h2>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {Object.entries(FORM_LABELS).map(([key, label]) => (
-                    <div key={key} className="rounded-xl border border-border p-4 text-center">
-                      <p className="text-xs font-medium text-muted-foreground mb-1">{label}</p>
-                      <p className="text-2xl font-extrabold text-foreground">{formStats[key] || 0}</p>
+                    <div key={key} className={`rounded-xl border border-border p-4 text-center ${FORM_COLORS[key]?.split(" ")[0] || "bg-muted/50"}`}>
+                      <p className="text-xs font-semibold text-muted-foreground mb-1">{label}</p>
+                      <p className="text-2xl font-black text-foreground">{formStats[key] || 0}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Subscription Overview */}
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm mb-8">
-                <div className="flex items-center gap-2 mb-5">
-                  <Shield className="h-5 w-5 text-primary" />
-                  <h2 className="text-lg font-bold text-foreground">Subscription Overview</h2>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                  <div className="rounded-xl border border-border p-4 text-center">
-                    <p className="text-xs font-medium text-muted-foreground mb-1">Subscribed</p>
-                    <p className="text-2xl font-extrabold text-green-500">{subStats.totalSubscribed}</p>
-                  </div>
-                  <div className="rounded-xl border border-border p-4 text-center">
-                    <p className="text-xs font-medium text-muted-foreground mb-1">Unsubscribed</p>
-                    <p className="text-2xl font-extrabold text-foreground">{subStats.totalUnsubscribed}</p>
-                  </div>
-                  <div className="rounded-xl border border-border p-4 text-center">
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                      <CreditCard className="h-3 w-3 text-muted-foreground" />
-                      <p className="text-xs font-medium text-muted-foreground">Monthly</p>
-                    </div>
-                    <p className="text-2xl font-extrabold text-foreground">{subStats.monthly}</p>
-                  </div>
-                  <div className="rounded-xl border border-border p-4 text-center">
-                    <div className="flex items-center justify-center gap-1 mb-1">
-                      <Calendar className="h-3 w-3 text-muted-foreground" />
-                      <p className="text-xs font-medium text-muted-foreground">Yearly</p>
-                    </div>
-                    <p className="text-2xl font-extrabold text-foreground">{subStats.yearly}</p>
-                  </div>
-                </div>
-
-                {/* Upcoming Renewals */}
-                <div className="border-t border-border pt-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <h3 className="text-sm font-bold text-foreground">Upcoming Renewals (Next 15 Days)</h3>
-                  </div>
-                  {subStats.upcomingRenewals.length > 0 ? (
-                    <div className="space-y-2">
-                      {subStats.upcomingRenewals.map((r) => {
-                        const daysLeft = Math.max(0, Math.ceil((new Date(r.next_billing_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
-                        return (
-                          <div key={r.id} className="flex items-center gap-3 rounded-xl border border-border p-3">
-                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-xs shrink-0">
-                              {r.user_name.charAt(0).toUpperCase()}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-semibold text-foreground truncate">{r.user_name}</p>
-                              <p className="text-xs text-muted-foreground truncate">{r.user_email}</p>
-                            </div>
-                            <span className="text-xs font-medium bg-accent px-2.5 py-1 rounded-full text-accent-foreground capitalize shrink-0">
-                              {r.plan_type}
-                            </span>
-                            <div className="text-right shrink-0">
-                              <p className="text-sm font-bold text-foreground">{daysLeft}d</p>
-                              <p className="text-[10px] text-muted-foreground">{new Date(r.next_billing_date).toLocaleDateString()}</p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground text-center py-4">No renewals in the next 15 days</p>
-                  )}
-                </div>
-              </div>
-
+              {/* Quick Actions */}
               <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-                <h2 className="text-lg font-bold text-foreground mb-4">Quick Actions</h2>
+                <h2 className="text-lg font-extrabold text-foreground mb-4">Quick Actions</h2>
                 <div className="flex flex-wrap gap-3">
                   <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button className="gap-2 rounded-xl font-semibold">
+                      <Button className="gap-2 rounded-xl font-semibold gradient-primary text-primary-foreground border-0 hover:opacity-90">
                         <Plus className="h-4 w-4" />
                         Add New User
                       </Button>
                     </DialogTrigger>
-                    <DialogContent className="mx-4 rounded-xl">
+                    <DialogContent className="mx-4 rounded-2xl">
                       <DialogHeader>
                         <DialogTitle>Add New User</DialogTitle>
                       </DialogHeader>
-                      <form onSubmit={handleCreateUser} className="space-y-4 mt-2">
-                        <div className="space-y-1.5">
-                          <Label>Full Name *</Label>
-                          <Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="John Doe" className="h-11 rounded-xl bg-muted/40" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label>Email *</Label>
-                          <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="user@example.com" className="h-11 rounded-xl bg-muted/40" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label>Password *</Label>
-                          <Input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 characters" className="h-11 rounded-xl bg-muted/40" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label>User Type</Label>
-                          <Select value={form.user_type} onValueChange={(v) => setForm({ ...form, user_type: v })}>
-                            <SelectTrigger className="h-11 rounded-xl bg-muted/40"><SelectValue /></SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="student">Student</SelectItem>
-                              <SelectItem value="practitioner">Practitioner</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label>User ID (optional)</Label>
-                          <Input value={form.custom_user_id} onChange={(e) => setForm({ ...form, custom_user_id: e.target.value })} placeholder="Hospital / Student ID" className="h-11 rounded-xl bg-muted/40" />
-                        </div>
-                        <Button type="submit" disabled={creating} className="w-full h-11 rounded-xl font-semibold">
-                          {creating ? "Creating..." : "Create User"}
-                        </Button>
-                      </form>
+                      <CreateUserForm />
                     </DialogContent>
                   </Dialog>
-
                   <Button variant="outline" className="gap-2 rounded-xl font-semibold" onClick={handleViewUsers}>
-                    <Users className="h-4 w-4" />
-                    View All Users
+                    <Users className="h-4 w-4" /> View All Users
                   </Button>
                   <Button variant="outline" className="gap-2 rounded-xl font-semibold" onClick={handleViewSubmissions}>
-                    <FileText className="h-4 w-4" />
-                    View Submissions
+                    <FileText className="h-4 w-4" /> View Submissions
+                  </Button>
+                  <Button variant="outline" className="gap-2 rounded-xl font-semibold" onClick={() => handleViewSubscriptions()}>
+                    <Shield className="h-4 w-4" /> View Subscriptions
                   </Button>
                 </div>
               </div>
@@ -478,52 +528,19 @@ const AdminDashboard = () => {
                 </div>
                 <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="gap-2 rounded-xl font-semibold">
-                      <Plus className="h-4 w-4" />
-                      Add User
+                    <Button className="gap-2 rounded-xl font-semibold gradient-primary text-primary-foreground border-0 hover:opacity-90">
+                      <Plus className="h-4 w-4" /> Add User
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="mx-4 rounded-xl">
+                  <DialogContent className="mx-4 rounded-2xl">
                     <DialogHeader><DialogTitle>Add New User</DialogTitle></DialogHeader>
-                    <form onSubmit={handleCreateUser} className="space-y-4 mt-2">
-                      <div className="space-y-1.5">
-                        <Label>Full Name *</Label>
-                        <Input value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="John Doe" className="h-11 rounded-xl bg-muted/40" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label>Email *</Label>
-                        <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="user@example.com" className="h-11 rounded-xl bg-muted/40" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label>Password *</Label>
-                        <Input type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Min. 8 characters" className="h-11 rounded-xl bg-muted/40" />
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label>User Type</Label>
-                        <Select value={form.user_type} onValueChange={(v) => setForm({ ...form, user_type: v })}>
-                          <SelectTrigger className="h-11 rounded-xl bg-muted/40"><SelectValue /></SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="student">Student</SelectItem>
-                            <SelectItem value="practitioner">Practitioner</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="space-y-1.5">
-                        <Label>User ID (optional)</Label>
-                        <Input value={form.custom_user_id} onChange={(e) => setForm({ ...form, custom_user_id: e.target.value })} placeholder="Hospital / Student ID" className="h-11 rounded-xl bg-muted/40" />
-                      </div>
-                      <Button type="submit" disabled={creating} className="w-full h-11 rounded-xl font-semibold">
-                        {creating ? "Creating..." : "Create User"}
-                      </Button>
-                    </form>
+                    <CreateUserForm />
                   </DialogContent>
                 </Dialog>
               </div>
 
               {loading ? (
-                <div className="flex justify-center py-12">
-                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-                </div>
+                <LoadingSpinner />
               ) : (
                 <div className="space-y-3">
                   {users.map((u, i) => (
@@ -532,16 +549,16 @@ const AdminDashboard = () => {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.03 }}
-                      className="rounded-xl border border-border bg-card p-4 flex items-center gap-4 hover:shadow-sm transition-shadow"
+                      className="rounded-xl border border-border bg-card p-4 flex items-center gap-4 hover:shadow-md hover:border-primary/20 transition-all"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm shrink-0">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full gradient-primary text-primary-foreground font-bold text-sm shrink-0">
                         {(u.full_name || u.email).charAt(0).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-foreground truncate">{u.full_name || "—"}</p>
                         <p className="text-xs text-muted-foreground truncate">{u.email}</p>
                       </div>
-                      <span className="text-xs font-medium bg-accent px-2.5 py-1 rounded-full text-accent-foreground capitalize shrink-0">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-accent px-2.5 py-1 rounded-full text-accent-foreground capitalize shrink-0">
                         {u.user_type}
                       </span>
                       <div className="text-right shrink-0">
@@ -552,11 +569,149 @@ const AdminDashboard = () => {
                       </div>
                     </motion.div>
                   ))}
-                  {users.length === 0 && (
-                    <div className="text-center py-12 text-muted-foreground">No users yet</div>
-                  )}
+                  {users.length === 0 && <EmptyState message="No users yet" />}
                 </div>
               )}
+            </motion.div>
+          )}
+
+          {/* ─── Subscriptions View ─── */}
+          {viewMode === "subscriptions" && (
+            <motion.div key="subscriptions" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h1 className="text-2xl font-extrabold text-foreground">Subscriptions</h1>
+                  <p className="text-sm text-muted-foreground mt-1">{filteredSubscriptions.length} records</p>
+                </div>
+              </div>
+
+              {/* Filter Tabs */}
+              <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+                {(["all", "active", "inactive", "monthly", "yearly"] as const).map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setSubFilter(f)}
+                    className={`text-xs font-semibold px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
+                      subFilter === f
+                        ? "gradient-primary text-primary-foreground border-transparent"
+                        : "border-border bg-card text-muted-foreground hover:text-foreground hover:border-primary/30"
+                    }`}
+                  >
+                    {f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1)}
+                  </button>
+                ))}
+              </div>
+
+              {subscriptionsLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <div className="space-y-3">
+                  {filteredSubscriptions.map((s, i) => {
+                    const isActive = s.status === "active";
+                    const daysLeft = s.next_billing_date
+                      ? Math.max(0, Math.ceil((new Date(s.next_billing_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+                      : null;
+                    return (
+                      <motion.button
+                        key={s.id}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.02 }}
+                        onClick={() => handleViewSubscriptionDetail(s)}
+                        className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-4 hover:shadow-md hover:border-primary/20 transition-all"
+                      >
+                        <div className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-sm shrink-0 ${isActive ? "gradient-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                          {s.user_name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-foreground truncate">{s.user_name}</p>
+                          <p className="text-xs text-muted-foreground truncate">{s.user_email}</p>
+                        </div>
+                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0 ${
+                          s.plan_type === "yearly" ? "bg-primary/10 text-primary" : "bg-accent text-accent-foreground"
+                        }`}>
+                          {s.plan_type}
+                        </span>
+                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shrink-0 ${
+                          isActive ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
+                        }`}>
+                          {s.status}
+                        </span>
+                        {daysLeft !== null && isActive && (
+                          <div className="text-right shrink-0">
+                            <p className={`text-sm font-black ${daysLeft <= 3 ? "text-destructive" : "text-foreground"}`}>{daysLeft}d</p>
+                            <p className="text-[10px] text-muted-foreground">left</p>
+                          </div>
+                        )}
+                        <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                      </motion.button>
+                    );
+                  })}
+                  {filteredSubscriptions.length === 0 && <EmptyState message="No subscriptions found" />}
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* ─── Subscription Detail View ─── */}
+          {viewMode === "subscription-detail" && selectedSubscription && (
+            <motion.div key="sub-detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
+                    selectedSubscription.status === "active" ? "gradient-primary text-primary-foreground" : "bg-destructive/10 text-destructive"
+                  }`}>
+                    {selectedSubscription.status}
+                  </span>
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
+                    selectedSubscription.plan_type === "yearly" ? "bg-primary/10 text-primary" : "bg-accent text-accent-foreground"
+                  }`}>
+                    {selectedSubscription.plan_type} plan
+                  </span>
+                </div>
+                <h1 className="text-2xl font-extrabold text-foreground">Subscription Detail</h1>
+              </div>
+
+              {/* User Info */}
+              <div className="rounded-2xl border border-border bg-card p-5 shadow-sm mb-4">
+                <h3 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Users className="h-4 w-4 text-primary" /> Subscriber
+                </h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full gradient-primary text-primary-foreground font-bold text-xl shrink-0">
+                    {selectedSubscription.user_name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <p className="text-lg font-bold text-foreground">{selectedSubscription.user_name}</p>
+                    <p className="text-sm text-muted-foreground">{selectedSubscription.user_email}</p>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-accent px-2 py-0.5 rounded-full text-accent-foreground mt-1 inline-block">
+                      {selectedSubscription.user_type}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Subscription Details */}
+              <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-card to-primary/5 p-5 shadow-sm mb-4">
+                <h3 className="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-primary" /> Plan Details
+                </h3>
+                <div className="space-y-2">
+                  <DetailRow label="Plan Type" value={selectedSubscription.plan_type.charAt(0).toUpperCase() + selectedSubscription.plan_type.slice(1)} />
+                  <DetailRow label="Status" value={selectedSubscription.status.charAt(0).toUpperCase() + selectedSubscription.status.slice(1)} />
+                  <DetailRow label="Start Date" value={selectedSubscription.start_date ? new Date(selectedSubscription.start_date).toLocaleDateString() : "—"} />
+                  <DetailRow label="Next Billing Date" value={selectedSubscription.next_billing_date ? new Date(selectedSubscription.next_billing_date).toLocaleDateString() : "—"} />
+                  {selectedSubscription.next_billing_date && selectedSubscription.status === "active" && (
+                    <DetailRow
+                      label="Days Remaining"
+                      value={`${Math.max(0, Math.ceil((new Date(selectedSubscription.next_billing_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))} days`}
+                    />
+                  )}
+                  <DetailRow label="PayPal Subscription ID" value={selectedSubscription.paypal_subscription_id || "—"} />
+                  <DetailRow label="Created" value={new Date(selectedSubscription.created_at).toLocaleString()} />
+                  <DetailRow label="Last Updated" value={new Date(selectedSubscription.updated_at).toLocaleString()} />
+                </div>
+              </div>
             </motion.div>
           )}
 
@@ -569,9 +724,7 @@ const AdminDashboard = () => {
               </div>
 
               {submissionsLoading ? (
-                <div className="flex justify-center py-12">
-                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-                </div>
+                <LoadingSpinner />
               ) : (
                 <div className="space-y-3">
                   {submissions.map((s, i) => (
@@ -581,7 +734,7 @@ const AdminDashboard = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.02 }}
                       onClick={() => handleViewSubmissionDetail(s)}
-                      className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-4 hover:shadow-sm hover:border-primary/20 transition-all"
+                      className="w-full text-left rounded-xl border border-border bg-card p-4 flex items-center gap-4 hover:shadow-md hover:border-primary/20 transition-all"
                     >
                       <div className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold shrink-0 ${FORM_COLORS[s.form_type] || "bg-muted text-muted-foreground"}`}>
                         {(FORM_LABELS[s.form_type] || s.form_type).slice(0, 2).toUpperCase()}
@@ -591,16 +744,12 @@ const AdminDashboard = () => {
                         <p className="text-xs text-muted-foreground truncate">by {s.user_name} • {s.user_email}</p>
                       </div>
                       <div className="text-right shrink-0 flex items-center gap-2">
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(s.created_at).toLocaleString()}
-                        </p>
+                        <p className="text-xs text-muted-foreground">{new Date(s.created_at).toLocaleString()}</p>
                         <ChevronRight className="h-4 w-4 text-muted-foreground" />
                       </div>
                     </motion.button>
                   ))}
-                  {submissions.length === 0 && (
-                    <div className="text-center py-12 text-muted-foreground">No submissions yet</div>
-                  )}
+                  {submissions.length === 0 && <EmptyState message="No submissions yet" />}
                 </div>
               )}
             </motion.div>
@@ -619,11 +768,9 @@ const AdminDashboard = () => {
                 </p>
               </div>
 
-              {/* User Info */}
               <div className="rounded-2xl border border-border bg-card p-5 shadow-sm mb-4">
                 <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                  <Users className="h-4 w-4 text-primary" />
-                  User Information
+                  <Users className="h-4 w-4 text-primary" /> User Information
                 </h3>
                 <div className="space-y-2">
                   <DetailRow label="Name" value={selectedSubmission.user_name} />
@@ -631,11 +778,9 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Results */}
-              <div className="rounded-2xl border border-primary/20 bg-primary/5 p-5 shadow-sm mb-4">
+              <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-card to-primary/5 p-5 shadow-sm mb-4">
                 <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  Results
+                  <TrendingUp className="h-4 w-4 text-primary" /> Results
                 </h3>
                 <div className="space-y-2">
                   {Object.entries(selectedSubmission.results).map(([key, value]) => (
@@ -644,11 +789,9 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Inputs */}
               <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-muted-foreground" />
-                  Submitted Inputs
+                  <FileText className="h-4 w-4 text-muted-foreground" /> Submitted Inputs
                 </h3>
                 <div className="space-y-2">
                   {Object.entries(selectedSubmission.inputs).map(([key, value]) => (
@@ -664,6 +807,51 @@ const AdminDashboard = () => {
   );
 };
 
+/* ─── Reusable Components ─── */
+
+const StatCard = ({ icon, label, value, onClick, iconBg, clickable }: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  onClick?: () => void;
+  iconBg: string;
+  clickable?: boolean;
+}) => {
+  const Comp = clickable ? "button" : "div";
+  return (
+    <Comp
+      onClick={onClick}
+      className={`group text-left rounded-2xl border border-border bg-card p-5 shadow-sm transition-all duration-200 ${
+        clickable ? "hover:shadow-md hover:border-primary/30 cursor-pointer" : ""
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${iconBg}`}>
+          {icon}
+        </div>
+        {clickable && <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />}
+      </div>
+      <p className="text-xs font-semibold text-muted-foreground">{label}</p>
+      <p className="text-3xl font-black text-foreground mt-0.5">{value}</p>
+    </Comp>
+  );
+};
+
+const LoadingSpinner = () => (
+  <div className="flex justify-center py-16">
+    <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+  </div>
+);
+
+const EmptyState = ({ message }: { message: string }) => (
+  <div className="text-center py-16">
+    <div className="h-12 w-12 rounded-full bg-muted/50 flex items-center justify-center mx-auto mb-3">
+      <Eye className="h-5 w-5 text-muted-foreground" />
+    </div>
+    <p className="text-sm text-muted-foreground">{message}</p>
+  </div>
+);
+
 function formatLabel(key: string): string {
   return key
     .replace(/([A-Z])/g, " $1")
@@ -673,9 +861,9 @@ function formatLabel(key: string): string {
 }
 
 const DetailRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex items-start justify-between py-1.5 border-b border-border/50 last:border-b-0">
+  <div className="flex items-start justify-between py-2 border-b border-border/50 last:border-b-0">
     <span className="text-sm text-muted-foreground">{label}</span>
-    <span className="text-sm font-semibold text-foreground text-right max-w-[60%]">{value}</span>
+    <span className="text-sm font-semibold text-foreground text-right max-w-[60%] break-all">{value}</span>
   </div>
 );
 
