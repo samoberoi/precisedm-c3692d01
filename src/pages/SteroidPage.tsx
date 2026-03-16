@@ -160,7 +160,13 @@ const SteroidPage = () => {
 
     const res = calculate(ageNum, weightNum, feetNum, inchesNum, a1cNum, scrNum, gender, dialysis);
     setResult(res);
-
+    saveSubmission("steroid", { age, weight, heightFeet, heightInches, a1c, serumCreatinine, gender, race, dialysis }, {
+      doseLowUnits: res.doseLowUnits,
+      doseHighUnits: res.doseHighUnits,
+      bmi: res.bmi,
+      egfr: res.egfr,
+      categoryCode: res.categoryCode,
+    });
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 

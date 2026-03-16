@@ -224,6 +224,13 @@ const DiaFormPage = () => {
 
     const res = calculate(form);
     setResult(res);
+    saveSubmission("diaform", form as any, {
+      doseLow: res.doseLow,
+      doseHigh: res.doseHigh,
+      bmi: res.bmi,
+      egfr: res.egfr,
+      doseCategory: res.doseCategory,
+    });
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 

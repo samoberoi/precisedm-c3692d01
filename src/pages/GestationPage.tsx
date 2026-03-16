@@ -276,6 +276,12 @@ const GestationPage = () => {
 
     const res = calculateGestation(form);
     setResult(res);
+    saveSubmission("gestation", form as any, {
+      basalRecommendation: res.basalRecommendation,
+      prandialRecommendation: res.prandialRecommendation,
+      tdd: res.tdd,
+      isf: res.isf,
+    });
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 

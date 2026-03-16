@@ -236,6 +236,12 @@ const MaintenancePage = () => {
 
     const res = calculateMaintenance(form);
     setResult(res);
+    saveSubmission("maintenance", form as any, {
+      basalRecommendation: res.basalRecommendation,
+      prandialRecommendation: res.prandialRecommendation,
+      tdd: res.tdd,
+      isf: res.isf,
+    });
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
