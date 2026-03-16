@@ -27,6 +27,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<SplashScreen />} />
+            <Route path="/onboarding/welcome" element={<WelcomeScreen />} />
             <Route path="/onboarding/features" element={<FeaturesScreen />} />
             <Route path="/onboarding/get-started" element={<GetStartedScreen />} />
             <Route path="/login" element={<LoginPage />} />
