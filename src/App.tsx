@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
+import SubscriptionGate from "@/components/SubscriptionGate";
 import SplashScreen from "./pages/onboarding/SplashScreen";
 import WelcomeScreen from "./pages/onboarding/WelcomeScreen";
 import FeaturesScreen from "./pages/onboarding/FeaturesScreen";
@@ -23,6 +24,8 @@ import SteroidPage from "./pages/SteroidPage";
 import MaintenancePage from "./pages/MaintenancePage";
 import GestationPage from "./pages/GestationPage";
 import DiaFormPage from "./pages/DiaFormPage";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import SubscriptionSuccessPage from "./pages/SubscriptionSuccessPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,11 +51,14 @@ const App = () => (
             <Route path="/connect" element={<ConnectPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />
-            <Route path="/videos" element={<VideosPage />} />
-            <Route path="/steroid" element={<SteroidPage />} />
-            <Route path="/maintenance" element={<MaintenancePage />} />
-            <Route path="/gestation" element={<GestationPage />} />
-            <Route path="/diaform" element={<DiaFormPage />} />
+            <Route path="/subscription" element={<SubscriptionPage />} />
+            <Route path="/subscription/success" element={<SubscriptionSuccessPage />} />
+            {/* Protected tools - require subscription */}
+            <Route path="/videos" element={<SubscriptionGate><VideosPage /></SubscriptionGate>} />
+            <Route path="/steroid" element={<SubscriptionGate><SteroidPage /></SubscriptionGate>} />
+            <Route path="/maintenance" element={<SubscriptionGate><MaintenancePage /></SubscriptionGate>} />
+            <Route path="/gestation" element={<SubscriptionGate><GestationPage /></SubscriptionGate>} />
+            <Route path="/diaform" element={<SubscriptionGate><DiaFormPage /></SubscriptionGate>} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
