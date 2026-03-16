@@ -689,6 +689,18 @@ const AdminDashboard = () => {
                 ))}
               </div>
 
+              <FilterBar
+                dateFilter={subDateFilter}
+                onDateFilterChange={(v) => setSubDateFilter(v)}
+                searchQuery={subSearchQuery}
+                onSearchChange={setSubSearchQuery}
+                searchPlaceholder="Search by name, email, or plan..."
+                customStartDate={subCustomStartDate}
+                customEndDate={subCustomEndDate}
+                onCustomStartChange={setSubCustomStartDate}
+                onCustomEndChange={setSubCustomEndDate}
+              />
+
               {subscriptionsLoading ? (
                 <LoadingSpinner />
               ) : (
