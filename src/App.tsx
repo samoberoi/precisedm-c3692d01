@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import SplashScreen from "./pages/onboarding/SplashScreen";
+import WelcomeScreen from "./pages/onboarding/WelcomeScreen";
 import FeaturesScreen from "./pages/onboarding/FeaturesScreen";
 import GetStartedScreen from "./pages/onboarding/GetStartedScreen";
 import LoginPage from "./pages/auth/LoginPage";
