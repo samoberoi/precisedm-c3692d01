@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import SplashScreen from "./pages/onboarding/SplashScreen";
+import WelcomeScreen from "./pages/onboarding/WelcomeScreen";
 import FeaturesScreen from "./pages/onboarding/FeaturesScreen";
 import GetStartedScreen from "./pages/onboarding/GetStartedScreen";
 import LoginPage from "./pages/auth/LoginPage";
@@ -26,6 +27,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/" element={<SplashScreen />} />
+            <Route path="/onboarding/welcome" element={<WelcomeScreen />} />
             <Route path="/onboarding/features" element={<FeaturesScreen />} />
             <Route path="/onboarding/get-started" element={<GetStartedScreen />} />
             <Route path="/login" element={<LoginPage />} />
