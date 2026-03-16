@@ -113,6 +113,13 @@ const AdminDashboard = () => {
     user_type: "student",
     custom_user_id: "",
   });
+  const [subStats, setSubStats] = useState<SubscriptionStats>({
+    totalSubscribed: 0,
+    totalUnsubscribed: 0,
+    monthly: 0,
+    yearly: 0,
+    upcomingRenewals: [],
+  });
 
   const fetchUsers = async () => {
     setLoading(true);
