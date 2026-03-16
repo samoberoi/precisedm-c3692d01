@@ -279,13 +279,13 @@ const AdminDashboard = () => {
   };
 
   const filterByDateAndSearch = <T extends { created_at: string }>(
-    items: T[], df: "today" | "yesterday" | "this_week" | "this_month" | "custom",
+    items: T[], df: "all_time" | "today" | "yesterday" | "this_week" | "this_month" | "custom",
     sq: string, cStart: string, cEnd: string, getSearchable: (item: T) => string
   ): T[] => {
-    const { start, end } = getDateRange(df, cStart, cEnd);
+    const range = getDateRange(df, cStart, cEnd);
     return items.filter((item) => {
-      const d = new Date(item.created_at);
-      return d >= start && d < end && (!sq || getSearchable(item).toLowerCase().includes(sq.toLowerCase()));
+      const inDate = range ? (() => { const d = new Date(item.created_at); return d >= range.start && d < range.end; })() : true;
+      return inDate && (!sq || getSearchable(item).toLowerCase().includes(sq.toLowerCase()));
     });
   };
 
