@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, LogOut, FileText, ChevronRight, Calendar, Sun, Moon } from "lucide-react";
+import { ChevronLeft, LogOut, FileText, ChevronRight, Calendar, Sun, Moon, Shield } from "lucide-react";
+import { useSubscription } from "@/hooks/use-subscription";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
