@@ -81,11 +81,11 @@ const HomePage = () => {
           />
           {/* Text overlay */}
           <div className="relative z-10 p-6 flex flex-col justify-end h-full">
-            <p className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">Welcome back</p>
-            <h1 className="text-[28px] font-extrabold text-foreground leading-[1.1] mt-1 tracking-tight">
+            <p className="text-xs font-semibold text-white/60 uppercase tracking-wider">Welcome back</p>
+            <h1 className="text-[28px] font-extrabold text-white leading-[1.1] mt-1 tracking-tight">
               {firstName || "User"}
             </h1>
-            <p className="text-xs text-foreground/50 mt-2 max-w-[160px] leading-relaxed">
+            <p className="text-xs text-white/50 mt-2 max-w-[160px] leading-relaxed">
               Your personalized diabetes management toolkit
             </p>
           </div>
