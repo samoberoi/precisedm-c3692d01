@@ -25,22 +25,12 @@ const toolkitItems = [
 const HomePage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [activeReview, setActiveReview] = useState(0);
-
   useEffect(() => {
     if (!user) return;
     supabase.rpc("has_role", { _user_id: user.id, _role: "admin" }).then(({ data }) => {
       if (data) navigate("/admin", { replace: true });
     });
   }, [user, navigate]);
-
-  // Auto-rotate reviews
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveReview((prev) => (prev + 1) % reviews.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
 
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "There";
 
