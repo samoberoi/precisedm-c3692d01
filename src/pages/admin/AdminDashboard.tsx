@@ -116,6 +116,13 @@ const FORM_GRADIENTS: Record<string, string> = {
   gestation: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))",
 };
 
+const FORM_ICONS: Record<string, string> = {
+  diaform: diaformIcon,
+  steroid: steroidIcon,
+  maintenance: maintenanceIcon,
+  gestation: gestationIcon,
+};
+
 const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
