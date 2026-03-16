@@ -144,7 +144,7 @@ const AdminDashboard = () => {
   const [submissionFormFilter, setSubmissionFormFilter] = useState<string | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [dateFilter, setDateFilter] = useState<"today" | "yesterday" | "this_week" | "this_month" | "custom">("today");
+  const [dateFilter, setDateFilter] = useState<"all_time" | "today" | "yesterday" | "this_week" | "this_month" | "custom">("all_time");
   const [customStartDate, setCustomStartDate] = useState("");
   const [customEndDate, setCustomEndDate] = useState("");
 
