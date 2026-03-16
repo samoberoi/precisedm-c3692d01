@@ -225,19 +225,19 @@ const DiaFormPage = () => {
       </div>
 
       {/* Hero Card */}
-      <div className="px-5 pt-1">
+      <div className="px-5 pt-2">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-3xl p-5"
+          className="relative overflow-hidden rounded-2xl p-5"
           style={{ background: "linear-gradient(135deg, hsl(210,80%,50%), hsl(210,90%,35%))" }}
         >
           <div className="relative z-10">
-            <p className="text-xs font-semibold text-white/60 uppercase tracking-wider">Initial Dosing</p>
-            <h2 className="text-xl font-extrabold text-white mt-1">DiaForm Calculator</h2>
-            <p className="text-xs text-white/70 mt-1 max-w-[220px]">Calculate initial insulin dose for adult diabetes patients</p>
+            <p className="text-[10px] font-semibold text-white/60 uppercase tracking-widest">Initial Dosing</p>
+            <h2 className="text-lg font-extrabold text-white mt-1">DiaForm Calculator</h2>
+            <p className="text-[11px] text-white/70 mt-1 max-w-[200px] leading-snug">Calculate initial insulin dose for adult diabetes patients</p>
           </div>
-          <img src={diaformIcon} alt="" className="absolute bottom-0 right-3 h-20 w-20 opacity-20" />
+          <img src={diaformIcon} alt="" className="absolute -bottom-2 -right-2 h-24 w-24 opacity-15 object-contain" />
         </motion.div>
       </div>
 
