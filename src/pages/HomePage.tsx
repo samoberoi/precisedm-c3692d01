@@ -21,26 +21,6 @@ const toolkitItems = [
   { label: "Videos", icon: null, image: videosIcon, color: "bg-[#B5E962]" },
 ];
 
-const reviews = [
-  {
-    text: "The tool is easily accessible and user friendly. Makes prescribing insulin much simpler and accurate.",
-    org: "Baptist Health Adult Medicine Specialists",
-    author: "K.Elaine Thrift, APRN, FNP-BC, CDE, BC-ADM",
-    date: "March 2024",
-  },
-  {
-    text: "PreciseDM has transformed how we approach insulin dosing for new diabetes patients. Highly recommended.",
-    org: "Endocrine Associates of Florida",
-    author: "Dr. Sarah Mitchell, MD",
-    date: "June 2024",
-  },
-  {
-    text: "An indispensable tool for any practitioner managing insulin therapy. Intuitive and evidence-based.",
-    org: "Mayo Clinic Diabetes Center",
-    author: "Dr. James Rivera, PharmD",
-    date: "September 2024",
-  },
-];
 
 const HomePage = () => {
   const { user } = useAuth();
