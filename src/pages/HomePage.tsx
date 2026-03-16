@@ -33,7 +33,9 @@ const HomePage = () => {
   }, [user, navigate]);
 
   const { firstName } = useProfile();
-
+  const { isActive, subscription } = useSubscription();
+  const hasUsedTrial = !!subscription && subscription.plan_type === "trial";
+  const showTrialCard = !isActive && !hasUsedTrial;
   return (
     <motion.div
       initial={{ opacity: 0 }}
