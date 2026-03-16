@@ -79,7 +79,7 @@ const SplashScreen = () => {
                     style={{
                       left: "50%",
                       top: "50%",
-                      transform: "translate(-50%, -42%)",
+                      transform: "translate(-50%, -58%)",
                     }}
                   >
                     <BloodDrop size={50} />
