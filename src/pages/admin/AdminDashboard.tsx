@@ -154,7 +154,7 @@ const AdminDashboard = () => {
   const [subCustomEndDate, setSubCustomEndDate] = useState("");
 
   const [userSearchQuery, setUserSearchQuery] = useState("");
-  const [userDateFilter, setUserDateFilter] = useState<"today" | "yesterday" | "this_week" | "this_month" | "custom">("today");
+  const [userDateFilter, setUserDateFilter] = useState<"all_time" | "today" | "yesterday" | "this_week" | "this_month" | "custom">("all_time");
   const [userCustomStartDate, setUserCustomStartDate] = useState("");
   const [userCustomEndDate, setUserCustomEndDate] = useState("");
 
