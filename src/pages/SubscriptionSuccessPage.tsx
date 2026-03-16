@@ -62,8 +62,8 @@ const SubscriptionSuccessPage = () => {
           </>
         ) : success ? (
           <>
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100 mx-auto mb-4">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 mx-auto mb-4">
+              <CheckCircle className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-xl font-bold text-foreground mb-2">Subscription Activated!</h2>
             <p className="text-sm text-muted-foreground mb-6">
