@@ -58,35 +58,23 @@ const AboutPage = () => {
 
       {/* Dr. Colleen Cook */}
       <div className="px-6 py-3">
-        <div className="relative overflow-hidden rounded-2xl">
+        <div className="overflow-hidden rounded-2xl">
           <img
             src={drColleenCook}
             alt="Dr. Colleen Cook"
-            className="h-[420px] w-full object-cover"
+            className="w-full object-contain"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-            <h3 className="text-2xl font-bold text-primary-foreground">Dr. Colleen Cook</h3>
-            <p className="text-sm text-primary-foreground/80 mt-1">PharmD, BC-ADM, CDCES</p>
-            <p className="text-sm text-primary-foreground/80">CEO</p>
-          </div>
         </div>
       </div>
 
       {/* Dr. Melanie Proctor */}
       <div className="px-6 py-3">
-        <div className="relative overflow-hidden rounded-2xl">
+        <div className="overflow-hidden rounded-2xl">
           <img
             src={drMelanieProctor}
             alt="Dr. Melanie Proctor"
-            className="h-[420px] w-full object-cover"
+            className="w-full object-contain"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
-            <h3 className="text-2xl font-bold text-primary-foreground">Dr. Melanie Proctor</h3>
-            <p className="text-sm text-primary-foreground/80 mt-1">PharmD, BCGP</p>
-            <p className="text-sm text-primary-foreground/80">COO</p>
-          </div>
         </div>
       </div>
 
