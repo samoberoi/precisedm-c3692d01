@@ -307,10 +307,11 @@ const AdminDashboard = () => {
   }, [submissions, submissionFormFilter, dateFilter, searchQuery, customStartDate, customEndDate]);
 
   const filteredUsers = useMemo(() => {
-    const { start, end } = getDateRange(userDateFilter, userCustomStartDate, userCustomEndDate);
+    const range = getDateRange(userDateFilter, userCustomStartDate, userCustomEndDate);
     return users.filter((u) => {
-      const d = new Date(u.created_at);
-      return d >= start && d < end && (!userSearchQuery || `${u.full_name} ${u.email}`.toLowerCase().includes(userSearchQuery.toLowerCase()));
+      const inDate = range ? (() => { const d = new Date(u.created_at); return d >= range.start && d < range.end; })() : true;
+      const inSearch = !userSearchQuery || `${u.full_name} ${u.email}`.toLowerCase().includes(userSearchQuery.toLowerCase());
+      return inDate && inSearch;
     });
   }, [users, userDateFilter, userSearchQuery, userCustomStartDate, userCustomEndDate]);
 
