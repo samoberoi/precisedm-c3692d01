@@ -21,6 +21,7 @@ import DisclaimerPage from "./pages/DisclaimerPage";
 import VideosPage from "./pages/VideosPage";
 import SteroidPage from "./pages/SteroidPage";
 import MaintenancePage from "./pages/MaintenancePage";
+import GestationPage from "./pages/GestationPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/videos" element={<VideosPage />} />
             <Route path="/steroid" element={<SteroidPage />} />
             <Route path="/maintenance" element={<MaintenancePage />} />
+            <Route path="/gestation" element={<GestationPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
