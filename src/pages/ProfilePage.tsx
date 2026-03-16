@@ -111,7 +111,7 @@ const ProfilePage = () => {
   const submissionStats = submissions.reduce((acc, s) => { acc[s.form_type] = (acc[s.form_type] || 0) + 1; return acc; }, {} as Record<string, number>);
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <div className="min-h-screen bg-background pb-36">
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-12 pb-3">
         <button onClick={() => navigate(-1)} className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border shadow-sm">

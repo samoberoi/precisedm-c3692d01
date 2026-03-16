@@ -80,7 +80,7 @@ const VideosPage = () => {
   const { firstName } = useProfile();
 
   return (
-    <div className="min-h-screen bg-background pb-28">
+    <div className="min-h-screen bg-background pb-36">
       <SubscriptionBanner />
       <div className="px-5 pt-6">
         <button

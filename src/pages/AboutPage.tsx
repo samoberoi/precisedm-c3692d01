@@ -18,7 +18,7 @@ const AboutPage = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-background pb-28"
+      className="min-h-screen bg-background pb-36"
     >
       {/* Header */}
       <div className="flex items-center justify-between px-5 pt-12 pb-3">
