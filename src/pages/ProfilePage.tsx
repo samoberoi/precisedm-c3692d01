@@ -343,10 +343,36 @@ const ProfilePage = () => {
           </div>
         </motion.div>
 
+        {/* Settings */}
+        <div className="mt-6 rounded-2xl glass-card p-4">
+          <h3 className="text-sm font-bold text-foreground mb-3">Settings</h3>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {theme === "dark" ? <Moon className="h-5 w-5 text-primary" /> : <Sun className="h-5 w-5 text-primary" />}
+              <div>
+                <p className="text-sm font-medium text-foreground">Dark Mode</p>
+                <p className="text-xs text-muted-foreground">{theme === "dark" ? "On" : "Off"}</p>
+              </div>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className={`relative h-7 w-12 rounded-full transition-colors ${
+                theme === "dark" ? "gradient-primary" : "bg-border"
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 h-6 w-6 rounded-full bg-foreground transition-transform ${
+                  theme === "dark" ? "translate-x-5 bg-primary-foreground" : "translate-x-0.5 bg-card"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
         {/* Logout */}
         <Button
           variant="outline"
-          className="mt-6 w-full gap-2 text-destructive border-destructive/30 hover:bg-destructive/10 rounded-xl"
+          className="mt-4 w-full gap-2 text-destructive border-destructive/30 hover:bg-destructive/10 rounded-xl"
           onClick={handleLogout}
         >
           <LogOut className="h-4 w-4" />
