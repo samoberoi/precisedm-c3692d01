@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import BottomNav from "@/components/BottomNav";
+
 import profileHero from "@/assets/profile-hero.jpg";
 
 interface ProfileData {
