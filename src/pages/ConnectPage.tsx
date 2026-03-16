@@ -60,7 +60,7 @@ const ConnectPage = () => {
     }
   };
 
-  const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "User";
+  const { firstName } = useProfile();
 
   return (
     <div className="min-h-screen bg-background pb-28">

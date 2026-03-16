@@ -33,7 +33,7 @@ const HomePage = () => {
     });
   }, [user, navigate]);
 
-  const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "There";
+  const { firstName } = useProfile();
 
   return (
     <motion.div
