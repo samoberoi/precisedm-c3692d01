@@ -3,16 +3,17 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { Info, Syringe, Baby, Activity, Play } from "lucide-react";
+import { Info, Baby, Activity, Play } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 import heroDoctor from "@/assets/hero-doctor.jpg";
 import diaformCard from "@/assets/diaform-card.jpg";
+import diaformIcon from "@/assets/diaform-icon.png";
 
 const toolkitItems = [
-  { label: "DiaForm", icon: Syringe, color: "bg-primary" },
-  { label: "Gestation", icon: Baby, color: "bg-destructive" },
-  { label: "Monitoring", icon: Activity, color: "bg-amber-400" },
-  { label: "Videos", icon: Play, color: "bg-primary" },
+  { label: "DiaForm", icon: null, image: diaformIcon, color: "bg-primary" },
+  { label: "Gestation", icon: Baby, image: null, color: "bg-destructive" },
+  { label: "Monitoring", icon: Activity, image: null, color: "bg-amber-400" },
+  { label: "Videos", icon: Play, image: null, color: "bg-primary" },
 ];
 
 const reviews = [
