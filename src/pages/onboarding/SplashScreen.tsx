@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 
 const BloodDrop = ({ size = 48 }: { size?: number }) => (
   <svg
@@ -13,9 +12,9 @@ const BloodDrop = ({ size = 48 }: { size?: number }) => (
   >
     <path
       d="M24 3C24 3 4 23 4 38C4 48.493 12.507 57 23 57H25C35.493 57 44 48.493 44 38C44 23 24 3 24 3Z"
-      fill="#DC2626"
+      fill="hsl(var(--destructive))"
     />
-    <ellipse cx="17" cy="33" rx="3.5" ry="6" fill="white" opacity="0.25" />
+    <ellipse cx="17" cy="33" rx="3.5" ry="6" fill="hsl(var(--background))" opacity="0.25" />
   </svg>
 );
 
@@ -30,8 +29,9 @@ const SplashScreen = () => {
       setTimeout(() => setStep(3), 2200),
       setTimeout(() => navigate("/onboarding/welcome"), 3400),
     ];
+
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-8 pb-32 bg-background">
@@ -44,19 +44,15 @@ const SplashScreen = () => {
               transition={{ duration: 0.45, ease: "easeOut" }}
               className="relative"
             >
-              {/* Outer blue container */}
-              <div className="flex items-stretch bg-primary border-[3px] border-primary rounded-sm">
-                {/* PRECISE — white inset box */}
-                <div className="bg-background px-5 py-2.5 flex items-center m-[3px] mr-0">
-                  <span className="text-3xl sm:text-4xl font-black italic tracking-wide text-foreground leading-none whitespace-nowrap">
+              <div className="flex items-stretch rounded-sm border-[3px] border-primary bg-primary">
+                <div className="m-[3px] mr-0 flex items-center bg-background px-5 py-2.5">
+                  <span className="whitespace-nowrap text-3xl font-black italic leading-none tracking-wide text-foreground sm:text-4xl">
                     PRECISE
                   </span>
                 </div>
 
-                {/* Spacer for blood drop */}
                 {step >= 3 && <div style={{ width: 28 }} />}
 
-                {/* DM — directly on blue */}
                 <AnimatePresence>
                   {step >= 2 && (
                     <motion.div
@@ -65,7 +61,7 @@ const SplashScreen = () => {
                       transition={{ duration: 0.4, ease: "easeOut" }}
                       className="flex items-center overflow-hidden"
                     >
-                      <span className="text-3xl sm:text-4xl font-black italic tracking-wide text-primary-foreground leading-none whitespace-nowrap px-5 py-2.5">
+                      <span className="whitespace-nowrap px-5 py-2.5 text-3xl font-black italic leading-none tracking-wide text-primary-foreground sm:text-4xl">
                         DM
                       </span>
                     </motion.div>
@@ -73,7 +69,6 @@ const SplashScreen = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Blood drop — centered at the PRECISE/DM boundary, extending above and below */}
               <AnimatePresence>
                 {step >= 3 && (
                   <motion.div
@@ -94,8 +89,7 @@ const SplashScreen = () => {
             </motion.div>
           )}
         </AnimatePresence>
-    </div>
-  );
+      </div>
     </div>
   );
 };
