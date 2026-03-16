@@ -250,6 +250,10 @@ const AdminDashboard = () => {
     return true;
   });
 
+  const filteredSubmissions = submissionFormFilter
+    ? submissions.filter((s) => s.form_type === submissionFormFilter)
+    : submissions;
+
   const videoCount = 3;
 
   const CreateUserForm = () => (
