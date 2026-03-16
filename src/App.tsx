@@ -17,6 +17,7 @@ import AboutPage from "./pages/AboutPage";
 import ConnectPage from "./pages/ConnectPage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import DisclaimerPage from "./pages/DisclaimerPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/about" element={<AboutPage />} />
             <Route path="/connect" element={<ConnectPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/disclaimer" element={<DisclaimerPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
