@@ -113,43 +113,31 @@ const HomePage = () => {
       {/* Toolkit Grid - 2x2 */}
       <div className="px-5">
         <div className="grid grid-cols-2 gap-3">
-          {toolkitItems.map((item, i) => {
-            const isDark = item.dark;
-            return (
+          {toolkitItems.map((item, i) => (
               <motion.button
                 key={item.label}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06 }}
                 onClick={() => navigate(item.route)}
-                className={`relative flex flex-col items-start rounded-2xl p-4 text-left transition-all active:scale-[0.97] shadow-sm ${item.bg} ${
-                  isDark ? "" : "border border-border"
-                }`}
-                style={{ minHeight: 130 }}
+                className="relative flex flex-col items-start rounded-2xl p-4 text-left transition-all active:scale-[0.97] shadow-lg"
+                style={{ minHeight: 130, background: item.gradient }}
               >
-                {/* Icon logo top-right */}
-                <div className={`absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-xl ${item.iconBg}`}>
-                  <img src={item.image} alt={item.label} className="h-5 w-5 object-contain" />
-                </div>
-                <p className={`text-base font-bold leading-tight ${isDark ? "text-white" : "text-foreground"}`}>
+                <p className="text-base font-bold leading-tight text-white">
                   {item.label}
                 </p>
-                <p className={`text-xs mt-0.5 ${isDark ? "text-white/60" : "text-muted-foreground"}`}>
+                <p className="text-xs mt-0.5 text-white/60">
                   {item.desc}
                 </p>
                 <div className="flex-1" />
                 <div className="flex items-end justify-between w-full mt-3">
-                  {isDark && <img src={item.image} alt={item.label} className="h-10 w-10 object-contain opacity-40" />}
-                  {!isDark && <div />}
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full ${
-                    isDark ? `${item.accent} text-primary-foreground` : "bg-primary/10 text-primary"
-                  }`}>
+                  <img src={item.image} alt={item.label} className="h-10 w-10 object-contain opacity-40" />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
                     <ArrowUpRight className="h-4 w-4" />
                   </div>
                 </div>
               </motion.button>
-            );
-          })}
+          ))}
         </div>
       </div>
 
