@@ -35,7 +35,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const PAGES_WITH_NAV = ["/home", "/about", "/connect", "/profile", "/disclaimer", "/subscription", "/videos", "/steroid", "/maintenance", "/gestation", "/diaform"];
+const PAGES_WITH_NAV = ["/home", "/about", "/connect", "/profile", "/disclaimer", "/subscription", "/videos", "/steroid", "/maintenance", "/gestation", "/diaform", "/admin"];
 
 const AnimatedRoutes = () => {
   const location = useLocation();
