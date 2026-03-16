@@ -148,16 +148,15 @@ const HomePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
           onClick={() => navigate("/videos")}
-          className="w-full flex items-center gap-4 rounded-2xl bg-card border border-border shadow-sm p-4 text-left active:scale-[0.98] transition-transform"
+          className="w-full flex items-center gap-4 rounded-2xl p-4 text-left active:scale-[0.98] transition-transform shadow-lg"
+          style={{ background: "linear-gradient(135deg, hsl(150,50%,40%), hsl(160,45%,30%))" }}
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[hsl(90,60%,50%)]/15">
-            <img src={videosIcon} alt="Videos" className="h-6 w-6 object-contain" />
-          </div>
+          <img src={videosIcon} alt="Videos" className="h-10 w-10 object-contain opacity-50" />
           <div className="flex-1">
-            <p className="text-sm font-bold text-foreground">Educational Videos</p>
-            <p className="text-xs text-muted-foreground">Learn insulin dosing techniques</p>
+            <p className="text-sm font-bold text-white">Educational Videos</p>
+            <p className="text-xs text-white/60">Learn insulin dosing techniques</p>
           </div>
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white">
             <ArrowUpRight className="h-4 w-4" />
           </div>
         </motion.button>
