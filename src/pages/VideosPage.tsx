@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, Info, Play, Pause } from "lucide-react";
 import { useProfile } from "@/hooks/use-profile";
 import BottomNav from "@/components/BottomNav";
+import SubscriptionBanner from "@/components/SubscriptionBanner";
 
 const videos = [
   { title: "DiaForm", description: "Learn the DiaForm insulin dosing process", src: "/videos/diaform.mp4" },
@@ -80,6 +81,7 @@ const VideosPage = () => {
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <SubscriptionBanner />
       <div className="px-5 pt-6">
         <button
           onClick={() => navigate(-1)}

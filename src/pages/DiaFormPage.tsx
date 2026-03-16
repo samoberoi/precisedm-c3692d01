@@ -5,6 +5,7 @@ import { ChevronLeft, Info, RotateCcw, Printer, Pencil } from "lucide-react";
 import { useProfile } from "@/hooks/use-profile";
 import { useSaveSubmission } from "@/hooks/use-save-submission";
 import BottomNav from "@/components/BottomNav";
+import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -249,6 +250,7 @@ const DiaFormPage = () => {
 
   return (
     <div className="min-h-screen bg-background pb-28">
+      <SubscriptionBanner />
       {/* Header */}
       <div className="px-5 pt-6">
         <button onClick={() => navigate(-1)} className="flex items-center gap-1 text-foreground mb-3">

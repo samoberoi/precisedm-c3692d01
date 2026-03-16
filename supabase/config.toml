@@ -5,3 +5,9 @@ verify_jwt = false
 
 [functions.admin-users]
 verify_jwt = false
+
+[functions.paypal-subscription]
+verify_jwt = false
+
+[functions.paypal-webhook]
+verify_jwt = false
