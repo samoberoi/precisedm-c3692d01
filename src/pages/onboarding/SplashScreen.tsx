@@ -28,7 +28,7 @@ const SplashScreen = () => {
       setTimeout(() => setStep(1), 600),
       setTimeout(() => setStep(2), 1400),
       setTimeout(() => setStep(3), 2200),
-      setTimeout(() => setStep(4), 3200),
+      setTimeout(() => navigate("/onboarding/welcome"), 3400),
     ];
     return () => timers.forEach(clearTimeout);
   }, []);
