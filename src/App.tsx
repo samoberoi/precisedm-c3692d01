@@ -51,6 +51,7 @@ import BlogPage from "./pages/website/BlogPage";
 import PrivacyPolicyPage from "./pages/website/PrivacyPolicyPage";
 import TermsPage from "./pages/website/TermsPage";
 import WebsiteDisclaimerPage from "./pages/website/WebsiteDisclaimerPage";
+import WebsiteProfilePage from "./pages/website/WebsiteProfilePage";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const AnimatedRoutes = () => {
             <Route path="privacy" element={<PrivacyPolicyPage />} />
             <Route path="terms" element={<TermsPage />} />
             <Route path="disclaimer" element={<WebsiteDisclaimerPage />} />
+            <Route path="profile" element={<WebsiteProfilePage />} />
           </Route>
 
           {/* Root redirects to website */}

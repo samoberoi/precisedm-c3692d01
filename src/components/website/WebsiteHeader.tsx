@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, X, Calculator, BookOpen, CreditCard, Users, MessageSquare, HelpCircle, User, LogIn, LayoutDashboard, Settings, LogOut } from "lucide-react";
+import { Menu, X, Calculator, BookOpen, CreditCard, Users, MessageSquare, HelpCircle, User, LogIn, LayoutDashboard, LogOut } from "lucide-react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
@@ -81,11 +81,8 @@ const WebsiteHeader = () => {
             <LayoutDashboard className="mr-2 h-4 w-4" /> Admin Dashboard
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={() => navigate("/profile")} className="cursor-pointer">
+        <DropdownMenuItem onClick={() => navigate("/w/profile")} className="cursor-pointer">
           <User className="mr-2 h-4 w-4" /> My Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/home")} className="cursor-pointer">
-          <Settings className="mr-2 h-4 w-4" /> Go to App
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
@@ -170,7 +167,7 @@ const WebsiteHeader = () => {
                               <LayoutDashboard className="h-4 w-4" /> Admin Dashboard
                             </Button>
                           )}
-                          <Button variant="outline" onClick={() => { setMobileOpen(false); navigate("/profile"); }} className="rounded-xl font-semibold justify-start gap-2">
+                          <Button variant="outline" onClick={() => { setMobileOpen(false); navigate("/w/profile"); }} className="rounded-xl font-semibold justify-start gap-2">
                             <User className="h-4 w-4" /> My Profile
                           </Button>
                           <Button variant="ghost" onClick={() => { setMobileOpen(false); handleLogout(); }} className="rounded-xl font-semibold justify-start gap-2 text-destructive">
