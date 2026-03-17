@@ -163,7 +163,7 @@ const WebsiteHeader = () => {
                       {user ? (
                         <>
                           {isAdmin && (
-                            <Button variant="outline" onClick={() => { setMobileOpen(false); navigate("/admin"); }} className="rounded-xl font-semibold justify-start gap-2">
+                            <Button variant="outline" onClick={() => { setMobileOpen(false); navigate("/w/admin"); }} className="rounded-xl font-semibold justify-start gap-2">
                               <LayoutDashboard className="h-4 w-4" /> Admin Dashboard
                             </Button>
                           )}
