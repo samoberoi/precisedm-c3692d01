@@ -73,7 +73,7 @@ const SubscriptionPage = () => {
   const handleSubscribe = async (planType: string) => {
     if (authLoading) return;
     if (!user) {
-      navigate("/login");
+      navigate(loginRoute);
       return;
     }
 
