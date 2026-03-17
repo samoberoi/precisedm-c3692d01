@@ -71,6 +71,7 @@ const ResetPasswordPage = () => {
           {loading ? "Updating..." : "Update Password"}
         </Button>
       </form>
+      </div>
     </motion.div>
   );
 };

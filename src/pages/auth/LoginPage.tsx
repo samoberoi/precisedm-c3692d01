@@ -94,6 +94,7 @@ const LoginPage = () => {
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Don't have an account? <Link to="/signup" className="text-primary font-semibold">Sign Up</Link>
       </p>
+      </div>
     </motion.div>
   );
 };
