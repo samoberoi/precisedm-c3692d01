@@ -178,14 +178,9 @@ const WebsiteHeader = () => {
                           </Button>
                         </>
                       ) : (
-                        <>
-                          <Button variant="outline" onClick={() => { setMobileOpen(false); openAuth("login"); }} className="rounded-xl font-semibold">
-                            Log In
-                          </Button>
-                          <Button onClick={() => { setMobileOpen(false); openAuth("signup"); }} className="rounded-xl gradient-primary glow-primary font-semibold">
-                            Get Started
-                          </Button>
-                        </>
+                        <Button onClick={() => { setMobileOpen(false); openAuth("login"); }} className="rounded-xl gradient-primary glow-primary font-semibold">
+                          Login
+                        </Button>
                       )}
                     </div>
                   </nav>
