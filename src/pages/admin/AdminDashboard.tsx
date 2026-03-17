@@ -306,6 +306,7 @@ const AdminDashboard = () => {
       if (subFilter === "inactive") return s.status !== "active";
       if (subFilter === "monthly") return s.plan_type === "monthly" && s.status === "active";
       if (subFilter === "yearly") return s.plan_type === "yearly" && s.status === "active";
+      if (subFilter === "trial") return s.plan_type === "trial";
       return true;
     });
     return filterByDateAndSearch(result, subDateFilter, subSearchQuery, subCustomStartDate, subCustomEndDate, (s) => `${s.user_name} ${s.user_email} ${s.plan_type}`);
