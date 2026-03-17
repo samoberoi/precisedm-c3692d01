@@ -365,7 +365,7 @@ const MaintenancePage = () => {
       <AnimatePresence>
         {result && (
           <motion.div ref={resultsRef} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
-            className="px-5 mt-5 space-y-4">
+            className={`${isWebsite ? cx : "px-5"} mt-5 space-y-4`}>
             <div className="rounded-2xl border border-primary/30 bg-primary/5 p-5 shadow-sm">
               <h3 className="text-lg font-extrabold text-foreground mb-4">Recommended Adjustments to Basal and/or Prandial Insulin Doses</h3>
               <div className={`rounded-xl p-4 text-center mb-3 ${result.isBasalError ? "bg-destructive/10" : "bg-primary/10"}`}>
