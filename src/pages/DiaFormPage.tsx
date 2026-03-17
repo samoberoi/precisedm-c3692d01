@@ -473,7 +473,7 @@ const DiaFormPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="px-5 mt-5 space-y-4"
+            className={`${isWebsite ? cx : "px-5"} mt-5 space-y-4`}
           >
             {/* Dose Card */}
             <div className="rounded-3xl overflow-hidden shadow-lg"
