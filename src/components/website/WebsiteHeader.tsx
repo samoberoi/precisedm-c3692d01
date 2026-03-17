@@ -81,11 +81,8 @@ const WebsiteHeader = () => {
             <LayoutDashboard className="mr-2 h-4 w-4" /> Admin Dashboard
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={() => navigate("/profile")} className="cursor-pointer">
+        <DropdownMenuItem onClick={() => navigate("/w/profile")} className="cursor-pointer">
           <User className="mr-2 h-4 w-4" /> My Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => navigate("/home")} className="cursor-pointer">
-          <Settings className="mr-2 h-4 w-4" /> Go to App
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
