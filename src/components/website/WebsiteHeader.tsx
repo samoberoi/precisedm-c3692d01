@@ -130,14 +130,9 @@ const WebsiteHeader = () => {
                 {user ? (
                   <ProfileDropdown />
                 ) : (
-                  <>
-                    <Button variant="ghost" onClick={() => openAuth("login")} className="rounded-xl font-semibold gap-2">
-                      <LogIn className="h-4 w-4" /> Log In
-                    </Button>
-                    <Button onClick={() => openAuth("signup")} className="rounded-xl gradient-primary glow-primary font-semibold">
-                      Get Started
-                    </Button>
-                  </>
+                  <Button onClick={() => openAuth("login")} className="rounded-xl gradient-primary glow-primary font-semibold gap-2">
+                    <LogIn className="h-4 w-4" /> Login
+                  </Button>
                 )}
               </div>
 
