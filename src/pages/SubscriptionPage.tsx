@@ -24,6 +24,7 @@ const plans = [
 
 const SubscriptionPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, session, loading: authLoading } = useAuth();
   const { subscription, isActive, daysRemaining, refresh } = useSubscription();
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
