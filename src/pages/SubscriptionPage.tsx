@@ -101,8 +101,8 @@ const SubscriptionPage = () => {
         },
         body: JSON.stringify({
           plan_type: planType,
-          return_url: `${baseUrl}/subscription/success`,
-          cancel_url: `${baseUrl}/subscription`,
+          return_url: `${baseUrl}${successRoute}`,
+          cancel_url: `${baseUrl}${subscriptionRoute}`,
         }),
       });
 
