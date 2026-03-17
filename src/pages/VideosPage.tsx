@@ -76,7 +76,9 @@ const VideoCard = ({ video, index }: { video: typeof videos[0]; index: number })
 
 const VideosPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { firstName } = useProfile();
+  const disclaimerRoute = location.pathname.startsWith("/w") ? "/w/disclaimer" : "/disclaimer";
 
   return (
     <div className="min-h-screen bg-background pb-36">
