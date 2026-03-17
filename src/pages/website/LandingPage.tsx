@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, Check, Shield, Zap, BookOpen, Calculator, ChevronRight, Star, TrendingUp, Lock, History } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/website/ScrollReveal";
 import AuthSlidePanel from "@/components/website/AuthSlidePanel";
 import { useAuth } from "@/contexts/AuthContext";
+import { motion, useInView } from "framer-motion";
 import heroDoctor from "@/assets/hero-doctor.jpg";
 import diaformIcon from "@/assets/diaform-card-icon.png";
 import gestationIcon from "@/assets/gestation-card-icon.png";
@@ -44,11 +45,41 @@ const team = [
 ];
 
 const stats = [
-  { value: "4", label: "Precision Calculators" },
-  { value: "3", label: "Clinical Experts" },
-  { value: "50/50", label: "Basal-Prandial Split" },
-  { value: "24/7", label: "Access Anytime" },
+  { value: 4, label: "Precision Calculators", suffix: "" },
+  { value: 3, label: "Clinical Experts", suffix: "+" },
+  { value: 50, label: "Basal-Prandial Split", suffix: "/50" },
+  { value: 24, label: "Access Anytime", suffix: "/7" },
 ];
+
+// Animated counter component
+const AnimatedCounter = ({ value, suffix, label }: { value: number; suffix: string; label: string }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  useEffect(() => {
+    if (!isInView) return;
+    let start = 0;
+    const end = value;
+    const duration = 1200;
+    const stepTime = Math.max(Math.floor(duration / end), 30);
+    const timer = setInterval(() => {
+      start += 1;
+      setCount(start);
+      if (start >= end) clearInterval(timer);
+    }, stepTime);
+    return () => clearInterval(timer);
+  }, [isInView, value]);
+
+  return (
+    <div ref={ref} className="text-center">
+      <p className="text-3xl lg:text-4xl font-extrabold text-primary tabular-nums">
+        {count}{suffix}
+      </p>
+      <p className="text-xs text-muted-foreground mt-1.5 font-medium">{label}</p>
+    </div>
+  );
+};
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -65,36 +96,43 @@ const LandingPage = () => {
     }
   };
 
+  const handleCTA = () => {
+    if (!user) {
+      setAuthMode("signup");
+      setAuthOpen(true);
+    }
+  };
+
   return (
     <div>
       {/* ═══ Hero ═══ */}
-      <section className="relative overflow-hidden py-24 lg:py-32 xl:py-40">
+      <section className="relative overflow-hidden py-16 lg:py-24 xl:py-28">
         <div className="absolute inset-0 -z-10" style={{ background: "linear-gradient(160deg, hsl(197 50% 92%), hsl(197 30% 96%) 40%, hsl(200 20% 98%))" }} />
         <div className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl -z-10" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-primary/3 blur-3xl -z-10" />
 
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
-          <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
             <ScrollReveal>
-              <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2 text-xs font-semibold text-primary mb-8">
+              <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-5 py-2 text-xs font-semibold text-primary mb-6">
                 <Zap className="h-3.5 w-3.5" /> Precision Insulin Dosing Platform
               </span>
               <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.08]">
                 Individualize Insulin Dosing with{" "}
                 <span className="text-gradient">Confidence</span>
               </h1>
-              <p className="mt-6 text-lg lg:text-xl text-muted-foreground max-w-xl leading-relaxed">
+              <p className="mt-5 text-lg lg:text-xl text-muted-foreground max-w-xl leading-relaxed">
                 An innovative toolkit for trained healthcare providers to quickly and accurately determine starting and maintenance insulin doses across clinical scenarios.
               </p>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Button size="lg" onClick={() => user ? navigate("/home") : (setAuthMode("signup"), setAuthOpen(true))} className="rounded-xl gradient-primary glow-primary font-bold text-base h-13 px-8">
-                  Start Free Trial <ArrowRight className="ml-2 h-4 w-4" />
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button size="lg" onClick={handleCTA} className="rounded-xl gradient-primary glow-primary font-bold text-base h-14 px-10">
+                  Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" onClick={() => navigate("/w/features")} className="rounded-xl font-bold text-base h-13 px-8">
+                <Button size="lg" variant="outline" onClick={() => navigate("/w/features")} className="rounded-xl font-bold text-base h-14 px-10 border-2">
                   Explore Features
                 </Button>
               </div>
-              <div className="mt-10 flex flex-wrap items-center gap-6">
+              <div className="mt-8 flex flex-wrap items-center gap-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground"><Check className="h-4 w-4 text-primary" /> Free 7-day trial</div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground"><Check className="h-4 w-4 text-primary" /> No credit card</div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground"><Check className="h-4 w-4 text-primary" /> Cancel anytime</div>
@@ -104,7 +142,7 @@ const LandingPage = () => {
             <ScrollReveal delay={0.15}>
               <div className="relative">
                 <div className="relative overflow-hidden rounded-3xl shadow-2xl" style={{ background: "linear-gradient(135deg, hsl(197 50% 85%), hsl(197 40% 75%))" }}>
-                  <img src={heroDoctor} alt="Healthcare professional using PreciseDM" className="h-[420px] w-full object-cover object-top lg:h-[520px] xl:h-[560px]" />
+                  <img src={heroDoctor} alt="Healthcare professional using PreciseDM" className="h-[380px] w-full object-cover object-top lg:h-[480px] xl:h-[520px]" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
                 <div className="absolute -bottom-5 -left-5 rounded-2xl bg-card border border-border shadow-xl p-4 hidden lg:block">
@@ -130,16 +168,13 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* ═══ Stats Bar ═══ */}
-      <section className="py-8 border-y border-border/50 bg-card/50">
+      {/* ═══ Stats Bar with Counting Animation ═══ */}
+      <section className="py-10 border-y border-border/50 bg-card/50">
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((s, i) => (
               <ScrollReveal key={s.label} delay={i * 0.08}>
-                <div className="text-center">
-                  <p className="text-2xl lg:text-3xl font-extrabold text-primary">{s.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1 font-medium">{s.label}</p>
-                </div>
+                <AnimatedCounter value={s.value} suffix={s.suffix} label={s.label} />
               </ScrollReveal>
             ))}
           </div>
@@ -147,9 +182,9 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ Features – Modern Bento Grid ═══ */}
-      <section className="py-24 lg:py-32">
+      <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
-          <ScrollReveal className="text-center mb-16">
+          <ScrollReveal className="text-center mb-14">
             <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl lg:text-5xl">Why Choose Precise DM?</h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Built by pharmacists and clinical experts to transform diabetes care delivery.</p>
           </ScrollReveal>
@@ -158,9 +193,7 @@ const LandingPage = () => {
             {features.map((f, i) => (
               <ScrollReveal key={f.title} delay={i * 0.06}>
                 <div className={`group relative overflow-hidden rounded-2xl border border-border bg-card p-8 hover:shadow-xl transition-all duration-300 ${i === 0 ? "md:col-span-2 lg:col-span-1 lg:row-span-2" : ""} h-full`}>
-                  {/* Accent glow */}
                   <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-3xl" style={{ background: f.accent }} />
-
                   <div className="relative">
                     <div className="h-12 w-12 rounded-2xl flex items-center justify-center mb-5" style={{ background: `${f.accent}15` }}>
                       <f.icon className="h-6 w-6" style={{ color: f.accent }} />
@@ -168,8 +201,6 @@ const LandingPage = () => {
                     <h3 className="text-lg font-bold text-foreground mb-2">{f.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
                   </div>
-
-                  {/* Bottom accent line */}
                   <div className="absolute bottom-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: f.accent }} />
                 </div>
               </ScrollReveal>
@@ -179,9 +210,9 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ Calculators Preview ═══ */}
-      <section className="py-24 lg:py-32 bg-accent/30">
+      <section className="py-20 lg:py-28 bg-accent/30">
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
-          <ScrollReveal className="text-center mb-16">
+          <ScrollReveal className="text-center mb-14">
             <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl lg:text-5xl">Our Calculator Suite</h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Four precision tools covering the full spectrum of insulin dosing needs.</p>
           </ScrollReveal>
@@ -207,9 +238,9 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ How it works ═══ */}
-      <section className="py-24 lg:py-32">
+      <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
-          <ScrollReveal className="text-center mb-16">
+          <ScrollReveal className="text-center mb-14">
             <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl lg:text-5xl">How It Works</h2>
             <p className="mt-4 text-lg text-muted-foreground">Four simple steps to precision dosing.</p>
           </ScrollReveal>
@@ -230,9 +261,9 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ Team ═══ */}
-      <section className="py-24 lg:py-32 bg-accent/30">
+      <section className="py-20 lg:py-28 bg-accent/30">
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
-          <ScrollReveal className="text-center mb-16">
+          <ScrollReveal className="text-center mb-14">
             <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl lg:text-5xl">Meet Our Team</h2>
             <p className="mt-4 text-lg text-muted-foreground">Clinical experts dedicated to improving diabetes care.</p>
           </ScrollReveal>
@@ -254,16 +285,16 @@ const LandingPage = () => {
       </section>
 
       {/* ═══ CTA ═══ */}
-      <section className="py-24 lg:py-32">
+      <section className="py-20 lg:py-28">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <ScrollReveal>
             <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl lg:text-5xl mb-5">Ready to Transform Diabetes Care?</h2>
             <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">Start your free 7-day trial today. No credit card required.</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Button size="lg" onClick={() => user ? navigate("/home") : (setAuthMode("signup"), setAuthOpen(true))} className="rounded-xl gradient-primary glow-primary font-bold text-base h-13 px-8">
-                Start Free Trial <ArrowRight className="ml-2 h-4 w-4" />
+              <Button size="lg" onClick={handleCTA} className="rounded-xl gradient-primary glow-primary font-bold text-base h-14 px-10">
+                Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" onClick={() => navigate("/w/pricing")} className="rounded-xl font-bold text-base h-13 px-8">
+              <Button size="lg" variant="outline" onClick={() => navigate("/w/pricing")} className="rounded-xl font-bold text-base h-14 px-10 border-2">
                 View Pricing
               </Button>
             </div>
