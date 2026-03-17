@@ -260,7 +260,7 @@ const AdminDashboard = () => {
 
   const handleViewUsers = () => setViewMode("users");
   const handleViewSubmissions = (formType?: string) => { fetchSubmissions(); setSubmissionFormFilter(formType || null); setViewMode("submissions"); };
-  const handleViewSubscriptions = (filter?: "all" | "active" | "inactive" | "monthly" | "yearly") => {
+  const handleViewSubscriptions = (filter?: "all" | "active" | "inactive" | "monthly" | "yearly" | "trial") => {
     fetchSubscriptions();
     if (filter) setSubFilter(filter);
     else setSubFilter("all");
