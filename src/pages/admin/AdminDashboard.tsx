@@ -142,7 +142,7 @@ const AdminDashboard = () => {
   const [allSubscriptions, setAllSubscriptions] = useState<SubscriptionRecord[]>([]);
   const [subscriptionsLoading, setSubscriptionsLoading] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionRecord | null>(null);
-  const [subFilter, setSubFilter] = useState<"all" | "active" | "inactive" | "monthly" | "yearly">("all");
+  const [subFilter, setSubFilter] = useState<"all" | "active" | "inactive" | "monthly" | "yearly" | "trial">("all");
   const [submissionFormFilter, setSubmissionFormFilter] = useState<string | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
