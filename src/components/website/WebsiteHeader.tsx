@@ -130,14 +130,9 @@ const WebsiteHeader = () => {
                 {user ? (
                   <ProfileDropdown />
                 ) : (
-                  <>
-                    <Button variant="ghost" onClick={() => openAuth("login")} className="rounded-xl font-semibold gap-2">
-                      <LogIn className="h-4 w-4" /> Log In
-                    </Button>
-                    <Button onClick={() => openAuth("signup")} className="rounded-xl gradient-primary glow-primary font-semibold">
-                      Get Started
-                    </Button>
-                  </>
+                  <Button onClick={() => openAuth("login")} className="rounded-xl gradient-primary glow-primary font-semibold gap-2">
+                    <LogIn className="h-4 w-4" /> Login
+                  </Button>
                 )}
               </div>
 
@@ -183,14 +178,9 @@ const WebsiteHeader = () => {
                           </Button>
                         </>
                       ) : (
-                        <>
-                          <Button variant="outline" onClick={() => { setMobileOpen(false); openAuth("login"); }} className="rounded-xl font-semibold">
-                            Log In
-                          </Button>
-                          <Button onClick={() => { setMobileOpen(false); openAuth("signup"); }} className="rounded-xl gradient-primary glow-primary font-semibold">
-                            Get Started
-                          </Button>
-                        </>
+                        <Button onClick={() => { setMobileOpen(false); openAuth("login"); }} className="rounded-xl gradient-primary glow-primary font-semibold">
+                          Login
+                        </Button>
                       )}
                     </div>
                   </nav>
@@ -231,14 +221,9 @@ const WebsiteHeader = () => {
               {user ? (
                 <ProfileDropdown size="sm" />
               ) : (
-                <>
-                  <Button size="sm" variant="ghost" onClick={() => openAuth("login")} className="rounded-xl font-semibold text-xs h-8">
-                    Log In
-                  </Button>
-                  <Button size="sm" onClick={() => openAuth("signup")} className="rounded-xl gradient-primary glow-primary font-semibold text-xs h-8 px-4">
-                    Sign Up
-                  </Button>
-                </>
+                <Button size="sm" onClick={() => openAuth("login")} className="rounded-xl gradient-primary glow-primary font-semibold text-xs h-8 px-4">
+                  Login
+                </Button>
               )}
             </div>
           </motion.div>
@@ -263,8 +248,8 @@ const WebsiteHeader = () => {
               {user ? (
                 <ProfileDropdown size="sm" />
               ) : (
-                <Button size="sm" onClick={() => openAuth("signup")} className="rounded-xl gradient-primary glow-primary font-semibold text-xs h-8 px-4">
-                  Get Started
+                <Button size="sm" onClick={() => openAuth("login")} className="rounded-xl gradient-primary glow-primary font-semibold text-xs h-8 px-4">
+                  Login
                 </Button>
               )}
             </div>
