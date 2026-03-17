@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Info, RotateCcw, Printer, Pencil, ChevronRight, Check } from "lucide-react";
 import { useProfile } from "@/hooks/use-profile";
