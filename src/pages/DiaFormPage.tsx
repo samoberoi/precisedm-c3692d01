@@ -527,7 +527,6 @@ const DiaFormPage = () => {
         )}
       </AnimatePresence>
       </div>
-      </div>
     </div>
   );
 };
