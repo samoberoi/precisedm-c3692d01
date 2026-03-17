@@ -196,7 +196,7 @@ const WebsiteHeader = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 80, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden md:flex"
+            className="fixed bottom-6 left-0 right-0 z-50 hidden md:flex justify-center"
           >
             <div className="flex items-center gap-1 rounded-2xl bg-card/90 backdrop-blur-2xl border border-border/60 shadow-2xl px-2 py-2">
               <Link to="/w" className="flex items-center gap-2 px-3 py-2 mr-1">
