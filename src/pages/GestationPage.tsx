@@ -207,8 +207,7 @@ const GestationPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-36 md:pb-16">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-background pb-36">
       <SubscriptionBanner />
 
       {/* Header */}
@@ -454,7 +453,6 @@ const GestationPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
     </div>
   );
 };
