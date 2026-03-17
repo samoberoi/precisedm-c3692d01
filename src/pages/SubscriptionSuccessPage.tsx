@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { CheckCircle, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
