@@ -527,6 +527,7 @@ const DiaFormPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 };
