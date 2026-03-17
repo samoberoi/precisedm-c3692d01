@@ -703,7 +703,7 @@ const AdminDashboard = () => {
               </div>
 
               <div className="flex gap-2 mb-4 overflow-x-auto pb-1 -mx-1 px-1">
-                {(["all", "active", "inactive", "monthly", "yearly"] as const).map((f) => (
+                {(["all", "active", "inactive", "trial", "monthly", "yearly"] as const).map((f) => (
                   <button key={f} onClick={() => setSubFilter(f)}
                     className={`text-xs font-semibold px-4 py-2 rounded-full border transition-all whitespace-nowrap ${
                       subFilter === f
