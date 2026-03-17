@@ -452,8 +452,24 @@ const AdminDashboard = () => {
 
               {/* Charts */}
               <div className="mt-5 space-y-4">
-                <UserGrowthChart users={users} />
-                <RevenueChart subscriptions={allSubscriptions} />
+                <UserGrowthChart
+                  users={users}
+                  dateRange={userChartRange}
+                  onDateRangeChange={setUserChartRange}
+                  customStart={userChartCustomStart}
+                  customEnd={userChartCustomEnd}
+                  onCustomStartChange={setUserChartCustomStart}
+                  onCustomEndChange={setUserChartCustomEnd}
+                />
+                <RevenueChart
+                  subscriptions={allSubscriptions}
+                  dateRange={revenueChartRange}
+                  onDateRangeChange={setRevenueChartRange}
+                  customStart={revenueChartCustomStart}
+                  customEnd={revenueChartCustomEnd}
+                  onCustomStartChange={setRevenueChartCustomStart}
+                  onCustomEndChange={setRevenueChartCustomEnd}
+                />
               </div>
 
               {/* Form Breakdown - 2x2 grid matching toolkit style */}
