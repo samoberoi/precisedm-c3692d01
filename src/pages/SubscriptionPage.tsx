@@ -40,7 +40,7 @@ const SubscriptionPage = () => {
 
   const handleStartTrial = async () => {
     if (authLoading) return;
-    if (!user) { navigate("/login"); return; }
+    if (!user) { navigate(loginRoute); return; }
 
     setTrialProcessing(true);
     try {
