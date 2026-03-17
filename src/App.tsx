@@ -48,6 +48,7 @@ import WebsiteAboutPage from "./pages/website/WebsiteAboutPage";
 import WebsiteContactPage from "./pages/website/WebsiteContactPage";
 import FAQPage from "./pages/website/FAQPage";
 import BlogPage from "./pages/website/BlogPage";
+import BlogPostPage from "./pages/website/BlogPostPage";
 import PrivacyPolicyPage from "./pages/website/PrivacyPolicyPage";
 import TermsPage from "./pages/website/TermsPage";
 import WebsiteDisclaimerPage from "./pages/website/WebsiteDisclaimerPage";
@@ -75,6 +76,7 @@ const AnimatedRoutes = () => {
             <Route path="contact" element={<WebsiteContactPage />} />
             <Route path="faq" element={<FAQPage />} />
             <Route path="blog" element={<BlogPage />} />
+            <Route path="blog/:slug" element={<BlogPostPage />} />
             <Route path="privacy" element={<PrivacyPolicyPage />} />
             <Route path="terms" element={<TermsPage />} />
             <Route path="disclaimer" element={<WebsiteDisclaimerPage />} />
