@@ -1,8 +1,8 @@
 import ScrollReveal from "@/components/website/ScrollReveal";
 
 const sections = [
-  { title: "Acceptance of Terms", content: "By accessing or using the Precise DM website and application, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, you should not use our services." },
-  { title: "Eligibility", content: "Precise DM is intended for use by trained medical professionals including physicians, pharmacists, nurse practitioners, and other licensed healthcare providers. By using our services, you represent that you have the appropriate credentials and training." },
+  { title: "Acceptance of Terms", content: "By accessing or using the PreciseDM website and application, you agree to be bound by these Terms and Conditions. If you do not agree to these terms, you should not use our services." },
+  { title: "Eligibility", content: "PreciseDM is intended for use by trained medical professionals including physicians, pharmacists, nurse practitioners, and other licensed healthcare providers. By using our services, you represent that you have the appropriate credentials and training." },
   { title: "Account Responsibilities", content: "You are responsible for maintaining the confidentiality of your account credentials and for all activities under your account. You agree to notify us immediately of any unauthorized use of your account." },
   { title: "Subscription and Payments", content: "Paid features require an active subscription. Subscriptions are billed through PayPal on a monthly or yearly basis. You may cancel at any time; access continues until the end of the billing period. Free trials are limited to one per user." },
   { title: "Disclaimer of Liability", content: "The diaForm process and all calculators developed by PreciseDM, LLC are intended only for use by trained medical professionals. While our tools provide recommended dosage ranges, users should consult closely with appropriate medical professionals to confirm any recommended dosage is appropriate for a particular patient. PreciseDM, LLC shall not be held liable for any improper or incorrect use of any product." },
