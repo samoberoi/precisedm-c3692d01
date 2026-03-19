@@ -20,7 +20,7 @@ const faqs = [
   ]},
   { category: "Account", items: [
     { q: "How do I reset my password?", a: "Click 'Forgot Password' on the login page, enter your email address, and you'll receive a password reset link." },
-    { q: "Can I use Precise DM on multiple devices?", a: "Yes, your account works across all devices. Simply log in with your credentials on any web browser." },
+    { q: "Can I use PreciseDM on multiple devices?", a: "Yes, your account works across all devices. Simply log in with your credentials on any web browser." },
   ]},
 ];
 
