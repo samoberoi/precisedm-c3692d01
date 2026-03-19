@@ -214,9 +214,9 @@ The ability for dosing tools, EHRs, and glucose monitors to share data seamlessl
 **4. Education at Scale**
 Digital platforms enable pharmacy students and new practitioners to learn dosing principles through interactive calculators rather than static textbooks.
 
-### Where Precise DM Fits
+### Where PreciseDM Fits
 
-Precise DM focuses on the foundational layer: getting the initial dose right. Our calculators cover four critical scenarios — initial dosing (DiaForm), gestational diabetes, steroid-induced hyperglycemia, and maintenance adjustments.
+PreciseDM focuses on the foundational layer: getting the initial dose right. Our calculators cover four critical scenarios — initial dosing (DiaForm), gestational diabetes, steroid-induced hyperglycemia, and maintenance adjustments.
 
 ### Looking Ahead
 
