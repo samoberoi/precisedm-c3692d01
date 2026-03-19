@@ -65,7 +65,7 @@ After initiation, frequent blood glucose monitoring is essential. Fasting blood 
 - Adjust basal by 2–4 units every 3–4 days based on fasting glucose
 - Adjust prandial doses based on carbohydrate counting or pattern management
 
-### When to Use Precise DM
+### When to Use PreciseDM
 
 Our DiaForm calculator automates this entire process. Simply enter the patient's weight, BMI category, and clinical context — and receive an evidence-based starting regimen in seconds.
 
