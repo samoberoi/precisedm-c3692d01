@@ -30,7 +30,7 @@ const FAQPage = () => (
       <div className="mx-auto max-w-[1440px] px-6 xl:px-10 text-center">
         <ScrollReveal>
           <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-6xl tracking-tight">Frequently Asked <span className="text-gradient">Questions</span></h1>
-          <p className="mt-6 text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">Everything you need to know about Precise DM.</p>
+          <p className="mt-6 text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">Everything you need to know about PreciseDM.</p>
         </ScrollReveal>
       </div>
     </section>

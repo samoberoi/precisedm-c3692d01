@@ -22,7 +22,7 @@ const WelcomeScreen = () => {
           className="text-xs font-semibold text-primary uppercase tracking-wider">Your personal assistant</motion.p>
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}
           className="text-3xl font-extrabold text-foreground tracking-tight leading-tight mt-2">
-          Welcome to<br />Precise DM
+          Welcome to<br />PreciseDM
         </motion.h1>
         <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.5 }}
           className="mt-3 text-muted-foreground leading-relaxed text-sm">

@@ -355,7 +355,7 @@ But overly aggressive dosing increases maternal hypoglycemia risk. Balance is ke
 
 ---
 
-*Gestational diabetes management requires precision and vigilance. Precise DM's Gestation calculator helps you find the right starting point for every trimester.*
+*Gestational diabetes management requires precision and vigilance. PreciseDM's Gestation calculator helps you find the right starting point for every trimester.*
     `,
   },
 ];

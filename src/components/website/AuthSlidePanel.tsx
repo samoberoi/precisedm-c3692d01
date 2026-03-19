@@ -424,7 +424,7 @@ const AuthSlidePanel = ({ open, onOpenChange, mode: initialMode = "login" }: Aut
                     </p>
                     <Button
                       onClick={() => {
-                        toast({ title: "Welcome to Precise DM!" });
+                        toast({ title: "Welcome to PreciseDM!" });
                         onOpenChange(false);
                       }}
                       className="rounded-xl h-12 font-bold gradient-primary glow-primary text-base px-8"

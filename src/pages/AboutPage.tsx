@@ -112,7 +112,7 @@ const AboutPage = () => {
               maintenance insulin doses for new or existing diabetes patients new to insulin.
             </p>
             <p>
-              Precise DM will continue to work on more insulin dosing tools to help improve the delivery of
+              PreciseDM will continue to work on more insulin dosing tools to help improve the delivery of
               diabetes care.
             </p>
           </div>

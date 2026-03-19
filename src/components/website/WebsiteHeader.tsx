@@ -239,7 +239,7 @@ const WebsiteHeader = () => {
             <div className="flex items-center justify-between rounded-2xl bg-card/90 backdrop-blur-2xl border border-border/60 shadow-2xl px-4 py-3">
               <Link to="/w" className="flex items-center gap-2">
                 <img src={logoIcon} alt="PreciseDM" className="h-7 w-7 rounded-full" />
-                <span className="text-sm font-bold text-foreground">Precise DM</span>
+                <span className="text-sm font-bold text-foreground">PreciseDM</span>
               </Link>
               {user ? (
                 <ProfileDropdown size="sm" />
