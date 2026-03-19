@@ -267,8 +267,7 @@ const AdminDashboard = () => {
   
   const handleViewSubscriptionDetail = (sub: SubscriptionRecord) => { setSelectedSubscription(sub); setViewMode("subscription-detail"); };
   const handleBack = () => {
-    if (viewMode === "submission-detail") setViewMode("submissions");
-    else if (viewMode === "subscription-detail") setViewMode("subscriptions");
+    if (viewMode === "subscription-detail") setViewMode("subscriptions");
     else setViewMode("dashboard");
   };
 
