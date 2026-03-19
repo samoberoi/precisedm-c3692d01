@@ -16,7 +16,7 @@ const sections = [
   {
     title: "Indemnification",
     paragraphs: [
-      "User agrees to defend, indemnify, and hold harmless, PreciseDM, LLC, its contributors, any entity jointly created by them, their respective affiliates and their respective directors, officers, employees, and agents from and against all claims and expenses, including attorneys' fees, arising out of the use of the diaForm process by user or user's account.",
+      "User agrees to defend, indemnify, and hold harmless, PreciseDM, LLC, its contributors, any entity jointly created by them, their respective affiliates and their respective directors, officers, employees, and agents from and against all claims and expenses, including attorneys' fees, arising out of the use of the DiaForm process by user or user's account.",
     ],
   },
   {
