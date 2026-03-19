@@ -311,7 +311,7 @@ const AdminDashboard = () => {
 
   const filteredSubmissions = useMemo(() => {
     let result = submissionFormFilter ? submissions.filter((s) => s.form_type === submissionFormFilter) : submissions;
-    return filterByDateAndSearch(result, dateFilter, searchQuery, customStartDate, customEndDate, (s) => `${s.user_name} ${s.user_email}`);
+    return filterByDateAndSearch(result, dateFilter, searchQuery, customStartDate, customEndDate, (s) => `${s.user_name}`);
   }, [submissions, submissionFormFilter, dateFilter, searchQuery, customStartDate, customEndDate]);
 
   const filteredUsers = useMemo(() => {
