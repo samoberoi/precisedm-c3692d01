@@ -63,11 +63,8 @@ interface SubmissionRow {
   id: string;
   user_id: string;
   form_type: string;
-  inputs: Record<string, unknown>;
-  results: Record<string, unknown>;
   created_at: string;
   user_name: string;
-  user_email: string;
 }
 
 interface UpcomingRenewal {
@@ -102,7 +99,7 @@ interface SubscriptionStats {
   upcomingRenewals: UpcomingRenewal[];
 }
 
-type ViewMode = "dashboard" | "users" | "submissions" | "submission-detail" | "subscriptions" | "subscription-detail";
+type ViewMode = "dashboard" | "users" | "submissions" | "subscriptions" | "subscription-detail";
 
 const FORM_LABELS: Record<string, string> = {
   diaform: "DiaForm Initial",
@@ -139,7 +136,7 @@ const AdminDashboard = () => {
   const [totalSubmissions, setTotalSubmissions] = useState(0);
   const [submissions, setSubmissions] = useState<SubmissionRow[]>([]);
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
-  const [selectedSubmission, setSelectedSubmission] = useState<SubmissionRow | null>(null);
+  
   const [allSubscriptions, setAllSubscriptions] = useState<SubscriptionRecord[]>([]);
   const [subscriptionsLoading, setSubscriptionsLoading] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionRecord | null>(null);
@@ -267,11 +264,10 @@ const AdminDashboard = () => {
     else setSubFilter("all");
     setViewMode("subscriptions");
   };
-  const handleViewSubmissionDetail = (sub: SubmissionRow) => { setSelectedSubmission(sub); setViewMode("submission-detail"); };
+  
   const handleViewSubscriptionDetail = (sub: SubscriptionRecord) => { setSelectedSubscription(sub); setViewMode("subscription-detail"); };
   const handleBack = () => {
-    if (viewMode === "submission-detail") setViewMode("submissions");
-    else if (viewMode === "subscription-detail") setViewMode("subscriptions");
+    if (viewMode === "subscription-detail") setViewMode("subscriptions");
     else setViewMode("dashboard");
   };
 
@@ -315,7 +311,7 @@ const AdminDashboard = () => {
 
   const filteredSubmissions = useMemo(() => {
     let result = submissionFormFilter ? submissions.filter((s) => s.form_type === submissionFormFilter) : submissions;
-    return filterByDateAndSearch(result, dateFilter, searchQuery, customStartDate, customEndDate, (s) => `${s.user_name} ${s.user_email}`);
+    return filterByDateAndSearch(result, dateFilter, searchQuery, customStartDate, customEndDate, (s) => `${s.user_name}`);
   }, [submissions, submissionFormFilter, dateFilter, searchQuery, customStartDate, customEndDate]);
 
   const filteredUsers = useMemo(() => {
@@ -822,7 +818,7 @@ const AdminDashboard = () => {
               <FilterBar
                 dateFilter={dateFilter} onDateFilterChange={(v) => setDateFilter(v)}
                 searchQuery={searchQuery} onSearchChange={setSearchQuery}
-                searchPlaceholder="Search by name or email..."
+                searchPlaceholder="Search by name..."
                 customStartDate={customStartDate} customEndDate={customEndDate}
                 onCustomStartChange={setCustomStartDate} onCustomEndChange={setCustomEndDate}
               />
@@ -830,19 +826,17 @@ const AdminDashboard = () => {
               {submissionsLoading ? <LoadingSpinner /> : (
                 <div className="space-y-2">
                   {filteredSubmissions.map((s, i) => (
-                    <motion.button key={s.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.02 }}
-                      onClick={() => handleViewSubmissionDetail(s)}
-                      className="w-full text-left rounded-2xl bg-card border border-border shadow-sm p-3 flex items-center gap-3 active:scale-[0.98] transition-transform"
+                    <motion.div key={s.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.02 }}
+                      className="w-full text-left rounded-2xl bg-card border border-border shadow-sm p-3 flex items-center gap-3"
                     >
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl text-xs font-bold shrink-0 gradient-primary text-primary-foreground">
                         {(FORM_LABELS[s.form_type] || s.form_type).slice(0, 2).toUpperCase()}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-foreground">{FORM_LABELS[s.form_type] || s.form_type}</p>
-                        <p className="text-xs text-muted-foreground truncate">{s.user_name} • {new Date(s.created_at).toLocaleDateString()}</p>
+                        <p className="text-sm font-semibold text-foreground">{s.user_name}</p>
+                        <p className="text-xs text-muted-foreground">{FORM_LABELS[s.form_type] || s.form_type} • {new Date(s.created_at).toLocaleDateString()}</p>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                    </motion.button>
+                    </motion.div>
                   ))}
                   {filteredSubmissions.length === 0 && <EmptyState message="No submissions found" />}
                 </div>
@@ -850,46 +844,6 @@ const AdminDashboard = () => {
             </motion.div>
           )}
 
-          {/* ─── Submission Detail ─── */}
-          {viewMode === "submission-detail" && selectedSubmission && (
-            <motion.div key="detail" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-              <div className="flex items-center gap-3 mb-5">
-                <button onClick={handleBack} className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border shadow-sm">
-                  <ChevronLeft className="h-5 w-5 text-foreground" />
-                </button>
-                <div>
-                  <h1 className="text-xl font-extrabold text-foreground">Submission Detail</h1>
-                  <p className="text-xs text-muted-foreground">{selectedSubmission.user_name} • {new Date(selectedSubmission.created_at).toLocaleString()}</p>
-                </div>
-              </div>
-
-              <div className="rounded-2xl bg-card border border-border shadow-sm p-5 mb-3">
-                <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                  <Users className="h-4 w-4 text-primary" /> User Info
-                </h3>
-                <DetailRow label="Name" value={selectedSubmission.user_name} />
-                <DetailRow label="Email" value={selectedSubmission.user_email} />
-              </div>
-
-              <div className="rounded-2xl bg-card border border-primary/20 shadow-sm p-5 mb-3">
-                <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-primary" /> Results
-                </h3>
-                {Object.entries(selectedSubmission.results).map(([key, value]) => (
-                  <DetailRow key={key} label={formatLabel(key)} value={String(value ?? "—")} />
-                ))}
-              </div>
-
-              <div className="rounded-2xl bg-card border border-border shadow-sm p-5">
-                <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-muted-foreground" /> Inputs
-                </h3>
-                {Object.entries(selectedSubmission.inputs).map(([key, value]) => (
-                  <DetailRow key={key} label={formatLabel(key)} value={String(value ?? "—")} />
-                ))}
-              </div>
-            </motion.div>
-          )}
         </AnimatePresence>
       </div>
     </motion.div>

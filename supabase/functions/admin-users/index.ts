@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
       if (action === "submissions") {
         const { data: submissions, error } = await supabaseAdmin
           .from("form_submissions")
-          .select("*")
+          .select("id, user_id, form_type, created_at")
           .order("created_at", { ascending: false });
 
         if (error) throw error;
@@ -92,14 +92,16 @@ Deno.serve(async (req) => {
         // Get profiles for user names
         const { data: profiles } = await supabaseAdmin
           .from("profiles")
-          .select("user_id, full_name, email");
+          .select("user_id, full_name");
 
         const enriched = (submissions || []).map((s: any) => {
           const profile = profiles?.find((p: any) => p.user_id === s.user_id);
           return {
-            ...s,
+            id: s.id,
+            user_id: s.user_id,
+            form_type: s.form_type,
+            created_at: s.created_at,
             user_name: profile?.full_name || "Unknown",
-            user_email: profile?.email || "",
           };
         });
 
