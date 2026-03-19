@@ -124,7 +124,7 @@ function calculateGestation(form: FormData): CalcResult {
       } else if (prandialBGAvg <= 69) {
         const perMealLow = Math.round(Math.round(pdt * 0.15) / npd);
         const perMealHigh = Math.round(Math.round(pdt * 0.3) / npd);
-        prandialRecommendation = `Decrease meal dose by ${perMealLow} to ${perMealHigh} units per meal`;
+        prandialRecommendation = `Decrease meal dose by ${perMealLow} - ${perMealHigh} units per meal`;
       } else { prandialRecommendation = "ERROR: Your average BG is above 69 meaning no hypoglycemia occurred."; isPrandialError = true; }
     } else {
       if (pbg >= 120) {
