@@ -20,7 +20,7 @@ const WebsiteAboutPage = () => (
       <div className="relative mx-auto max-w-[1440px] px-6 xl:px-10 text-center">
         <ScrollReveal>
           <h1 className="text-4xl font-extrabold text-foreground sm:text-5xl lg:text-6xl tracking-tight">About <span className="text-gradient">PreciseDM</span></h1>
-          <p className="mt-6 text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">An innovative med-health company with a vision to improve the diabetes care of our community members.</p>
+          <p className="mt-6 text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto">An innovative healthcare company with a vision to improve the diabetes care of our community members.</p>
         </ScrollReveal>
       </div>
     </section>
