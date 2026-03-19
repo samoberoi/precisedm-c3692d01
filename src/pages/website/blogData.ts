@@ -198,7 +198,7 @@ Manual insulin dose calculations are:
 
 ### How Technology Bridges the Gap
 
-Digital tools like Precise DM standardize the dosing process while preserving clinical flexibility. They serve as a decision-support layer — not a replacement for clinical judgment.
+Digital tools like PreciseDM standardize the dosing process while preserving clinical flexibility. They serve as a decision-support layer — not a replacement for clinical judgment.
 
 ### Key Trends Shaping the Future
 
