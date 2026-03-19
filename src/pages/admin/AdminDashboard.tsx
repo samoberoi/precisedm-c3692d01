@@ -136,7 +136,7 @@ const AdminDashboard = () => {
   const [totalSubmissions, setTotalSubmissions] = useState(0);
   const [submissions, setSubmissions] = useState<SubmissionRow[]>([]);
   const [submissionsLoading, setSubmissionsLoading] = useState(false);
-  const [selectedSubmission, setSelectedSubmission] = useState<SubmissionRow | null>(null);
+  
   const [allSubscriptions, setAllSubscriptions] = useState<SubscriptionRecord[]>([]);
   const [subscriptionsLoading, setSubscriptionsLoading] = useState(false);
   const [selectedSubscription, setSelectedSubscription] = useState<SubscriptionRecord | null>(null);
