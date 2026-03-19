@@ -105,7 +105,7 @@ function calculateMaintenance(form: FormData): CalcResult {
         const deltaMeal = delta / 3;
         let lower = Math.round(deltaMeal - 1); let upper = Math.round(deltaMeal + 1);
         if (lower < 1) lower = 1; if (upper < 2) upper = 2;
-        prandialRecommendation = `Increase current prandial dose per meal by ${lower} to ${upper} units`;
+        prandialRecommendation = `Increase current prandial dose per meal by ${lower} - ${upper} units`;
       } else if (pbg >= 71) { prandialRecommendation = "No change to prandial insulin dose."; }
       else { prandialRecommendation = "You had hypoglycemia. Please go back and select YES."; isPrandialError = true; }
     }

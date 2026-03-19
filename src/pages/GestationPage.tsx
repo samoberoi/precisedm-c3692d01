@@ -138,7 +138,7 @@ function calculateGestation(form: FormData): CalcResult {
       else if (pbg >= 70) {
         const perMealLow = Math.round(Math.round(pdt * 0.1) / npd);
         const perMealHigh = Math.round(Math.round(pdt * 0.3) / npd);
-        prandialRecommendation = `Decrease meal dose by ${perMealLow} to ${perMealHigh} units per meal`;
+        prandialRecommendation = `Decrease meal dose by ${perMealLow} - ${perMealHigh} units per meal`;
       } else { prandialRecommendation = "You had hypoglycemia. Please go back and select YES."; isPrandialError = true; }
     }
   }
