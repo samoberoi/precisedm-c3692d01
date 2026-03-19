@@ -180,7 +180,7 @@ The PreciseDM Steroid calculator accounts for the type and dose of corticosteroi
     slug: "future-of-diabetes-care-technology",
     img: visionImage,
     title: "The Future of Diabetes Care Technology",
-    excerpt: "How digital health tools like Precise DM are transforming the way healthcare providers manage diabetes treatment.",
+    excerpt: "How digital health tools like PreciseDM are transforming the way healthcare providers manage diabetes treatment.",
     date: "Feb 28, 2026",
     read: "4 min read",
     category: "Industry",
