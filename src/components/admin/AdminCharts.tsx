@@ -32,8 +32,8 @@ const CHART_DATE_LABELS: Record<ChartDateRange, string> = {
   "custom": "Custom Range",
 };
 
-const MONTHLY_PRICE = 1;
-const YEARLY_PRICE = 12;
+const MONTHLY_PRICE = 12;
+const YEARLY_PRICE = 120;
 
 function getDays(range: ChartDateRange, customStart?: string, customEnd?: string): string[] {
   const days: string[] = [];
