@@ -41,6 +41,45 @@ export type Database = {
         }
         Relationships: []
       }
+      otp_codes: {
+        Row: {
+          accepted_terms: boolean | null
+          code: string
+          created_at: string | null
+          custom_user_id: string | null
+          email: string
+          expires_at: string
+          full_name: string | null
+          id: string
+          used: boolean | null
+          user_type: string | null
+        }
+        Insert: {
+          accepted_terms?: boolean | null
+          code: string
+          created_at?: string | null
+          custom_user_id?: string | null
+          email: string
+          expires_at: string
+          full_name?: string | null
+          id?: string
+          used?: boolean | null
+          user_type?: string | null
+        }
+        Update: {
+          accepted_terms?: boolean | null
+          code?: string
+          created_at?: string | null
+          custom_user_id?: string | null
+          email?: string
+          expires_at?: string
+          full_name?: string | null
+          id?: string
+          used?: boolean | null
+          user_type?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           accepted_terms: boolean
