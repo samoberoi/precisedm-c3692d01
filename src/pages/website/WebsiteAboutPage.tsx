@@ -73,9 +73,10 @@ const WebsiteAboutPage = () => (
               <div className="rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-xl transition-shadow duration-300">
                 <img src={t.img} alt={t.name} className="h-80 w-full object-cover" />
                 <div className="p-6">
-                  <h3 className="text-base font-bold text-foreground">{t.name}</h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t.creds}</p>
-                  <p className="text-xs text-primary font-semibold mt-1">{t.role}</p>
+                   <h3 className="text-base font-bold text-foreground">{t.name}</h3>
+                   <p className="text-xs text-muted-foreground mt-0.5">{t.creds}</p>
+                   <p className="text-xs text-primary font-semibold mt-1">{t.role}</p>
+                   {"desc" in t && t.desc && <p className="text-xs text-muted-foreground mt-3 leading-relaxed">{t.desc}</p>}
                 </div>
               </div>
             </ScrollReveal>
