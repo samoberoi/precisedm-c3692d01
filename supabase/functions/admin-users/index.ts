@@ -127,13 +127,22 @@ Deno.serve(async (req) => {
         .from("profiles")
         .select("*");
 
+      const { data: roles } = await supabaseAdmin
+        .from("user_roles")
+        .select("user_id, role");
+
+      const adminUserIds = new Set(
+        (roles || []).filter((r: any) => r.role === "admin").map((r: any) => r.user_id)
+      );
+
       const users = (usersData?.users || []).map((u: any) => {
         const profile = profiles?.find((p: any) => p.user_id === u.id);
+        const isAdmin = adminUserIds.has(u.id);
         return {
           id: u.id,
           email: u.email,
           full_name: profile?.full_name || "",
-          user_type: profile?.user_type || "student",
+          user_type: isAdmin ? "admin" : (profile?.user_type || "student"),
           custom_user_id: profile?.custom_user_id || "",
           created_at: u.created_at,
           last_sign_in_at: u.last_sign_in_at,
