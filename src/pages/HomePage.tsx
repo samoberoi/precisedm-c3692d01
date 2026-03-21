@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
+import drColleenCook from "@/assets/dr-colleen-cook.jpg";
+import drMelanieProctor from "@/assets/dr-melanie-proctor.jpg";
+import drSuzanneChung from "@/assets/dr-suzanne-chung.jpg";
 import { useSubscription } from "@/hooks/use-subscription";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +23,12 @@ const toolkitItems = [
   { label: "Gestation", desc: "Pregnancy Care", image: gestationIcon, route: "/gestation", gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", iconBg: "bg-white/15" },
   { label: "Maintenance", desc: "Ongoing Doses", image: maintenanceIcon, route: "/maintenance", gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", iconBg: "bg-white/15" },
   { label: "Steroid", desc: "Steroid Dosing", image: steroidIcon, route: "/steroid", gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", iconBg: "bg-white/15" },
+];
+
+const teamMembers = [
+  { img: drColleenCook, name: "Dr. Colleen Cook", creds: "PharmD, BC-ADM, CDCES", role: "CEO", desc: "Co-owner of PreciseDM and inventor of diaForm. 25+ years' experience as a hospital pharmacist specializing in diabetes care and education." },
+  { img: drMelanieProctor, name: "Dr. Melanie Proctor", creds: "PharmD, BCGP", role: "COO", desc: "PharmD practicing since 2004. Clinical pharmacist and co-founder of Progressive Care Solutions. Currently at Ridgeview Hospital." },
+  { img: drSuzanneChung, name: "Dr. Suzanne Chung", creds: "PhD Analytical Chemistry", role: "CFO", desc: "Analytical chemist with 25+ years' experience in clinical diagnostics and medical device development." },
 ];
 
 const HomePage = () => {
@@ -187,6 +196,32 @@ const HomePage = () => {
             </p>
           </div>
         </motion.div>
+      </div>
+
+      {/* Our Team */}
+      <div className="px-5 pt-6 pb-3">
+        <h2 className="text-[22px] font-extrabold text-foreground tracking-tight">Our Team</h2>
+      </div>
+      <div className="pl-5 pr-2 pb-4">
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+          {teamMembers.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.55 + i * 0.08 }}
+              className="shrink-0 w-[260px] overflow-hidden rounded-2xl bg-card border border-border shadow-sm"
+            >
+              <img src={t.img} alt={t.name} className="h-48 w-full object-cover" />
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-foreground">{t.name}</h3>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{t.creds}</p>
+                <p className="text-[11px] text-primary font-semibold mt-0.5">{t.role}</p>
+                <p className="text-[11px] text-muted-foreground mt-2 leading-relaxed">{t.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
