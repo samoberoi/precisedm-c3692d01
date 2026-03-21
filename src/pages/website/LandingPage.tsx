@@ -39,9 +39,27 @@ const steps = [
 ];
 
 const team = [
-  { img: drColleenCook, name: "Dr. Colleen Cook", title: "PharmD, BC-ADM, CDCES", role: "CEO" },
-  { img: drMelanieProctor, name: "Dr. Melanie Proctor", title: "PharmD, BCGP", role: "COO" },
-  { img: drSuzanneChung, name: "Dr. Suzanne Chung", title: "PhD Analytical Chemistry", role: "CFO" },
+  {
+    img: drColleenCook,
+    name: "Dr. Colleen Cook",
+    title: "PharmD, BC-ADM, CDCES",
+    role: "CEO",
+    desc: "Colleen Cook is the co-owner of PreciseDM and inventor of the product called diaForm. She has 25+ years' experience working as a hospital pharmacist and has dedicated the last decade of her career to specializing in diabetes care and education. Her passion, energy and drive to enhance diabetes management, inspired her to develop an individualized insulin dosing calculator intended to be used by trained health care professionals, such as physicians, nurses, nurse practitioners, pharmacists and physician assistants. Her mission is to improve diabetes care in her community and to further impact the development of tools to enhance the efficiency of diabetes care to patients.",
+  },
+  {
+    img: drMelanieProctor,
+    name: "Dr. Melanie Proctor",
+    title: "PharmD, BCGP",
+    role: "COO",
+    desc: "Melanie Proctor is a PharmD with a BCGP and has been practicing since 2004. She began as a clinical pharmacist at North Country Regional Hospital in Bemidji, MN. She worked for the Regional Hospital for 5 years before moving into Geriatric Pharmacy Consulting for Pharmerica in 2009. She continued consulting for Pharmerica and for various other pharmacies, eventually co-founding a company of her own called Progressive Care Solutions. She sold that company, along with her antibiotic tracking product abxtracker in 2019. She currently works as an inpatient clinical pharmacist at Ridgeview Hospital.",
+  },
+  {
+    img: drSuzanneChung,
+    name: "Dr. Suzanne Chung",
+    title: "PhD Analytical Chemistry",
+    role: "CFO",
+    desc: "Suzanne Chung is an analytical chemist with 25+ years' experience in clinical diagnostics systems development and technical support. Her experience extends to medical device development processes and applicable regulatory requirements. She has planned and led feasibility, development verification and validation activities on cross-functional teams to demonstrate product viability design, investigated systemic problem areas to improve quality and customer satisfaction, and delivered results with recommendations to Management.",
+  },
 ];
 
 const stats = [
@@ -276,6 +294,7 @@ const LandingPage = () => {
                     <h3 className="text-base font-bold text-foreground">{t.name}</h3>
                     <p className="text-xs text-muted-foreground mt-0.5">{t.title}</p>
                     <p className="text-xs text-primary font-semibold mt-1">{t.role}</p>
+                    <p className="text-xs text-muted-foreground mt-3 leading-relaxed">{t.desc}</p>
                   </div>
                 </div>
               </ScrollReveal>
