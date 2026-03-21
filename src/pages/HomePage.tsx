@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
+import drColleenCook from "@/assets/dr-colleen-cook.jpg";
+import drMelanieProctor from "@/assets/dr-melanie-proctor.jpg";
+import drSuzanneChung from "@/assets/dr-suzanne-chung.jpg";
 import { useSubscription } from "@/hooks/use-subscription";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +23,12 @@ const toolkitItems = [
   { label: "Gestation", desc: "Pregnancy Care", image: gestationIcon, route: "/gestation", gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", iconBg: "bg-white/15" },
   { label: "Maintenance", desc: "Ongoing Doses", image: maintenanceIcon, route: "/maintenance", gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", iconBg: "bg-white/15" },
   { label: "Steroid", desc: "Steroid Dosing", image: steroidIcon, route: "/steroid", gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", iconBg: "bg-white/15" },
+];
+
+const teamMembers = [
+  { img: drColleenCook, name: "Dr. Colleen Cook", creds: "PharmD, BC-ADM, CDCES", role: "CEO", desc: "Co-owner of PreciseDM and inventor of diaForm. 25+ years' experience as a hospital pharmacist specializing in diabetes care and education." },
+  { img: drMelanieProctor, name: "Dr. Melanie Proctor", creds: "PharmD, BCGP", role: "COO", desc: "PharmD practicing since 2004. Clinical pharmacist and co-founder of Progressive Care Solutions. Currently at Ridgeview Hospital." },
+  { img: drSuzanneChung, name: "Dr. Suzanne Chung", creds: "PhD Analytical Chemistry", role: "CFO", desc: "Analytical chemist with 25+ years' experience in clinical diagnostics and medical device development." },
 ];
 
 const HomePage = () => {
