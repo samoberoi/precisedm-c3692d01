@@ -100,19 +100,13 @@ const AboutPage = () => {
         >
           <div className="space-y-3 text-sm text-white/80 leading-relaxed">
             <p>
-              PreciseDM is an innovative healthcare company with a vision to improve the diabetes
-              care of our community members. Being aware of the growing epidemiology of diabetes, where
-              it is projected that 1 in 3 Americans will have Type 2 diabetes by the year 2050, it became
-              imperative that something be done to help improve the care of diabetes patients.
+              PreciseDM is an innovative healthcare company with a vision to improve the diabetes care of our community members. Being aware of the growing epidemiology of diabetes, where it is projected that 1 in 3 Americans will have Type 2 diabetes by the year 2050, it became imperative that something be done to help improve the care of diabetes patients.
             </p>
             <p>
-              In response, we worked together to develop our first product called "diaForm" intended to be
-              used by health care providers with credentials to confidently individualize and determine the starting and
-              maintenance insulin doses for new or existing diabetes patients new to insulin.
+              In response, we collaborated to develop our first products called "DiaForm- starting insulin dosing and DiaForm Maintenance." It is designed for credentialed healthcare providers to confidently individualize and determine starting and maintenance insulin doses for patients - whether they are new to insulin therapy or already receiving it.
             </p>
             <p>
-              PreciseDM will continue to work on more insulin dosing tools to help improve the delivery of
-              diabetes care.
+              Since then, our company has expanded its portfolio with two additional tools: Gestation and Steroid. We remain committed to ongoing innovation and will continue developing new products as needs arise.
             </p>
           </div>
         </motion.div>
