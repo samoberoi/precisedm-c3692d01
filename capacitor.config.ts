@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.7ff78999af584443a8841d10f3c1d73f',
+  appId: 'com.precisedm.app',
   appName: 'PreciseDM',
   webDir: 'dist',
   server: {
