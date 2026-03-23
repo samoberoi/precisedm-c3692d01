@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { SplashScreen as CapSplash } from "@capacitor/splash-screen";
 import { useNavigate } from "react-router-dom";
 
 const BloodDrop = ({ size = 48 }: { size?: number }) => (
