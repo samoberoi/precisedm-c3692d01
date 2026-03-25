@@ -76,10 +76,10 @@ Deno.serve(async (req) => {
         password: randomPassword,
         email_confirm: true,
         user_metadata: {
-          full_name: otpRecord.full_name || "",
-          user_type: otpRecord.user_type || "student",
-          custom_user_id: otpRecord.custom_user_id || null,
-          accepted_terms: otpRecord.accepted_terms || false,
+          full_name: otpRecord?.full_name || "",
+          user_type: otpRecord?.user_type || "student",
+          custom_user_id: otpRecord?.custom_user_id || null,
+          accepted_terms: otpRecord?.accepted_terms || false,
         },
       });
 
