@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import onboardingImg from "@/assets/onboarding-getstarted.png";
-import logoIcon from "@/assets/logo-icon.png";
+
 
 const GetStartedScreen = () => {
   const navigate = useNavigate();
