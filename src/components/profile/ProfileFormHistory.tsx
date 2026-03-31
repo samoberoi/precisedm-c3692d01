@@ -100,10 +100,10 @@ const ProfileFormHistory = ({ userId }: { userId?: string }) => {
                     <div className="mt-3 pt-3 border-t border-border space-y-3">
                       <div>
                         <p className="text-xs font-bold text-primary mb-1.5">Results</p>
-                        <div className="space-y-1">{Object.entries(s.results).map(([key, value]) => (
+                        <div className="space-y-1">{(RESULT_KEYS[s.form_type] || Object.keys(s.results)).filter((key) => s.results[key] != null).map((key) => (
                           <div key={key} className="flex justify-between text-xs">
-                            <span className="text-muted-foreground">{formatLabel(key)}</span>
-                            <span className="font-semibold text-foreground">{String(value ?? "—")}</span>
+                            <span className="text-muted-foreground">{RESULT_LABELS[key] || formatLabel(key)}</span>
+                            <span className="font-semibold text-foreground text-right max-w-[60%]">{String(s.results[key] ?? "—")}</span>
                           </div>
                         ))}</div>
                       </div>
