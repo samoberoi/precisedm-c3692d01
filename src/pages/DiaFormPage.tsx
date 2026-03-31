@@ -450,7 +450,7 @@ const DiaFormPage = () => {
                     Estimated at <span className="font-semibold text-foreground">50% of TDD</span>. Divided equally over 3 meals with the current diabetes regimen.
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed mt-2">
-                    <span className="font-medium text-foreground">Example:</span> If TDD is {result.doseLow}-{result.doseHigh} units, provider can select {Math.round(result.doseLow / 3)}-{Math.round(result.doseHigh / 3)} units of Novolog or Humalog SQ with each meal.
+                    <span className="font-medium text-foreground">Example:</span> If the range is {result.doseLow}-{result.doseHigh} units, provider can select {Math.round(result.doseLow / 3)}-{Math.round(result.doseHigh / 3)} units of Novolog or Humalog SQ with each meal.
                   </p>
                 </div>
               </div>
