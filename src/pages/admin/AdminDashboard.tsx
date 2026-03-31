@@ -103,22 +103,22 @@ type ViewMode = "dashboard" | "users" | "submissions" | "subscriptions" | "subsc
 
 const FORM_LABELS: Record<string, string> = {
   diaform: "DiaForm Initial",
-  steroid: "Steroid Dosing",
   maintenance: "Maintenance",
+  steroid: "Steroid Dosing",
   gestation: "Gestation",
 };
 
 const FORM_GRADIENTS: Record<string, string> = {
   diaform: "linear-gradient(135deg, hsl(210,80%,50%), hsl(210,90%,40%))",
-  steroid: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))",
   maintenance: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))",
+  steroid: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))",
   gestation: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))",
 };
 
 const FORM_ICONS: Record<string, string> = {
   diaform: diaformIcon,
-  steroid: steroidIcon,
   maintenance: maintenanceIcon,
+  steroid: steroidIcon,
   gestation: gestationIcon,
 };
 

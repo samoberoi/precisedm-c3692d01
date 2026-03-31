@@ -13,15 +13,15 @@ interface SubmissionRecord {
 
 const FORM_LABELS: Record<string, string> = {
   diaform: "DiaForm",
-  steroid: "Steroid",
   maintenance: "Maintenance",
+  steroid: "Steroid",
   gestation: "Gestation",
 };
 
 const FORM_COLORS: Record<string, string> = {
   diaform: "bg-primary/15 text-primary",
-  steroid: "bg-accent text-accent-foreground",
   maintenance: "bg-secondary text-secondary-foreground",
+  steroid: "bg-accent text-accent-foreground",
   gestation: "bg-destructive/15 text-destructive",
 };
 
