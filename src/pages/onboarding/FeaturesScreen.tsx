@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import onboardingImg from "@/assets/onboarding-features.jpg";
-import logoIcon from "@/assets/logo-icon.png";
+
 
 const FeaturesScreen = () => {
   const navigate = useNavigate();
