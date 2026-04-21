@@ -299,6 +299,43 @@ const SteroidPage = () => {
               </div>
             </div>
 
+            {/* How to Use This Dose */}
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-sm space-y-4">
+              <h3 className="text-base font-extrabold text-foreground text-center">How to Use This Dose</h3>
+
+              <div className="rounded-xl bg-muted/40 border border-border p-4 space-y-2">
+                <p className="text-sm font-bold text-foreground">Insulin naive</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  <span className="font-semibold text-foreground">Prednisone:</span> Add NPH insulin once daily, preferably in the morning, administered at the same time as the prednisone dose (see below for insulin dependent diabetes).{" "}
+                  <span className="font-medium text-foreground">Example:</span> If the range is {result.doseLowUnits}-{result.doseHighUnits} units, select NPH {Math.round((result.doseLowUnits + result.doseHighUnits) / 4)} units SQ every morning.
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-muted/40 border border-border p-4 space-y-3">
+                <p className="text-sm font-bold text-foreground">Insulin dependent diabetes</p>
+
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Prednisone: Increase basal-bolus doses</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                    <span className="font-medium text-foreground">Example:</span> If the range is {result.doseLowUnits}-{result.doseHighUnits} units, increase Basal Insulin by {Math.round((result.doseLowUnits + result.doseHighUnits) / 4)} units and short acting insulin by {Math.max(1, Math.round((result.doseLowUnits + result.doseHighUnits) / 12))} units per meal.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Methylprednisolone or hydrocortisone - Multiple iv injections.</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-1">
+                    Add NPH bid or adjust basal-bolus insulin doses.
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                    <span className="font-medium text-foreground">Example 1:</span> If the range is {result.doseLowUnits}-{result.doseHighUnits} units, select NPH {Math.max(1, Math.round((result.doseLowUnits + result.doseHighUnits) / 4))} units SQ bid.
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed mt-2">
+                    <span className="font-medium text-foreground">Example 2:</span> If the range is {result.doseLowUnits}-{result.doseHighUnits} units, increase Basal Insulin by {Math.round((result.doseLowUnits + result.doseHighUnits) / 4)} units SQ qam and short acting insulin by {Math.max(1, Math.round((result.doseLowUnits + result.doseHighUnits) / 12))} units per meal.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Submitted Inputs Card */}
             <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
               <h3 className="text-sm font-bold text-foreground mb-3">Submitted Inputs</h3>
