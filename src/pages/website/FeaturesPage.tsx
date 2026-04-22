@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Calculator, Zap, BookOpen, Shield, History, UserCheck, Printer, BarChart3, ArrowRight, ChevronRight } from "lucide-react";
+import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/seo-config";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/website/ScrollReveal";
 import diaformIcon from "@/assets/diaform-card-icon.png";

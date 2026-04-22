@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Check, Crown, Zap, Gift, ArrowRight, Shield } from "lucide-react";
+import Seo from "@/components/Seo";
+import { getPageSeo } from "@/lib/seo-config";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/website/ScrollReveal";
 
