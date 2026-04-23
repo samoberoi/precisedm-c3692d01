@@ -236,6 +236,88 @@ const HyperRevampReportingPage = () => {
           <StatCard icon={MapIcon} label="Sitemap" value={stats.sitemapUrls} sub="URLs Indexed" accent="text-rose-400" />
         </div>
 
+        {/* ── Live Traffic (GA4) ── */}
+        <section className="mt-12 rounded-3xl border border-white/10 bg-white/[0.02] p-8">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <SectionTitle icon={BarChart3}>Live Traffic — Google Analytics 4</SectionTitle>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-[11px] font-bold text-emerald-300 ring-1 ring-emerald-400/30">
+              {loading ? "Loading…" : ga4Err ? "Error" : "Last 28 days"}
+            </span>
+          </div>
+          {ga4Err ? (
+            <div className="flex items-start gap-3 rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+              <div><p className="font-bold">GA4 unavailable</p><p className="mt-1 text-xs opacity-80">{ga4Err}</p></div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+                <StatCard icon={Users} label="Active Users" value={ga4?.summary.activeUsers ?? 0} sub="28d" accent="text-emerald-400" />
+                <StatCard icon={Activity} label="Sessions" value={ga4?.summary.sessions ?? 0} sub="28d" accent="text-sky-400" />
+                <StatCard icon={Eye} label="Page Views" value={ga4?.summary.pageViews ?? 0} sub="28d" accent="text-violet-400" />
+                <StatCard icon={TrendingUp} label="Bounce Rate" value={`${((ga4?.summary.bounceRate ?? 0) * 100).toFixed(1)}%`} sub="28d" accent="text-amber-400" />
+                <StatCard icon={Calendar} label="Avg. Session" value={`${Math.round(ga4?.summary.avgSessionDuration ?? 0)}s`} sub="duration" accent="text-rose-400" />
+              </div>
+              {(ga4?.topPages?.length ?? 0) > 0 && (
+                <div className="mt-6 grid gap-6 lg:grid-cols-2">
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+                    <p className="mb-4 text-xs font-bold uppercase tracking-widest text-white/40">Top Pages</p>
+                    <div className="space-y-2">
+                      {ga4!.topPages.slice(0, 8).map((p) => (
+                        <div key={p.path} className="flex items-center justify-between gap-3 text-sm">
+                          <span className="truncate font-medium text-white/80">{p.path}</span>
+                          <span className="flex-shrink-0 font-bold tabular-nums text-primary">{p.views.toLocaleString()}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+                    <p className="mb-4 text-xs font-bold uppercase tracking-widest text-white/40">Top Countries</p>
+                    <div className="space-y-2">
+                      {(ga4?.countries ?? []).slice(0, 8).map((c) => (
+                        <div key={c.country} className="flex items-center justify-between gap-3 text-sm">
+                          <span className="truncate font-medium text-white/80">{c.country}</span>
+                          <span className="flex-shrink-0 font-bold tabular-nums text-primary">{c.users.toLocaleString()}</span>
+                        </div>
+                      ))}
+                      {(ga4?.countries?.length ?? 0) === 0 && <p className="text-xs text-white/40">No data yet for this window.</p>}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </section>
+
+        {/* ── Search Console summary ── */}
+        <section className="mt-12 rounded-3xl border border-white/10 bg-white/[0.02] p-8">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+            <SectionTitle icon={Search}>Search Console — Live Performance</SectionTitle>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.04] px-3 py-1 text-[11px] font-bold text-white/60 ring-1 ring-white/10">
+              {loading ? "Loading…" : gscErr ? "Permission pending" : `${gsc?.dateRange.startDate} → ${gsc?.dateRange.endDate}`}
+            </span>
+          </div>
+          {gscErr ? (
+            <div className="flex items-start gap-3 rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+              <div>
+                <p className="font-bold">Add the service account to Search Console</p>
+                <p className="mt-1 text-xs opacity-80">
+                  In Search Console → Settings → Users and permissions, add{" "}
+                  <code className="rounded bg-white/10 px-1.5 py-0.5">precisedm@hyperrevamp-491002.iam.gserviceaccount.com</code> as a <b>Full</b> user. Live data will appear automatically once granted.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              <StatCard icon={MousePointerClick} label="Clicks" value={gsc?.totals.clicks ?? 0} sub="Search clicks" accent="text-emerald-400" />
+              <StatCard icon={Eye} label="Impressions" value={(gsc?.totals.impressions ?? 0).toLocaleString()} sub="SERP views" accent="text-sky-400" />
+              <StatCard icon={TrendingUp} label="Avg. CTR" value={`${((gsc?.totals.ctr ?? 0) * 100).toFixed(2)}%`} sub="Click-through" accent="text-violet-400" />
+              <StatCard icon={Award} label="Avg. Position" value={(gsc?.totals.position ?? 0).toFixed(1)} sub="Across queries" accent="text-amber-400" />
+            </div>
+          )}
+        </section>
+
         {/* ── Domain Authority block ── */}
         <section className="mt-12 rounded-3xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur">
           <SectionTitle icon={Award}>Domain Authority &amp; Metrics</SectionTitle>
