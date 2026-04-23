@@ -86,6 +86,27 @@ const HyperRevampReportingPage = () => {
   const today = new Date();
   const reportDate = formatDate(today);
 
+  const [ga4, setGa4] = useState<Ga4Data | null>(null);
+  const [gsc, setGsc] = useState<GscData | null>(null);
+  const [ga4Err, setGa4Err] = useState<string | null>(null);
+  const [gscErr, setGscErr] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      const [ga, gs] = await Promise.all([
+        supabase.functions.invoke("ga4-report"),
+        supabase.functions.invoke("gsc-report"),
+      ]);
+      if (ga.error || (ga.data as any)?.error) setGa4Err((ga.data as any)?.error || ga.error?.message || "GA4 unavailable");
+      else setGa4(ga.data as Ga4Data);
+      if (gs.error || (gs.data as any)?.error) setGscErr((gs.data as any)?.error || gs.error?.message || "GSC unavailable");
+      else setGsc(gs.data as GscData);
+      setLoading(false);
+    };
+    load();
+  }, []);
+
   // Aggregate live counts from seo-config
   const stats = useMemo(() => {
     const indexable = PAGES.filter((p) => !p.noindex);
