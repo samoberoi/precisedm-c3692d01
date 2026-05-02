@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import profileHero from "@/assets/profile-hero.jpg";
 import ProfileSubscriptionSection from "@/components/profile/ProfileSubscriptionSection";
 import ProfileFormHistory from "@/components/profile/ProfileFormHistory";
+import ProfileReceipts from "@/components/profile/ProfileReceipts";
 
 interface ProfileData {
   full_name: string;
@@ -179,6 +180,7 @@ const ProfilePage = () => {
         {!isAdmin && (
           <>
             <ProfileSubscriptionSection />
+            <ProfileReceipts userId={user?.id} />
             <ProfileFormHistory userId={user?.id} />
           </>
         )}
