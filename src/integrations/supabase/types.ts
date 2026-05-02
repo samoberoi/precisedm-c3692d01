@@ -119,6 +119,62 @@ export type Database = {
         }
         Relationships: []
       }
+      receipts: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          email_sent_at: string | null
+          id: string
+          payment_date: string
+          paypal_subscription_id: string | null
+          paypal_transaction_id: string | null
+          pdf_base64: string | null
+          plan_type: string
+          receipt_number: string
+          subscription_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          email_sent_at?: string | null
+          id?: string
+          payment_date?: string
+          paypal_subscription_id?: string | null
+          paypal_transaction_id?: string | null
+          pdf_base64?: string | null
+          plan_type: string
+          receipt_number: string
+          subscription_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          email_sent_at?: string | null
+          id?: string
+          payment_date?: string
+          paypal_subscription_id?: string | null
+          paypal_transaction_id?: string | null
+          pdf_base64?: string | null
+          plan_type?: string
+          receipt_number?: string
+          subscription_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "receipts_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           created_at: string
