@@ -139,7 +139,7 @@ Deno.serve(async (req) => {
       const detail = await detailRes.json();
 
       if (detail.status === "ACTIVE") {
-        await supabaseAdmin
+        const { data: sub } = await supabaseAdmin
           .from("subscriptions")
           .update({
             status: "active",
@@ -147,7 +147,35 @@ Deno.serve(async (req) => {
             next_billing_date: detail.billing_info?.next_billing_time || null,
           })
           .eq("paypal_subscription_id", subscription_id)
-          .eq("user_id", user.id);
+          .eq("user_id", user.id)
+          .select("id, user_id, plan_type, paypal_subscription_id")
+          .maybeSingle();
+
+        // Trigger receipt for activation (idempotent via paypal_transaction_id)
+        if (sub) {
+          try {
+            await fetch(
+              `${Deno.env.get("SUPABASE_URL")}/functions/v1/generate-receipt?action=internal`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+                },
+                body: JSON.stringify({
+                  userId: sub.user_id,
+                  subscriptionId: sub.id,
+                  paypalSubscriptionId: sub.paypal_subscription_id,
+                  paypalTransactionId: `ACTIVATION-${subscription_id}`,
+                  planType: sub.plan_type,
+                  paymentDate: detail.start_time,
+                }),
+              },
+            );
+          } catch (e) {
+            console.error("Receipt trigger failed:", e);
+          }
+        }
 
         return new Response(JSON.stringify({ success: true, status: "active" }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" },
