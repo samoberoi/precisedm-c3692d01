@@ -383,7 +383,9 @@ Deno.serve(async (req) => {
       const { data: subs } = await supabaseAdmin
         .from("subscriptions")
         .select("id, user_id, plan_type, paypal_subscription_id, start_date, status")
-        .eq("status", "active");
+        .eq("status", "active")
+        .in("plan_type", ["monthly", "yearly"])
+        .not("paypal_subscription_id", "is", null);
 
       let created = 0;
       let skipped = 0;
