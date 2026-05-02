@@ -200,7 +200,7 @@ async function sendReceiptEmail(opts: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "PreciseDM <receipts@resend.dev>",
+      from: "PreciseDM <no-reply@hyperrevamp.com>",
       to: [opts.to],
       subject: `Your PreciseDM receipt #${opts.receiptNumber}`,
       html,
