@@ -266,8 +266,8 @@ export const blogPosts: BlogPost[] = [
         text: "This tension — between the inherent complexity of insulin dosing and the institutional need for diabetes care consistency — plays out every day across clinics, hospitals, and practices. The consequences of inconsistency are not abstract. They show up in patient outcomes, treatment errors, and the added burden placed on care teams trying to fill gaps that better systems could close.",
       },
       {
-        type: "p",
-        text: "This blog explores why standardization in diabetes care is so difficult to achieve, what drives inconsistent insulin dosing practices, and what it would take to build a more reliable framework for clinical decision-making.",
+        type: "html",
+        html: 'This blog explores why <a href="/">standardization in diabetes care</a> is so difficult to achieve, what drives inconsistent insulin dosing practices, and what it would take to build a more reliable framework for clinical decision-making.',
       },
       { type: "h2", text: "1. Different Clinicians, Different Approaches for the Same Patient" },
       {
