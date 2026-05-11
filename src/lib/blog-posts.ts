@@ -27,9 +27,11 @@ export interface BlogPost {
 
 export type BlogBlock =
   | { type: "p"; text: string }
+  | { type: "html"; html: string }
   | { type: "h2"; text: string }
   | { type: "h3"; text: string }
   | { type: "ul"; items: string[] }
+  | { type: "ul_html"; items: string[] }
   | { type: "callout"; text: string; href?: string };
 
 export const blogPosts: BlogPost[] = [
