@@ -1,5 +1,7 @@
 import insulinDosingChallengesImg from "@/assets/blog/insulin-dosing-challenges.jpg";
 import insulinDosingConsistencyImg from "@/assets/blog/insulin-dosing-consistency.jpg";
+import supportingClinicalJudgmentImg from "@/assets/blog/supporting-clinical-judgment.jpg";
+import reducingCognitiveLoadImg from "@/assets/blog/reducing-cognitive-load.jpg";
 
 export interface BlogFaq {
   q: string;
