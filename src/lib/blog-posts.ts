@@ -319,8 +319,8 @@ export const blogPosts: BlogPost[] = [
         text: "When a new provider sees a patient, they need access to a clear and reliable picture of the patient's diabetes history. In practice, this information is often incomplete or fragmented. When providers are forced to make decisions with partial data, inconsistent insulin dosing practices become more likely.",
       },
       {
-        type: "p",
-        text: "Better information flow helps. But even with improved data access, achieving true diabetes care consistency requires structured tools that help translate data into actionable guidance — especially in environments where time and information are limited.",
+        type: "html",
+        html: 'Better information flow helps. But even with improved data access, achieving true diabetes care consistency requires <a href="/features">structured tools that can support</a> translating data into actionable guidance — especially in environments where time and information are limited.',
       },
       { type: "h2", text: "5. High-Complexity Cases Magnify the Problem" },
       {
