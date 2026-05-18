@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
-import { fade } from "@remotion/transitions/fade";
+import { slide } from "@remotion/transitions/slide";
 import { Scene1Hook } from "./scenes/Scene1Hook";
 import { Scene2Problem } from "./scenes/Scene2Problem";
 import { Scene3Tools } from "./scenes/Scene3Tools";
