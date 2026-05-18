@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, interpolate } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
-import { fade } from "@remotion/transitions/fade";
+import { slide } from "@remotion/transitions/slide";
 import { Scene1Hook } from "./scenes/Scene1Hook";
 import { Scene2Problem } from "./scenes/Scene2Problem";
 import { Scene3Tools } from "./scenes/Scene3Tools";
@@ -55,29 +55,29 @@ export const MainVideo: React.FC = () => {
           <Scene1Hook />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
-          presentation={fade()}
-          timing={linearTiming({ durationInFrames: 15 })}
+          presentation={slide()}
+          timing={linearTiming({ durationInFrames: 20 })}
         />
         <TransitionSeries.Sequence durationInFrames={120}>
           <Scene2Problem />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
-          presentation={fade()}
-          timing={linearTiming({ durationInFrames: 15 })}
+          presentation={slide()}
+          timing={linearTiming({ durationInFrames: 20 })}
         />
         <TransitionSeries.Sequence durationInFrames={165}>
           <Scene3Tools />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
-          presentation={fade()}
-          timing={linearTiming({ durationInFrames: 15 })}
+          presentation={slide()}
+          timing={linearTiming({ durationInFrames: 20 })}
         />
         <TransitionSeries.Sequence durationInFrames={105}>
           <Scene4Trust />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition
-          presentation={fade()}
-          timing={linearTiming({ durationInFrames: 15 })}
+          presentation={slide()}
+          timing={linearTiming({ durationInFrames: 20 })}
         />
         <TransitionSeries.Sequence durationInFrames={135}>
           <Scene5CTA />

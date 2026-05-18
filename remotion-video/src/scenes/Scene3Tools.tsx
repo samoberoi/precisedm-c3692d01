@@ -5,10 +5,10 @@ import { loadFont } from "@remotion/google-fonts/Inter";
 const { fontFamily } = loadFont("normal", { weights: ["400", "600", "800", "900"], subsets: ["latin"] });
 
 const tools = [
-  { name: "Starting", desc: "Initial Insulin Dosing", color: "#1E88E5" },
-  { name: "Maintenance", desc: "Ongoing Adjustments", color: "#F4A623" },
-  { name: "Steroid", desc: "Steroid-Induced Dosing", color: "#34495E" },
-  { name: "Gestation", desc: "Pregnancy Care", color: "#E76F51" },
+  { name: "DiaForm", desc: "Starting Insulin Dosing", color: "#1E88E5" },
+  { name: "Maintenance", desc: "Ongoing Dose Adjustments", color: "#F4A623" },
+  { name: "Steroid", desc: "Steroid-Induced Hyperglycemia", color: "#34495E" },
+  { name: "Gestation", desc: "Pregnancy Insulin Care", color: "#E76F51" },
 ];
 
 export const Scene3Tools: React.FC = () => {
