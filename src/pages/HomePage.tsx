@@ -20,9 +20,9 @@ import PreciseLogo from "@/components/PreciseLogo";
 
 const toolkitItems = [
   { label: "DiaForm", desc: "Initial Dosing", image: diaformIcon, route: "/diaform", gradient: "linear-gradient(135deg, hsl(210,80%,50%), hsl(210,90%,40%))", iconBg: "bg-white/15" },
-  { label: "Maintenance", desc: "Ongoing Doses", image: maintenanceIcon, route: "/maintenance", gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", iconBg: "bg-white/15" },
-  { label: "Steroid", desc: "Steroid Dosing", image: steroidIcon, route: "/steroid", gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", iconBg: "bg-white/15" },
-  { label: "Gestation", desc: "Pregnancy Care", image: gestationIcon, route: "/gestation", gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", iconBg: "bg-white/15" },
+  { label: "Maintenance", desc: "Ongoing Insulin Dose Adjustments", image: maintenanceIcon, route: "/maintenance", gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", iconBg: "bg-white/15" },
+  { label: "Steroid", desc: "Insulin Dose Adjustments for Steroid-induced Hyperglycemia", image: steroidIcon, route: "/steroid", gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", iconBg: "bg-white/15" },
+  { label: "Gestation", desc: "Insulin Dose Adjustments in Gestation Diabetes", image: gestationIcon, route: "/gestation", gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", iconBg: "bg-white/15" },
 ];
 
 const teamMembers = [
