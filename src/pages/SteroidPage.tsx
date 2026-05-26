@@ -320,7 +320,7 @@ const SteroidPage = () => {
                 <div>
                   <p className="text-sm font-semibold text-foreground">Prednisone: Increase basal-bolus doses</p>
                   <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                    <span className="font-medium text-foreground">Example:</span> If the range is {result.doseLowUnits}-{result.doseHighUnits} units, increase Basal Insulin by {Math.round((result.doseLowUnits + result.doseHighUnits) / 4)} units and short acting insulin by {Math.max(1, Math.round((result.doseLowUnits + result.doseHighUnits) / 12))} units per meal.
+                    <span className="font-medium text-foreground">Example:</span> If the range is {result.doseLowUnits}-{result.doseHighUnits} units, you may choose to increase Basal Insulin by {Math.round((result.doseLowUnits + result.doseHighUnits) / 4)} units and short acting insulin by {Math.max(1, Math.round((result.doseLowUnits + result.doseHighUnits) / 12))} units per meal.
                   </p>
                 </div>
 
