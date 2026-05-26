@@ -192,7 +192,7 @@ const HomePage = () => {
             <p className="text-xs font-semibold text-sky-400 uppercase tracking-wider">Featured</p>
             <p className="text-sm font-bold text-white mt-1">About DiaForm</p>
             <p className="text-xs text-white/70 mt-1 leading-relaxed line-clamp-2">
-              An innovative insulin dosing tool for trained healthcare providers across a range of clinical scenarios.
+              An innovative insulin dosing tool for trained healthcare professionals across a range of clinical scenarios.
             </p>
           </div>
         </motion.div>
