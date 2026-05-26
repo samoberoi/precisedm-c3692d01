@@ -28,9 +28,9 @@ const features = [
 
 const calculators = [
   { name: "Starting", desc: "Initial Insulin Dosing", icon: diaformIcon, gradient: "linear-gradient(135deg, hsl(210,80%,50%), hsl(210,90%,40%))", route: "/diaform-tool" },
-  { name: "Maintenance", desc: "Ongoing Dose Adjustments", icon: maintenanceIcon, gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", route: "/maintenance-tool" },
-  { name: "Steroid", desc: "Steroid-Induced Dosing", icon: steroidIcon, gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", route: "/steroid-tool" },
-  { name: "Gestation", desc: "Pregnancy Care Dosing", icon: gestationIcon, gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", route: "/gestation-tool" },
+  { name: "Maintenance", desc: "Ongoing Insulin Dose Adjustments", icon: maintenanceIcon, gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", route: "/maintenance-tool" },
+  { name: "Steroid", desc: "Insulin Dose Adjustments for Steroid-induced Hyperglycemia", icon: steroidIcon, gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", route: "/steroid-tool" },
+  { name: "Gestation", desc: "Insulin Dose Adjustments in Gestation Diabetes", icon: gestationIcon, gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", route: "/gestation-tool" },
 ];
 
 const steps = [
