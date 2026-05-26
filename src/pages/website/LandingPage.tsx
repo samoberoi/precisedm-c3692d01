@@ -19,7 +19,7 @@ import drSuzanneChung from "@/assets/dr-suzanne-chung.jpg";
 
 const features = [
   { icon: Calculator, title: "Advanced Calculators", desc: "4 precision insulin dosing calculators for different clinical scenarios.", accent: "hsl(210, 80%, 50%)" },
-  { icon: Zap, title: "Instant Results", desc: "Calculate recommended dosages in seconds with evidence-based algorithms.", accent: "hsl(45, 85%, 50%)" },
+  { icon: Zap, title: "Instant Results", desc: "Evidence-based algorithms deliver recommended insulin dose ranges in seconds.", accent: "hsl(45, 85%, 50%)" },
   
   { icon: Shield, title: "Secure & Reliable", desc: "Privacy-focused design with saved history and secure data handling.", accent: "hsl(160, 60%, 45%)" },
   { icon: TrendingUp, title: "Smart Analytics", desc: "Track dosing patterns and outcomes with built-in insights.", accent: "hsl(270, 60%, 55%)" },
@@ -28,9 +28,9 @@ const features = [
 
 const calculators = [
   { name: "Starting", desc: "Initial Insulin Dosing", icon: diaformIcon, gradient: "linear-gradient(135deg, hsl(210,80%,50%), hsl(210,90%,40%))", route: "/diaform-tool" },
-  { name: "Maintenance", desc: "Ongoing Dose Adjustments", icon: maintenanceIcon, gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", route: "/maintenance-tool" },
-  { name: "Steroid", desc: "Steroid-Induced Dosing", icon: steroidIcon, gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", route: "/steroid-tool" },
-  { name: "Gestation", desc: "Pregnancy Care Dosing", icon: gestationIcon, gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", route: "/gestation-tool" },
+  { name: "Maintenance", desc: "Ongoing Insulin Dose Adjustments", icon: maintenanceIcon, gradient: "linear-gradient(135deg, hsl(45,85%,50%), hsl(35,80%,42%))", route: "/maintenance-tool" },
+  { name: "Steroid", desc: "Insulin Dose Adjustments for Steroid-induced Hyperglycemia", icon: steroidIcon, gradient: "linear-gradient(135deg, hsl(200,30%,22%), hsl(200,25%,15%))", route: "/steroid-tool" },
+  { name: "Gestation", desc: "Insulin Dose Adjustments in Gestation Diabetes", icon: gestationIcon, gradient: "linear-gradient(135deg, hsl(15,80%,55%), hsl(10,75%,45%))", route: "/gestation-tool" },
 ];
 
 const steps = [
@@ -143,7 +143,7 @@ const LandingPage = () => {
                 <span className="text-gradient">Confidence</span>
               </h1>
               <p className="mt-5 text-lg lg:text-xl text-muted-foreground max-w-xl leading-relaxed">
-                An innovative toolkit for trained healthcare providers to quickly and accurately determine starting and maintenance of insulin doses across clinical scenarios.
+                An innovative toolkit for trained healthcare professionals to quickly and accurately determine starting and maintenance insulin doses across clinical scenarios.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button size="lg" onClick={handleCTA} className="rounded-xl gradient-primary glow-primary font-bold text-base h-14 px-10">
@@ -263,7 +263,7 @@ const LandingPage = () => {
         <div className="mx-auto max-w-[1440px] px-6 xl:px-10">
           <ScrollReveal className="text-center mb-14">
             <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl lg:text-5xl">How It Works</h2>
-            <p className="mt-4 text-lg text-muted-foreground">Four simple steps to precision dosing.</p>
+            <p className="mt-4 text-lg text-muted-foreground">Four Simple Tools for Customized Insulin Dosing</p>
           </ScrollReveal>
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
