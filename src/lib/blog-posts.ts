@@ -26,6 +26,8 @@ export interface BlogPost {
   publishedAt: string;
   readTime: string;
   author: string;
+  /** Self-referencing canonical URL (overrides auto-generated default) */
+  canonicalUrl?: string;
   /** Rich content as ordered blocks (rendered by BlogPostPage) */
   content: BlogBlock[];
   faqs: BlogFaq[];
@@ -991,6 +993,7 @@ export const blogPosts: BlogPost[] = [
     publishedAt: "2026-05-18",
     readTime: "8 min read",
     author: "PreciseDM Clinical Team",
+    canonicalUrl: "https://www.precisedm.com/blog/time-constraints-clinical-practice-diabetes-care-decisions",
     content: [
       { type: "p", text: "There is a version of every clinical appointment that exists only on paper." },
       { type: "p", text: "In that version, the clinician reviews the patient's full history before they walk in. The glucose data has been downloaded and is ready to interpret. There is enough time to work through the relevant variables, ask the right questions, and arrive at a dosing decision that reflects careful, unhurried clinical reasoning." },
@@ -1070,6 +1073,7 @@ export const blogPosts: BlogPost[] = [
     publishedAt: "2026-05-22",
     readTime: "9 min read",
     author: "PreciseDM Clinical Team",
+    canonicalUrl: "https://www.precisedm.com/blog/manual-estimation-structured-support-modern-diabetes-care-tools",
     content: [
       { type: "p", text: "There is a kind of insulin dosing that happens entirely inside the clinician's head." },
       { type: "p", text: "The patient's most recent readings. Their weight. What they were on before. What has worked and what has not. How this case compares to others the clinician has managed. A mental synthesis of all of it, arriving at a number, or a range, that the provider then puts on the chart." },

@@ -83,7 +83,7 @@ const BlogPostPage = () => {
 
   if (!post) return <Navigate to="/blog" replace />;
 
-  const canonical = `${SITE.url}/blog/${post.slug}`;
+  const canonical = post.canonicalUrl || `${SITE.url}/blog/${post.slug}`;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
