@@ -41,11 +41,22 @@ async function assertAdmin(req: Request, supabaseUrl: string, anonKey: string) {
   return data === true;
 }
 
+const PAGE_OVERRIDE_TYPES = new Set([
+  "meta", "content", "schema", "image-seo",
+  "faq", "internal-link", "cta", "geo-page",
+]);
+
+const EXTERNAL_MANUAL_TYPES: Record<string, string> = {
+  audit: "External audit task: run the audit (e.g. submit sitemap, Lighthouse scan, broken-link sweep) and then mark this done manually.",
+  citation: "External citation task: update the listing on the third-party directory (Google Business Profile, Healthgrades, Practo, etc.) and mark done manually.",
+  outreach: "External outreach task: send the emails / pitches outside the platform and mark done manually once completed.",
+};
+
 async function executeTask(supabase: ReturnType<typeof createClient>, task: SeoTask, settings: { blog_approval_required: boolean }) {
   const now = new Date().toISOString();
-  const type = task.deliverable_type;
+  const type = task.deliverable_type ?? "";
 
-  if (type === "meta" || type === "content" || type === "schema" || type === "image-seo") {
+  if (PAGE_OVERRIDE_TYPES.has(type)) {
     const routePath = routeFromTarget(task.target_url);
     if (!routePath) {
       await supabase.from("seo_tasks").update({ status: "blocked", notes: "Cannot auto-execute: no editable target page URL." }).eq("id", task.id);
@@ -94,11 +105,12 @@ async function executeTask(supabase: ReturnType<typeof createClient>, task: SeoT
     return { completed: true, kind: "blog", slug: task.blog_slug };
   }
 
+  const externalNote = EXTERNAL_MANUAL_TYPES[type]
+    ?? "This task type cannot be auto-completed by the platform. Complete the action and mark it done manually.";
   await supabase.from("seo_tasks").update({
-    status: "blocked", completed_at: null,
-    notes: "Not auto-completed: this is an external/manual task and must be verified by a person before completion.",
+    status: "blocked", completed_at: null, notes: externalNote,
   }).eq("id", task.id);
-  return { completed: false, blocked: true, reason: "manual_or_external" };
+  return { completed: false, blocked: true, reason: "manual_or_external", type };
 }
 
 Deno.serve(async (req) => {
